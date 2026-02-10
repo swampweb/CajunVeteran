@@ -1,8 +1,11 @@
 
 :root{--bg:#0b1420;--panel:#0f1c2b;--muted:#93a3b5;--text:#e9edf2;--accent:#f0b429;--danger:#ef4444;--ok:#10b981;--yellow:#f59e0b}
-*{box-sizing:border-box} html,body{margin:0}
+*{box-sizing:border-box}
+html,body{margin:0}
 body{background:var(--bg);color:var(--text);font:15px/1.45 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-.container{max-width:1100px;margin:24px auto;padding:0 16px}
+
+/* ---- Layout: make content fluid and fill the window width ---- */
+.container{max-width:none;width:100%;margin:24px auto;padding:0 16px}
 .site-header,.site-footer{background:var(--panel);padding:10px 16px;border-bottom:1px solid #17273a}
 .site-footer{border-top:1px solid #17273a;border-bottom:none}
 .site-header h1{margin:0;font-size:20px;line-height:1.1}
@@ -13,26 +16,52 @@ nav a{color:var(--muted);margin-left:12px;text-decoration:none}
 nav a.active{color:var(--accent)}
 section{margin:24px 0}
 .controls{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+
+/* ---- Panels ---- */
+.panels{display:flex;flex-direction:column;gap:18px}
+.panel{background:var(--panel);padding:14px;border:1px solid #1b2b40;border-radius:10px}
+.error{color:var(--danger)}
+.danger{background:linear-gradient(135deg,var(--danger),#b91c1c)!important;color:#fff}
+.btn-secondary{background:linear-gradient(135deg,#264055,#3b5167)!important;color:#e9edf2}
+
+/* ---- Tables: full-width, responsive, sticky header ---- */
 .table-wrap{overflow:auto;border:1px solid #1b2b40;border-radius:10px}
-table{width:100%;border-collapse:collapse}
-th,td{padding:10px;border-bottom:1px solid #1b2b40;text-align:left}
-th{background:#0a1a2a;position:sticky;top:0}
+
+/* Make ALL tables fill the available width */
+table{width:100%;table-layout:auto;border-collapse:collapse}
+
+th,td{padding:10px;border-bottom:1px solid #1b2b40;text-align:left;white-space:normal;word-break:break-word}
+
+/* Sticky header that remains visible when scrolling */
+th{background:#0a1a2a;position:sticky;top:0;z-index:1}
+
+/* Row hover */
 tr:hover td{background:#0d2235}
-.muted{color:var(--muted)} .hidden{display:none}
+
+/* Badges & labels */
+.muted{color:var(--muted)}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px}
+.badge.ok{background:rgba(16,185,129,.2);color:var(--ok)}
+.badge.warn{background:rgba(245,158,11,.2);color:var(--yellow)}
+.badge.muted{background:rgba(148,163,184,.2);color:var(--muted)}
+
+/* Images */
+.img-thumb{max-width:64px;height:64px;object-fit:cover;border-radius:6px;border:1px solid #28415e;background:#0a1827}
+.img-cell{display:flex;align-items:center;gap:8px}
+
+/* Descriptions and dimensions */
+.desc{max-width:520px;white-space:normal;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.dim-badge{font-size:12px;color:var(--muted)}
+
+/* Forms */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:12px 0}
 .grid input,.grid select,.grid button{padding:9px 10px;border-radius:6px;border:1px solid #28415e;background:#0a1827;color:var(--text);font-size:14px}
 .grid button{background:linear-gradient(135deg,var(--accent),#e29f1d);border:none;cursor:pointer}
 .grid button:hover{filter:brightness(1.05)}
-.btn-secondary{background:linear-gradient(135deg,#264055,#3b5167)!important}
-.panel{background:var(--panel);padding:14px;border:1px solid #1b2b40;border-radius:10px;margin-bottom:18px}
-.error{color:var(--danger)} .danger{background:linear-gradient(135deg,var(--danger),#b91c1c)!important;color:#fff}
-.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px}
-.badge.ok{background:rgba(16,185,129,.2);color:var(--ok)} .badge.warn{background:rgba(245,158,11,.2);color:var(--yellow)} .badge.muted{background:rgba(148,163,184,.2);color:var(--muted)}
-.img-thumb{width:64px;height:64px;object-fit:cover;border-radius:6px;border:1px solid #28415e;background:#0a1827}
-.img-cell{display:flex;align-items:center;gap:8px}
-.desc{max-width:520px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
-.dim-badge{font-size:12px;color:var(--muted)}
-input[type=file]{color:var(--muted)} .preview{width:96px;height:96px;object-fit:cover;border:1px dashed #28415e;border-radius:8px;background:#0a1827}
+input[type=file]{color:var(--muted)}
+.preview{width:96px;height:96px;object-fit:cover;border:1px dashed #28415e;border-radius:8px;background:#0a1827}
+
+/* Order lines group */
 .order-lines{display:flex;flex-direction:column;gap:12px}
 .order-line{display:grid;grid-template-columns:minmax(220px,1fr) 140px;gap:10px;align-items:flex-start;padding:10px;border:1px solid #1b2b40;border-radius:8px;background:#0b1828}
 .order-line label{display:flex;flex-direction:column;gap:6px}
@@ -41,12 +70,21 @@ input[type=file]{color:var(--muted)} .preview{width:96px;height:96px;object-fit:
 .order-line .removeLine{grid-column:2;align-self:end;justify-self:end;height:36px}
 #addLineBtn{grid-column:1 / -1;margin-top:4px;position:static}
 @media (max-width:720px){.order-line{grid-template-columns:1fr}.order-line .removeLine{grid-column:1;justify-self:end}}
+
+/* Profit readout */
 .profit-box{display:flex;align-items:center;gap:8px;background:#0a1827;border:1px solid #28415e;border-radius:6px;padding:8px;height:40px}
 .profit-out{font-weight:700;color:var(--accent)}
+
+/* Numeric alignment for admin totals */
 #adminOrdersTableWrap th:nth-child(8), #adminOrdersTableWrap td:nth-child(8),
 #adminOrdersTableWrap th:nth-child(9), #adminOrdersTableWrap td:nth-child(9),
 #adminOrdersTableWrap th:nth-child(10), #adminOrdersTableWrap td:nth-child(10),
 #adminOrdersTableWrap th:nth-child(11), #adminOrdersTableWrap td:nth-child(11){text-align:right}
-tr.st-new td{ background: rgba(148,163,184,.20); }
-tr.st-in_progress td{ background: rgba(245,158,11,.20); }
-tr.st-completed td{ background: rgba(16,185,129,.20); }
+
+/* Status shading (optional) */
+tr.st-new td{ background: rgba(148,163,184,.10); }
+tr.st-in_progress td{ background: rgba(245,158,11,.10); }
+tr.st-completed td{ background: rgba(16,185,129,.10); }
+
+/* Optional: slightly more side padding on very wide screens */
+@media (min-width:1400px){ .container{ padding:0 24px } }
