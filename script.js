@@ -114,3 +114,44 @@ function suggestNextOrderId(){ const f=document.getElementById('orderForm'); if(
 function nextSku(){ const s=loadStore(); const nums=s.items.map(i=>Number(i.sku)).filter(n=>!isNaN(n)); const max=nums.length?Math.max(...nums):1000000; return String(max+1); }
 function suggestNextSku(){ const s=document.getElementById('sku'); if(!s) return; if(!s.value) s.value=nextSku(); }
 function fileToDataURL(file){ return new Promise((resolve,reject)=>{ const r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file); }); }
+
+
+// --- v10.0 buttons fix: robust delegated handlers for Edit/Delete ---
+(function(){
+  if (typeof document === 'undefined') return;
+  if (document.__hasGlobalActHandler) return; // guard against double-binding
+  document.__hasGlobalActHandler = true;
+
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('[data-act]');
+    if (!el) return;
+    var act = el.getAttribute('data-act');
+    if (!act) return;
+
+    // Colors table
+    if (act === 'editColor') { e.preventDefault(); try{ onEditColor({target: el}); }catch(_){} return; }
+    if (act === 'delColor')  { e.preventDefault(); try{ onDelColor({target: el}); }catch(_){} return; }
+
+    // Items table
+    if (act === 'editItem')  { e.preventDefault(); try{ onEditItem({target: el}); }catch(_){} return; }
+    if (act === 'delItem')   { e.preventDefault(); try{ onDelItem({target: el}); }catch(_){} return; }
+
+    // Orders table
+    if (act === 'editOrder') { e.preventDefault(); try{ onEditOrder({target: el}); }catch(_){} return; }
+    if (act === 'delOrder')  { e.preventDefault(); try{ onDelOrder({target: el}); }catch(_){} return; }
+  }, true);
+})();
+
+
+function onDelOrder(e){
+  try{
+    var idx = Number(e.target.dataset.idx);
+    var s = loadStore();
+    if (isNaN(idx) || idx < 0 || idx >= s.orders.length) return;
+    if (confirm('Delete this order?')){
+      s.orders.splice(idx,1);
+      saveStore(s);
+      renderAdminTables?.();
+    }
+  }catch(_){}
+}

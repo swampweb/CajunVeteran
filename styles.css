@@ -152,3 +152,13 @@ body.admin.admin-orders #adminOrdersTableWrap td:nth-child(11) {
   body.admin.admin-orders #adminOrdersTableWrap th:nth-child(10),
   body.admin.admin-orders #adminOrdersTableWrap td:nth-child(10) { display: none; }
 }
+
+
+/* v10.0 buttons fix: red delete buttons */
+button.danger, .danger.button, .danger[role="button"], .danger.btn {
+  background: #ef4444; /* red-500 */
+  color: #fff;
+  border: 1px solid #b91c1c; /* red-700 */
+}
+button.danger:hover, .danger.button:hover { filter: brightness(0.95); }
+button.danger:focus { outline: 2px solid #fca5a5; outline-offset: 2px; }
