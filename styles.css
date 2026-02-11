@@ -93,11 +93,8 @@ tr.st-completed td{ background: rgba(16,185,129,.10); }
 .table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 @media (min-width:1400px){ .container{ padding:0 24px } }
 @media (min-width:1600px){ #adminOrdersTableWrap th,#adminOrdersTableWrap td{padding:10px 12px} }
-/* --- HOTFIX 10: Admin Orders columns layout (v9.4p3) --- */
-/* Problem: narrow/sliver-looking column(s) between Items and Paid due to table-layout:fixed on a 14-col table. */
-/* Fix: use auto layout for admin tables and set min-widths for money columns. */
+/* --- HOTFIX: Admin Orders columns layout --- */
 body.admin.admin-orders #adminOrdersTableWrap { table-layout: auto !important; }
-/* Give numeric columns breathing room */
 body.admin.admin-orders #adminOrdersTableWrap th:nth-child(8),
 body.admin.admin-orders #adminOrdersTableWrap td:nth-child(8) { min-width: 8.5rem; }
 body.admin.admin-orders #adminOrdersTableWrap th:nth-child(9),
@@ -106,7 +103,6 @@ body.admin.admin-orders #adminOrdersTableWrap th:nth-child(10),
 body.admin.admin-orders #adminOrdersTableWrap td:nth-child(10) { min-width: 6.5rem; }
 body.admin.admin-orders #adminOrdersTableWrap th:nth-child(11),
 body.admin.admin-orders #adminOrdersTableWrap td:nth-child(11) { min-width: 8.5rem; }
-/* Keep numbers right-aligned for readability (already present, reinforce) */
 body.admin.admin-orders #adminOrdersTableWrap th:nth-child(8),
 body.admin.admin-orders #adminOrdersTableWrap td:nth-child(8),
 body.admin.admin-orders #adminOrdersTableWrap th:nth-child(9),
@@ -118,22 +114,16 @@ body.admin.admin-orders #adminOrdersTableWrap td:nth-child(11) {
  text-align: right;
  white-space: nowrap;
 }
-/* On small screens, optionally hide Adj and Surch columns to avoid horizontal squeeze */
 @media (max-width: 900px) {
  body.admin.admin-orders #adminOrdersTableWrap th:nth-child(9),
  body.admin.admin-orders #adminOrdersTableWrap td:nth-child(9),
  body.admin.admin-orders #adminOrdersTableWrap th:nth-child(10),
  body.admin.admin-orders #adminOrdersTableWrap td:nth-child(10) { display: none; }
 }
-/* v10.0 buttons fix: red delete buttons */
-button.danger, .danger.button, .danger[role="button"], .danger.btn {
- background: #ef4444;
- color: #fff;
- border: 1px solid #b91c1c;
-}
+/* Buttons */
+button.danger, .danger.button, .danger[role="button"], .danger.btn { background: #ef4444; color: #fff; border: 1px solid #b91c1c; }
 button.danger:hover, .danger.button:hover { filter: brightness(0.95); }
 button.danger:focus { outline: 2px solid #fca5a5; outline-offset: 2px; }
-
-/* --- v10.1: Dropdown visibility & stacking fix (prevents clipping when editing orders) --- */
+/* --- v10.1: Dropdown visibility fix (prevents clipping) --- */
 .order-line, .panel, .panel .panel-body, .table-wrap { overflow: visible !important; }
 .order-line .orderItemSelect { position: relative; z-index: 5; }
