@@ -116,7 +116,7 @@ function suggestNextSku(){ const s=document.getElementById('sku'); if(!s) return
 function fileToDataURL(file){ return new Promise((resolve,reject)=>{ const r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file); }); }
 
 
-// --- v10.0 buttons fix: robust delegated handlers for Edit/Delete ---
+// --- v10.0 buttons fix 2: robust delegated handlers for Edit/Delete ---
 (function(){
   if (typeof document === 'undefined') return;
   if (document.__hasGlobalActHandler) return; // guard against double-binding

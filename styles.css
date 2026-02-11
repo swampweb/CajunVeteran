@@ -156,9 +156,9 @@ body.admin.admin-orders #adminOrdersTableWrap td:nth-child(11) {
 
 /* v10.0 buttons fix: red delete buttons */
 button.danger, .danger.button, .danger[role="button"], .danger.btn {
-  background: #ef4444; /* red-500 */
+  background: #ef4444;
   color: #fff;
-  border: 1px solid #b91c1c; /* red-700 */
+  border: 1px solid #b91c1c;
 }
 button.danger:hover, .danger.button:hover { filter: brightness(0.95); }
 button.danger:focus { outline: 2px solid #fca5a5; outline-offset: 2px; }
