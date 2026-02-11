@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +20,6 @@
       <a href="admin.html">Admin</a>
     </nav>
   </header>
-
   <main class="container">
     <!-- 1) ACTIVE ORDERS (expanded) -->
     <section class="panel">
@@ -58,7 +56,6 @@
         </div>
       </div>
     </section>
-
     <!-- 2) COMPLETED (collapsed) -->
     <details class="panel">
       <summary>
@@ -87,7 +84,6 @@
         </div>
       </div>
     </details>
-
     <!-- 3) ITEMS (collapsed) -->
     <details class="panel">
       <summary>
@@ -128,7 +124,6 @@
       </div>
     </details>
   </main>
-
   <!-- Image modal (hidden initially) -->
   <div id="imgModal" class="hidden" aria-hidden="true" style="position:fixed;inset:0;background:rgba(0,0,0,.7);align-items:center;justify-content:center;">
     <figure style="max-width:90vw;max-height:90vh;margin:0">
@@ -137,17 +132,15 @@
     </figure>
     <button aria-label="Close" onclick="closeImageModal()" style="position:absolute;top:12px;right:12px;padding:8px 10px;border-radius:6px;border:1px solid #28415e;background:#0a1827;color:#e9edf2;cursor:pointer">Close</button>
   </div>
-
   <footer class="site-footer">© CajunVeteran 3D Printing</footer>
-
   <script src="script.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       renderItemsPublic?.();
       renderOrdersPublic?.();
-      document.getElementById('searchItems')?.addEventListener('input', ()=>renderItemsPublic?.());
-      document.getElementById('filterAvailability')?.addEventListener('change', ()=>renderItemsPublic?.());
-      document.getElementById('orderStatusFilter')?.addEventListener('change', ()=>renderOrdersPublic?.());
+      document.getElementById('searchItems')?.addEventListener('input', () => renderItemsPublic?.());
+      document.getElementById('filterAvailability')?.addEventListener('change', () => renderItemsPublic?.());
+      document.getElementById('orderStatusFilter')?.addEventListener('change', () => renderOrdersPublic?.());
     });
   </script>
 </body>
