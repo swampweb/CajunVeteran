@@ -1,81 +1,114 @@
 
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Admin — CajunVeteran 3D Printing (v9.4p1)</title><link rel="stylesheet" href="styles.css"/></head>
-<body>
-<header class="site-header"><div class="brand"><img class="brand-logo" src="CajunVeteran 3D Print Logo.png" alt="CajunVeteran 3D Printing"/><div><h1>CajunVeteran 3D Printing</h1><div class="brand-sub">Admin — Inventory & Orders - v9.4p1</div></div></div><nav><a href="index.html">Public View</a><a href="admin.html" class="active">Admin</a></nav></header>
+<title>Admin — CajunVeteran 3D Printing (v9.4p3)</title><link rel="stylesheet" href="styles.css"/></head>
+<body class="admin admin-orders">
+<header class="site-header"><div class="brand"><img class="brand-logo" src="CajunVeteran 3D Print Logo.png" alt="CajunVeteran 3D Printing"/><div><h1>CajunVeteran 3D Printing</h1><div class="brand-sub">Admin — Inventory & Orders - v9.4p3</div></div></div><nav><a href="index.html">Public View</a><a href="admin.html" class="active">Admin</a></nav></header>
 <main class="container">
-<section id="adminPanels"><div class="panels">
-<div class="panel"><h2>Orders</h2>
-<form id="orderForm" class="grid flat-inputs">
-<input name="orderId" id="orderId" placeholder="Order # (auto)"/>
-<input name="customer" placeholder="Customer (first name/initials)" required/>
-<input name="orderDate" type="date" placeholder="Date Ordered"/>
-<input name="dueDate" type="date" placeholder="Order Due"/>
-<label>Status<select name="status"><option value="new">New</option><option value="in_progress">In Process</option><option value="completed">Completed</option><option value="shipped">Shipped/Delivered</option></select></label>
-<label>Priority (1=highest)<input name="priority" type="number" min="1" max="9" value="3"/></label>
-<label>Adjustment<select name="discountType" id="discountType"><option value="none">None</option><option value="percent">% Off</option><option value="amount">$ Off</option></select></label>
-<input name="discountValue" id="discountValue" type="number" step="0.01" placeholder="Adj. value"/>
-<label>Surcharge<select name="surchargeType" id="surchargeType"><option value="none">None</option><option value="percent">% Add</option><option value="amount">$ Add</option></select></label>
-<input name="surchargeValue" id="surchargeValue" type="number" step="0.01" placeholder="Surcharge value"/>
-<label class="paid-row"><input type="checkbox" name="paid" id="paidChk"/> Paid</label>
-<input name="notes" placeholder="Notes (optional)"/>
+<section id="adminPanels" class="panels">
 
-<!-- Order lines moved below header fields; spans full row -->
-<div class="order-lines">
-  <div class="order-line" data-index="0">
-    <label>Item
-      <select class="orderItemSelect"></select>
-      <small class="line-price muted"></small>
-    </label>
-    <label>Qty<input type="number" class="orderQtyInput" min="1" value="1"/></label>
-    <label>Color(s)<select class="orderLineColorsSelect" multiple size="4"></select></label>
-    <button type="button" class="removeLine" title="Remove line">✕</button>
+<details class="panel" open>
+  <summary><span class="twisty">▶</span><strong>Add / Edit Order</strong></summary>
+  <div class="panel-body">
+    <form id="orderForm" class="grid flat-inputs">
+      <input name="orderId" id="orderId" placeholder="Order # (auto)"/>
+      <input name="customer" placeholder="Customer (first name/initials)" required/>
+      <input name="orderDate" type="date" placeholder="Date Ordered"/>
+      <input name="dueDate" type="date" placeholder="Order Due"/>
+      <label>Status<select name="status"><option value="new">New</option><option value="in_progress">In Process</option><option value="completed">Completed</option><option value="shipped">Shipped/Delivered</option></select></label>
+      <label>Priority (1=highest)<input name="priority" type="number" min="1" max="9" value="3"/></label>
+      <label>Adjustment<select name="discountType" id="discountType"><option value="none">None</option><option value="percent">% Off</option><option value="amount">$ Off</option></select></label>
+      <input name="discountValue" id="discountValue" type="number" step="0.01" placeholder="Adj. value"/>
+      <label>Surcharge<select name="surchargeType" id="surchargeType"><option value="none">None</option><option value="percent">% Add</option><option value="amount">$ Add</option></select></label>
+      <input name="surchargeValue" id="surchargeValue" type="number" step="0.01" placeholder="Surcharge value"/>
+      <label class="paid-row"><input type="checkbox" name="paid" id="paidChk"/> Paid</label>
+      <input name="notes" placeholder="Notes (optional)"/>
+
+      <div class="order-lines">
+        <div class="order-line" data-index="0">
+          <label>Item
+            <select class="orderItemSelect"></select>
+            <small class="line-price muted"></small>
+          </label>
+          <label>Qty<input type="number" class="orderQtyInput" min="1" value="1"/></label>
+          <label>Color(s)<select class="orderLineColorsSelect" multiple size="4"></select></label>
+          <button type="button" class="removeLine" title="Remove line">✕</button>
+        </div>
+      </div>
+      <button type="button" id="addLineBtn" class="btn-secondary">+ Add Line</button>
+
+      <button type="submit">Add / Update Order</button>
+    </form>
   </div>
-</div>
-<button type="button" id="addLineBtn" class="btn-secondary">+ Add Line</button>
+</details>
 
-<button type="submit">Add / Update Order</button>
-</form>
-<div class="table-wrap"><table id="adminOrdersTableWrap"><thead><tr><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Date Ordered</th><th>Order Due</th><th>Items (Name × Qty)</th><th>Subtotal ($)</th><th>Adj (-)</th><th>Surch (+)</th><th>Total ($)</th><th>Paid</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="adminOrdersTable"></tbody></table></div>
-</div>
+<details class="panel" open>
+  <summary><span class="twisty">▶</span><strong>Orders — Active (New + In Process)</strong> <span class="badge warn" id="adminCountActive">0</span></summary>
+  <div class="panel-body">
+    <div class="table-wrap"><table id="adminOrdersTableWrap"><thead><tr><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Date Ordered</th><th>Order Due</th><th>Items (Name × Qty)</th><th>Subtotal ($)</th><th>Adj (-)</th><th>Surch (+)</th><th>Total ($)</th><th>Paid</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="adminOrdersTableActive"></tbody></table></div>
+  </div>
+</details>
 
-<div class="panel"><h2>Items</h2>
-<form id="itemForm" class="grid flat-inputs">
-<input name="sku" id="sku" placeholder="SKU (auto)"/>
-<input name="name" placeholder="Name" required/>
-<label>Size<select name="size" id="size"><option value="Mini">Mini</option><option value="Small">Small</option><option value="Medium">Medium</option><option value="Large">Large</option><option value="X-L">X-L</option><option value="Other">Other</option></select></label>
-<input name="price" id="price" placeholder="Price ($)" type="number" step="0.01"/>
-<input name="costMaterial" id="costMaterial" placeholder="Material Cost ($)" type="number" step="0.01"/>
-<div class="profit-box"><label>Profit</label><output id="profitOut" class="profit-out">$0.00</output></div>
-<input name="qty" placeholder="Qty Available" type="number" min="0"/>
-<input name="desc" placeholder="Description"/>
-<input name="length" placeholder="Length (mm)" type="number" step="0.01"/>
-<input name="width" placeholder="Width (mm)" type="number" step="0.01"/>
-<input name="height" placeholder="Height (mm)" type="number" step="0.01"/>
-<label>Image (optional)<input name="image" id="itemImage" type="file" accept="image/*"/></label>
-<img id="imgPreview" class="preview" alt="preview"/>
-<label>Printed Colors (multi-select)<select id="itemColorsSelect" name="colorsSelect" multiple size="6" style="min-height:120px"></select></label>
-<label>Visible publicly<select name="visible"><option value="true">Yes</option><option value="false">No</option></select></label>
-<button type="submit">Add / Update Item</button>
-</form>
-<div class="table-wrap"><table><thead><tr><th>Image</th><th>SKU</th><th>Name</th><th>Size</th><th>Colors</th><th>Description</th><th>Dimensions</th><th>Price</th><th>Qty</th><th>Visible</th><th>Actions</th></tr></thead><tbody id="adminItemsTable"></tbody></table></div>
-</div>
+<details class="panel" open>
+  <summary><span class="twisty">▶</span><strong>Orders — Completed</strong> <span class="badge ok" id="adminCountCompleted">0</span></summary>
+  <div class="panel-body">
+    <div class="table-wrap"><table id="adminOrdersTableWrap"><thead><tr><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Date Ordered</th><th>Order Due</th><th>Items (Name × Qty)</th><th>Subtotal ($)</th><th>Adj (-)</th><th>Surch (+)</th><th>Total ($)</th><th>Paid</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="adminOrdersTableCompleted"></tbody></table></div>
+  </div>
+</details>
 
-<div class="panel"><h2>Colors On Hand</h2>
-<form id="colorForm" class="grid flat-inputs">
-<input name="brand" placeholder="Brand" required/>
-<input name="type" placeholder="Color Type" required/>
-<input name="color" placeholder="Color" required/>
-<button type="submit">Add / Update Color</button>
-</form>
-<div class="table-wrap"><table><thead><tr><th>Brand</th><th>Type</th><th>Color</th><th>Actions</th></tr></thead><tbody id="colorsTable"></tbody></table></div>
-</div>
+<details class="panel">
+  <summary><span class="twisty">▶</span><strong>Orders — Shipped / Delivered</strong> <span class="badge muted" id="adminCountShipped">0</span></summary>
+  <div class="panel-body">
+    <div class="table-wrap"><table id="adminOrdersTableWrap"><thead><tr><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Date Ordered</th><th>Order Due</th><th>Items (Name × Qty)</th><th>Subtotal ($)</th><th>Adj (-)</th><th>Surch (+)</th><th>Total ($)</th><th>Paid</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="adminOrdersTableShipped"></tbody></table></div>
+  </div>
+</details>
 
-<div class="panel"><h2>Backup & Restore</h2>
-<div class="backup-controls"><button id="downloadBackup">Download Backup (JSON)</button><label class="upload">Restore from JSON<input id="restoreFile" type="file" accept="application/json"/></label><button id="clearAll" class="danger">Clear All Data</button></div>
-</div>
-</div></section></main>
+<details class="panel">
+  <summary><span class="twisty">▶</span><strong>Items</strong> <span class="badge muted" id="adminCountItems">0</span></summary>
+  <div class="panel-body">
+    <form id="itemForm" class="grid flat-inputs">
+      <input name="sku" id="sku" placeholder="SKU (auto)"/>
+      <input name="name" placeholder="Name" required/>
+      <label>Size<select name="size" id="size"><option value="Mini">Mini</option><option value="Small">Small</option><option value="Medium">Medium</option><option value="Large">Large</option><option value="X-L">X-L</option><option value="Other">Other</option></select></label>
+      <input name="price" id="price" placeholder="Price ($)" type="number" step="0.01"/>
+      <input name="costMaterial" id="costMaterial" placeholder="Material Cost ($)" type="number" step="0.01"/>
+      <div class="profit-box"><label>Profit</label><output id="profitOut" class="profit-out">$0.00</output></div>
+      <input name="qty" placeholder="Qty Available" type="number" min="0"/>
+      <input name="desc" placeholder="Description"/>
+      <input name="length" placeholder="Length (mm)" type="number" step="0.01"/>
+      <input name="width" placeholder="Width (mm)" type="number" step="0.01"/>
+      <input name="height" placeholder="Height (mm)" type="number" step="0.01"/>
+      <label>Image (optional)<input name="image" id="itemImage" type="file" accept="image/*"/></label>
+      <img id="imgPreview" class="preview" alt="preview"/>
+      <label>Printed Colors (multi-select)<select id="itemColorsSelect" name="colorsSelect" multiple size="6" style="min-height:120px"></select></label>
+      <label>Visible publicly<select name="visible"><option value="true">Yes</option><option value="false">No</option></select></label>
+      <button type="submit">Add / Update Item</button>
+    </form>
+    <div class="table-wrap"><table><thead><tr><th>Image</th><th>SKU</th><th>Name</th><th>Size</th><th>Colors</th><th>Description</th><th>Dimensions</th><th>Price</th><th>Qty</th><th>Visible</th><th>Actions</th></tr></thead><tbody id="adminItemsTable"></tbody></table></div>
+  </div>
+</details>
+
+<details class="panel">
+  <summary><span class="twisty">▶</span><strong>Colors On Hand</strong> <span class="badge muted" id="adminCountColors">0</span></summary>
+  <div class="panel-body">
+    <form id="colorForm" class="grid flat-inputs">
+      <input name="brand" placeholder="Brand" required/>
+      <input name="type" placeholder="Color Type" required/>
+      <input name="color" placeholder="Color" required/>
+      <button type="submit">Add / Update Color</button>
+    </form>
+    <div class="table-wrap"><table><thead><tr><th>Brand</th><th>Type</th><th>Color</th><th>Actions</th></tr></thead><tbody id="colorsTable"></tbody></table></div>
+  </div>
+</details>
+
+<details class="panel" open>
+  <summary><span class="twisty">▶</span><strong>Backup & Restore</strong></summary>
+  <div class="panel-body">
+    <div class="backup-controls"><button id="downloadBackup">Download Backup (JSON)</button><label class="upload">Restore from JSON<input id="restoreFile" type="file" accept="application/json"/></label><button id="clearAll" class="danger">Clear All Data</button></div>
+  </div>
+</details>
+
+</section></main>
 <footer class="site-footer">Admin — CajunVeteran 3D Printing</footer>
 <script src="script.js"></script>
 <script>document.addEventListener('DOMContentLoaded',()=>{ setupAdmin(); });</script>

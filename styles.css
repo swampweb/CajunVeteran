@@ -4,7 +4,14 @@
 html,body{margin:0}
 body{background:var(--bg);color:var(--text);font:15px/1.45 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
 
-/* Fluid container */
+/* Utility */
+.hidden{ display:none !important; }
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px}
+.badge.ok{background:rgba(16,185,129,.2);color:var(--ok)}
+.badge.warn{background:rgba(245,158,11,.2);color:var(--yellow)}
+.badge.muted{background:rgba(148,163,184,.2);color:var(--muted)}
+.muted{color:var(--muted)}
+
 .container{max-width:none;width:100%;margin:24px auto;padding:0 16px}
 .site-header,.site-footer{background:var(--panel);padding:10px 16px;border-bottom:1px solid #17273a}
 .site-footer{border-top:1px solid #17273a;border-bottom:none}
@@ -15,28 +22,36 @@ body{background:var(--bg);color:var(--text);font:15px/1.45 system-ui,Segoe UI,Ro
 nav a{color:var(--muted);margin-left:12px;text-decoration:none}
 nav a.active{color:var(--accent)}
 section{margin:24px 0}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
 
 /* Panels */
-.panels{display:flex;flex-direction:column;gap:18px}
-.panel{background:var(--panel);padding:14px;border:1px solid #1b2b40;border-radius:10px}
-.error{color:var(--danger)}
-.danger{background:linear-gradient(135deg,var(--danger),#b91c1c)!important;color:#fff}
-.btn-secondary{background:linear-gradient(135deg,#264055,#3b5167)!important;color:#e9edf2}
+.panels{display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--panel);border:1px solid #1b2b40;border-radius:10px}
 
-/* Tables generic */
+/* Normalize margins to avoid stray gaps */
+.panel, .panel * { margin-block-start: 0; }
+
+/* For details panels, use summary/body spacing */
+.panel > summary{padding:8px 12px;border-bottom:1px solid #1b2b40;display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none}
+.panel > .panel-body{padding:6px 10px 10px}
+
+/* For section panels (with H2), ensure same body spacing */
+.panel > h2{padding:8px 12px;margin:0;border-bottom:1px solid #1b2b40;display:flex;align-items:center;gap:10px}
+
+/* If first child is a table-wrap, ensure no extra margin */
+.panel > .panel-body > .table-wrap:first-child{margin-top:0}
+.panel > .panel-body > *:first-child{margin-top:0}
+
+/* Collapsible arrow */
+details.panel > summary::-webkit-details-marker{display:none}
+summary .twisty{display:inline-block;width:12px;transform:rotate(0deg);transition:transform .15s ease-in-out}
+details[open] .twisty{transform:rotate(90deg)}
+
+/* Tables */
 .table-wrap{overflow:auto;border:1px solid #1b2b40;border-radius:10px}
 table{width:100%;table-layout:auto;border-collapse:collapse}
-th,td{padding:10px;border-bottom:1px solid #1b2b40;text-align:left;white-space:normal;word-break:break-word}
+th,td{padding:8px 10px;border-bottom:1px solid #1b2b40;text-align:left;white-space:normal;word-break:break-word}
 th{background:#0a1a2a;position:sticky;top:0;z-index:1}
 tr:hover td{background:#0d2235}
-
-/* Badges */
-.muted{color:var(--muted)}
-.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px}
-.badge.ok{background:rgba(16,185,129,.2);color:var(--ok)}
-.badge.warn{background:rgba(245,158,11,.2);color:var(--yellow)}
-.badge.muted{background:rgba(148,163,184,.2);color:var(--muted)}
 
 /* Images */
 .img-thumb{max-width:64px;height:64px;object-fit:cover;border-radius:6px;border:1px solid #28415e;background:#0a1827}
@@ -54,7 +69,7 @@ tr:hover td{background:#0d2235}
 input[type=file]{color:var(--muted)}
 .preview{width:96px;height:96px;object-fit:cover;border:1px dashed #28415e;border-radius:8px;background:#0a1827}
 
-/* Order lines block occupies full row */
+/* Order lines */
 .order-lines, #addLineBtn { grid-column: 1 / -1; }
 .order-lines{display:flex;flex-direction:column;gap:12px}
 .order-line{display:grid;grid-template-columns:minmax(260px,1fr) 140px minmax(260px,1fr) 40px;gap:10px;align-items:start;padding:10px;border:1px solid #1b2b40;border-radius:8px;background:#0b1828}
@@ -69,7 +84,7 @@ input[type=file]{color:var(--muted)}
 .profit-box{display:flex;align-items:center;gap:8px;background:#0a1827;border:1px solid #28415e;border-radius:6px;padding:8px;height:40px}
 .profit-out{font-weight:700;color:var(--accent)}
 
-/* Admin totals alignment */
+/* Admin orders table alignment */
 #adminOrdersTableWrap th:nth-child(8), #adminOrdersTableWrap td:nth-child(8),
 #adminOrdersTableWrap th:nth-child(9), #adminOrdersTableWrap td:nth-child(9),
 #adminOrdersTableWrap th:nth-child(10), #adminOrdersTableWrap td:nth-child(10),
@@ -80,9 +95,8 @@ tr.st-new td{ background: rgba(148,163,184,.10); }
 tr.st-in_progress td{ background: rgba(245,158,11,.10); }
 tr.st-completed td{ background: rgba(16,185,129,.10); }
 
-/* Admin Orders: eliminate horizontal scroll at desktop widths */
 #adminOrdersTableWrap{width:100%!important;table-layout:fixed!important;border-collapse:collapse}
-#adminOrdersTableWrap th,#adminOrdersTableWrap td{overflow:hidden;text-overflow:ellipsis;white-space:normal;word-break:break-word;overflow-wrap:anywhere;vertical-align:top;padding:8px 10px;line-height:1.3}
+#adminOrdersTableWrap th,#adminOrdersTableWrap td{overflow:hidden;text-overflow:ellipsis;white-space:normal;word-break:break-word;overflow-wrap:anywhere;vertical-align:top;padding:8px 10px;line-height:1.25}
 #adminOrdersTableWrap th{position:sticky;top:0;z-index:2}
 #adminOrdersTableWrap th:nth-child(1),#adminOrdersTableWrap td:nth-child(1){width:6.5rem}
 #adminOrdersTableWrap th:nth-child(2),#adminOrdersTableWrap td:nth-child(2){width:8.5rem}
@@ -96,6 +110,45 @@ tr.st-completed td{ background: rgba(16,185,129,.10); }
 #adminOrdersTableWrap th:nth-child(14),#adminOrdersTableWrap td:nth-child(14){width:9rem}
 #adminOrdersTableWrap select{max-width:100%;width:100%;white-space:normal}
 #adminOrdersTableWrap .paid-toggle,#adminOrdersTableWrap .paid-toggle label{white-space:normal}
+
 .table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 @media (min-width:1400px){ .container{ padding:0 24px } }
 @media (min-width:1600px){ #adminOrdersTableWrap th,#adminOrdersTableWrap td{padding:10px 12px} }
+
+
+/* --- HOTFIX 10: Admin Orders columns layout (v9.4p3) --- */
+/* Problem: narrow/sliver-looking column(s) between Items and Paid due to table-layout:fixed on a 14-col table. */
+/* Fix: use auto layout for admin tables and set min-widths for money columns. */
+
+body.admin.admin-orders #adminOrdersTableWrap { table-layout: auto !important; }
+
+/* Give numeric columns breathing room */
+body.admin.admin-orders #adminOrdersTableWrap th:nth-child(8),
+body.admin.admin-orders #adminOrdersTableWrap td:nth-child(8) { min-width: 8.5rem; }
+body.admin.admin-orders #adminOrdersTableWrap th:nth-child(9),
+body.admin.admin-orders #adminOrdersTableWrap td:nth-child(9) { min-width: 6.5rem; }
+body.admin.admin-orders #adminOrdersTableWrap th:nth-child(10),
+body.admin.admin-orders #adminOrdersTableWrap td:nth-child(10) { min-width: 6.5rem; }
+body.admin.admin-orders #adminOrdersTableWrap th:nth-child(11),
+body.admin.admin-orders #adminOrdersTableWrap td:nth-child(11) { min-width: 8.5rem; }
+
+/* Keep numbers right-aligned for readability (already present, reinforce) */
+body.admin.admin-orders #adminOrdersTableWrap th:nth-child(8),
+body.admin.admin-orders #adminOrdersTableWrap td:nth-child(8),
+body.admin.admin-orders #adminOrdersTableWrap th:nth-child(9),
+body.admin.admin-orders #adminOrdersTableWrap td:nth-child(9),
+body.admin.admin-orders #adminOrdersTableWrap th:nth-child(10),
+body.admin.admin-orders #adminOrdersTableWrap td:nth-child(10),
+body.admin.admin-orders #adminOrdersTableWrap th:nth-child(11),
+body.admin.admin-orders #adminOrdersTableWrap td:nth-child(11) {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* On small screens, optionally hide Adj and Surch columns to avoid horizontal squeeze */
+@media (max-width: 900px) {
+  body.admin.admin-orders #adminOrdersTableWrap th:nth-child(9),
+  body.admin.admin-orders #adminOrdersTableWrap td:nth-child(9),
+  body.admin.admin-orders #adminOrdersTableWrap th:nth-child(10),
+  body.admin.admin-orders #adminOrdersTableWrap td:nth-child(10) { display: none; }
+}

@@ -1,16 +1,154 @@
+
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CajunVeteran 3D Printing — Inventory & Orders (v9.4p1)</title>
-<link rel="stylesheet" href="styles.css"/></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CajunVeteran 3D Printing — Public</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 <body>
-<header class="site-header"><div class="brand"><img class="brand-logo" src="CajunVeteran 3D Print Logo.png" alt="CajunVeteran 3D Printing"/><div><h1>CajunVeteran 3D Printing</h1><div class="brand-sub">Inventory & Orders Tracker</div></div></div><nav><a href="index.html" class="active">Public View</a><a href="admin.html">Admin</a></nav></header>
-<main class="container">
-<section><h2>Active Order Queue</h2><p class="muted">Sorted by Priority (1 = highest). Shipped/Delivered appears below.</p><div class="controls"><label>Status filter: <select id="orderStatusFilter"><option value="all">All</option><option value="new">New</option><option value="in_progress">In Process</option><option value="completed">Completed</option></select></label></div><div class="table-wrap"><table><thead><tr><th>Image</th><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Date Ordered</th><th>Order Due</th><th>Items & Qty</th><th>Descriptions</th><th>Total ($)</th><th>Paid</th></tr></thead><tbody id="ordersTableActive"></tbody></table></div></section>
-<section><h2>Items For Sale</h2><div class="controls"><input id="searchItems" type="search" placeholder="Search items..."/><select id="filterAvailability"><option value="all">All</option><option value="in">In Stock</option><option value="out">Out of Stock</option></select></div><div class="table-wrap"><table><thead><tr><th>Image</th><th>SKU</th><th>Name</th><th>Description</th><th>Size</th><th>Dimensions</th><th>Colors</th><th>Price</th><th>Available</th></tr></thead><tbody id="itemsTable"></tbody></table></div></section>
-<section><h2>Completed / Shipped Orders</h2><div class="table-wrap"><table><thead><tr><th>Image</th><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Date Ordered</th><th>Order Due</th><th>Items & Qty</th><th>Descriptions</th><th>Total ($)</th><th>Paid</th></tr></thead><tbody id="ordersTableCompleted"></tbody></table></div></section>
-</main>
-<footer class="site-footer">© CajunVeteran 3D Printing</footer>
-<div id="imgModal" class="modal hidden" aria-hidden="true" role="dialog" aria-label="Image preview"><div class="modal-backdrop" data-act="closeModal"></div><div class="modal-dialog" role="document"><button class="modal-close" title="Close" aria-label="Close" data-act="closeModal">×</button><img id="modalImg" alt="preview"/><div id="modalCaption" class="modal-caption"></div></div></div>
-<script src="script.js"></script>
-<script>document.addEventListener('DOMContentLoaded',()=>{renderItemsPublic();renderOrdersPublic();document.getElementById('searchItems').addEventListener('input',renderItemsPublic);document.getElementById('filterAvailability').addEventListener('change',renderItemsPublic);document.getElementById('orderStatusFilter').addEventListener('change',renderOrdersPublic);});</script>
-</body></html>
+  <header class="site-header">
+    <div class="brand">
+      <img class="brand-logo" src="CajunVeteran 3D Print Logo.png" alt="CajunVeteran 3D Printing" />
+      <div>
+        <h1>CajunVeteran 3D Printing</h1>
+        <div class="brand-sub">Public View — Inventory & Orders</div>
+      </div>
+    </div>
+    <nav>
+      <a href="index.html" class="active">Public View</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- 1) ACTIVE ORDERS (expanded) -->
+    <section class="panel">
+      <h2>Orders <span class="badge warn" id="countActive">0</span></h2>
+      <div class="panel-body">
+        <div class="controls">
+          <label>
+            Status
+            <select id="orderStatusFilter">
+              <option value="all">All (except Shipped)</option>
+              <option value="new">New</option>
+              <option value="in_progress">In Process</option>
+              <option value="completed">Completed</option>
+            </select>
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Priority</th>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Date Ordered</th>
+                <th>Order Due</th>
+                <th>Items (Name × Qty)</th>
+                <th>Total ($)</th>
+                <th>Paid</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableActive"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2) COMPLETED (collapsed) -->
+    <details class="panel">
+      <summary>
+        <span class="twisty">▶</span>
+        <strong>Completed / Shipped</strong>
+        <span class="badge ok" id="countCompleted">0</span>
+      </summary>
+      <div class="panel-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Priority</th>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Date Ordered</th>
+                <th>Order Due</th>
+                <th>Items (Name × Qty)</th>
+                <th>Total ($)</th>
+                <th>Paid</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableCompleted"></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <!-- 3) ITEMS (collapsed) -->
+    <details class="panel">
+      <summary>
+        <span class="twisty">▶</span>
+        <strong>Items</strong>
+        <span class="badge muted" id="countItems">0</span>
+      </summary>
+      <div class="panel-body">
+        <div class="controls">
+          <input id="searchItems" placeholder="Search items…" />
+          <label>
+            Availability
+            <select id="filterAvailability">
+              <option value="all">All</option>
+              <option value="in">In stock</option>
+              <option value="out">Out of stock</option>
+            </select>
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>SKU</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Size</th>
+                <th>Dimensions</th>
+                <th>Colors</th>
+                <th>Price</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody id="itemsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </main>
+
+  <!-- Image modal (hidden initially) -->
+  <div id="imgModal" class="hidden" aria-hidden="true" style="position:fixed;inset:0;background:rgba(0,0,0,.7);align-items:center;justify-content:center;">
+    <figure style="max-width:90vw;max-height:90vh;margin:0">
+      <img id="modalImg" alt="preview" style="max-width:100%;max-height:80vh;display:block;border-radius:8px" />
+      <figcaption id="modalCaption" class="muted" style="margin-top:6px;text-align:center"></figcaption>
+    </figure>
+    <button aria-label="Close" onclick="closeImageModal()" style="position:absolute;top:12px;right:12px;padding:8px 10px;border-radius:6px;border:1px solid #28415e;background:#0a1827;color:#e9edf2;cursor:pointer">Close</button>
+  </div>
+
+  <footer class="site-footer">© CajunVeteran 3D Printing</footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderItemsPublic?.();
+      renderOrdersPublic?.();
+      document.getElementById('searchItems')?.addEventListener('input', ()=>renderItemsPublic?.());
+      document.getElementById('filterAvailability')?.addEventListener('change', ()=>renderItemsPublic?.());
+      document.getElementById('orderStatusFilter')?.addEventListener('change', ()=>renderOrdersPublic?.());
+    });
+  </script>
+</body>
+</html>
