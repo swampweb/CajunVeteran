@@ -1,16 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CajunVeteran 3D Printing — Inventory & Orders (v9.4p1 DATEFIX)</title>
+<title>CajunVeteran 3D Printing — Public (placeholder)</title>
 <link rel="stylesheet" href="styles.css"/></head>
 <body>
 <header class="site-header"><div class="brand"><img class="brand-logo" src="CajunVeteran 3D Print Logo.png" alt="CajunVeteran 3D Printing"/><div><h1>CajunVeteran 3D Printing</h1><div class="brand-sub">Inventory & Orders Tracker</div></div></div><nav><a href="index.html" class="active">Public View</a><a href="admin.html">Admin</a></nav></header>
-<main class="container">
-<section><h2>Active Order Queue</h2><div class="controls"><label>Status filter: <select id="orderStatusFilter"><option value="all">All</option><option value="new">New</option><option value="in_progress">In Process</option><option value="completed">Completed</option></select></label></div><div class="table-wrap"><table><thead><tr><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Order Due</th><th>Items & Qty</th><th>Total ($)</th><th>Paid</th></tr></thead><tbody id="ordersTableActive"></tbody></table></div></section>
-<section><h2>Items For Sale</h2><div class="controls"><input id="searchItems" type="search" placeholder="Search items..."/><select id="filterAvailability"><option value="all">All</option><option value="in">In Stock</option><option value="out">Out of Stock</option></select></div><div class="table-wrap"><table><thead><tr><th>Image</th><th>SKU</th><th>Name</th><th>Description</th><th>Size</th><th>Dimensions</th><th>Colors</th><th>Price</th><th>Available</th></tr></thead><tbody id="itemsTable"></tbody></table></div></section>
-<section><h2>Completed / Shipped Orders</h2><div class="table-wrap"><table><thead><tr><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Order Due</th><th>Items & Qty</th><th>Total ($)</th><th>Paid</th></tr></thead><tbody id="ordersTableCompleted"></tbody></table></div></section>
-</main>
+<main class="container"><section><p class="muted">This ZIP focuses on the Admin edits (order lines moved below & price under item). Use the Admin link above.</p></section></main>
 <footer class="site-footer">© CajunVeteran 3D Printing</footer>
-<div id="imgModal" class="modal hidden" aria-hidden="true" role="dialog" aria-label="Image preview"><div class="modal-backdrop" data-act="closeModal"></div><div class="modal-dialog" role="document"><button class="modal-close" title="Close" aria-label="Close" data-act="closeModal">×</button><img id="modalImg" alt="preview"/><div id="modalCaption" class="modal-caption"></div></div></div>
-<script src="script.js"></script>
-<script>document.addEventListener('DOMContentLoaded',()=>{renderItemsPublic();renderOrdersPublic();document.getElementById('searchItems').addEventListener('input',renderItemsPublic);document.getElementById('filterAvailability').addEventListener('change',renderItemsPublic);document.getElementById('orderStatusFilter').addEventListener('change',renderOrdersPublic);});</script>
 </body></html>
