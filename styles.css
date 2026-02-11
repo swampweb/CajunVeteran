@@ -4,7 +4,7 @@
 html,body{margin:0}
 body{background:var(--bg);color:var(--text);font:15px/1.45 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
 
-/* ---- Layout: make content fluid and fill the window width ---- */
+/* Fluid container */
 .container{max-width:none;width:100%;margin:24px auto;padding:0 16px}
 .site-header,.site-footer{background:var(--panel);padding:10px 16px;border-bottom:1px solid #17273a}
 .site-footer{border-top:1px solid #17273a;border-bottom:none}
@@ -17,28 +17,21 @@ nav a.active{color:var(--accent)}
 section{margin:24px 0}
 .controls{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
 
-/* ---- Panels ---- */
+/* Panels */
 .panels{display:flex;flex-direction:column;gap:18px}
 .panel{background:var(--panel);padding:14px;border:1px solid #1b2b40;border-radius:10px}
 .error{color:var(--danger)}
 .danger{background:linear-gradient(135deg,var(--danger),#b91c1c)!important;color:#fff}
 .btn-secondary{background:linear-gradient(135deg,#264055,#3b5167)!important;color:#e9edf2}
 
-/* ---- Tables: full-width, responsive, sticky header ---- */
+/* Tables generic */
 .table-wrap{overflow:auto;border:1px solid #1b2b40;border-radius:10px}
-
-/* Make ALL tables fill the available width */
 table{width:100%;table-layout:auto;border-collapse:collapse}
-
 th,td{padding:10px;border-bottom:1px solid #1b2b40;text-align:left;white-space:normal;word-break:break-word}
-
-/* Sticky header that remains visible when scrolling */
 th{background:#0a1a2a;position:sticky;top:0;z-index:1}
-
-/* Row hover */
 tr:hover td{background:#0d2235}
 
-/* Badges & labels */
+/* Badges */
 .muted{color:var(--muted)}
 .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px}
 .badge.ok{background:rgba(16,185,129,.2);color:var(--ok)}
@@ -49,11 +42,11 @@ tr:hover td{background:#0d2235}
 .img-thumb{max-width:64px;height:64px;object-fit:cover;border-radius:6px;border:1px solid #28415e;background:#0a1827}
 .img-cell{display:flex;align-items:center;gap:8px}
 
-/* Descriptions and dimensions */
+/* Descriptions & dims */
 .desc{max-width:520px;white-space:normal;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
 .dim-badge{font-size:12px;color:var(--muted)}
 
-/* Forms */
+/* Form grid */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:12px 0}
 .grid input,.grid select,.grid button{padding:9px 10px;border-radius:6px;border:1px solid #28415e;background:#0a1827;color:var(--text);font-size:14px}
 .grid button{background:linear-gradient(135deg,var(--accent),#e29f1d);border:none;cursor:pointer}
@@ -61,30 +54,48 @@ tr:hover td{background:#0d2235}
 input[type=file]{color:var(--muted)}
 .preview{width:96px;height:96px;object-fit:cover;border:1px dashed #28415e;border-radius:8px;background:#0a1827}
 
-/* Order lines group */
+/* Order lines block occupies full row */
+.order-lines, #addLineBtn { grid-column: 1 / -1; }
 .order-lines{display:flex;flex-direction:column;gap:12px}
-.order-line{display:grid;grid-template-columns:minmax(220px,1fr) 140px;gap:10px;align-items:flex-start;padding:10px;border:1px solid #1b2b40;border-radius:8px;background:#0b1828}
-.order-line label{display:flex;flex-direction:column;gap:6px}
+.order-line{display:grid;grid-template-columns:minmax(260px,1fr) 140px minmax(260px,1fr) 40px;gap:10px;align-items:start;padding:10px;border:1px solid #1b2b40;border-radius:8px;background:#0b1828}
+.order-line label{display:flex;flex-direction:column;gap:6px;align-self:stretch}
 .order-line .orderLineColorsSelect{min-height:96px}
-.order-line label:nth-of-type(3){grid-column:1 / -1}
-.order-line .removeLine{grid-column:2;align-self:end;justify-self:end;height:36px}
-#addLineBtn{grid-column:1 / -1;margin-top:4px;position:static}
-@media (max-width:720px){.order-line{grid-template-columns:1fr}.order-line .removeLine{grid-column:1;justify-self:end}}
+.order-line .removeLine{grid-column:4;align-self:end;justify-self:end;height:36px}
+@media (max-width:720px){.order-line{grid-template-columns:1fr 140px;}.order-line .removeLine{grid-column:2;justify-self:end}}
+
+.line-price{display:block;margin-top:4px;font-size:12px;color:var(--muted)}
 
 /* Profit readout */
 .profit-box{display:flex;align-items:center;gap:8px;background:#0a1827;border:1px solid #28415e;border-radius:6px;padding:8px;height:40px}
 .profit-out{font-weight:700;color:var(--accent)}
 
-/* Numeric alignment for admin totals */
+/* Admin totals alignment */
 #adminOrdersTableWrap th:nth-child(8), #adminOrdersTableWrap td:nth-child(8),
 #adminOrdersTableWrap th:nth-child(9), #adminOrdersTableWrap td:nth-child(9),
 #adminOrdersTableWrap th:nth-child(10), #adminOrdersTableWrap td:nth-child(10),
 #adminOrdersTableWrap th:nth-child(11), #adminOrdersTableWrap td:nth-child(11){text-align:right}
 
-/* Status shading (optional) */
+/* Status shading */
 tr.st-new td{ background: rgba(148,163,184,.10); }
 tr.st-in_progress td{ background: rgba(245,158,11,.10); }
 tr.st-completed td{ background: rgba(16,185,129,.10); }
 
-/* Optional: slightly more side padding on very wide screens */
+/* Admin Orders: eliminate horizontal scroll at desktop widths */
+#adminOrdersTableWrap{width:100%!important;table-layout:fixed!important;border-collapse:collapse}
+#adminOrdersTableWrap th,#adminOrdersTableWrap td{overflow:hidden;text-overflow:ellipsis;white-space:normal;word-break:break-word;overflow-wrap:anywhere;vertical-align:top;padding:8px 10px;line-height:1.3}
+#adminOrdersTableWrap th{position:sticky;top:0;z-index:2}
+#adminOrdersTableWrap th:nth-child(1),#adminOrdersTableWrap td:nth-child(1){width:6.5rem}
+#adminOrdersTableWrap th:nth-child(2),#adminOrdersTableWrap td:nth-child(2){width:8.5rem}
+#adminOrdersTableWrap th:nth-child(3),#adminOrdersTableWrap td:nth-child(3){width:12rem}
+#adminOrdersTableWrap th:nth-child(4),#adminOrdersTableWrap td:nth-child(4){width:11rem}
+#adminOrdersTableWrap th:nth-child(5),#adminOrdersTableWrap td:nth-child(5){width:10rem}
+#adminOrdersTableWrap th:nth-child(6),#adminOrdersTableWrap td:nth-child(6){width:10rem}
+#adminOrdersTableWrap th:nth-child(7),#adminOrdersTableWrap td:nth-child(7){width:22rem;max-width:28rem}
+#adminOrdersTableWrap th:nth-child(12),#adminOrdersTableWrap td:nth-child(12){width:8.5rem}
+#adminOrdersTableWrap th:nth-child(13),#adminOrdersTableWrap td:nth-child(13){width:14rem;max-width:18rem}
+#adminOrdersTableWrap th:nth-child(14),#adminOrdersTableWrap td:nth-child(14){width:9rem}
+#adminOrdersTableWrap select{max-width:100%;width:100%;white-space:normal}
+#adminOrdersTableWrap .paid-toggle,#adminOrdersTableWrap .paid-toggle label{white-space:normal}
+.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 @media (min-width:1400px){ .container{ padding:0 24px } }
+@media (min-width:1600px){ #adminOrdersTableWrap th,#adminOrdersTableWrap td{padding:10px 12px} }
