@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Admin — CajunVeteran 3D Printing (v10.1.3)</title><link rel="stylesheet" href="styles.css"/></head>
+<html lang="en"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin — CajunVeteran 3D Printing (v10.1.4)</title><link rel="stylesheet" href="styles.css"/></head>
 <body class="admin admin-orders">
-<header class="site-header"><div class="brand"><img class="brand-logo" src="CajunVeteran 3D Print Logo.png" alt="CajunVeteran 3D Printing"/><div><h1>CajunVeteran 3D Printing</h1><div class="brand-sub">Admin — Inventory & Orders - v10.1.3</div></div></div><nav><a href="index.html">Public View</a><a href="admin.html" class="active">Admin</a></nav></header>
+<header class="site-header"><div class="brand"><img class="brand-logo" src="CajunVeteran 3D Print Logo.png" alt="CajunVeteran 3D Printing"/><div><h1>CajunVeteran 3D Printing</h1><div class="brand-sub">Admin — Inventory &amp; Orders - v10.1.4</div></div></div><nav><a href="index.html">Public View</a><a href="admin.html" class="active">Admin</a></nav></header>
 <main class="container">
 <section id="adminPanels" class="panels">
 <details class="panel" open>
@@ -22,15 +23,15 @@
  <label class="paid-row"><input type="checkbox" name="paid" id="paidChk"/> Paid</label>
  <input name="notes" placeholder="Notes (optional)"/>
  <div class="order-lines">
- <div class="order-line" data-index="0">
- <label>Item 
- <select class="orderItemSelect"></select>
- <small class="line-price muted"></small>
- </label>
- <label>Qty<input type="number" class="orderQtyInput" min="1" value="1"/></label>
- <label>Color(s)<select class="orderLineColorsSelect" multiple size="4"></select></label>
- <button type="button" class="removeLine" title="Remove line">✕</button>
- </div>
+  <div class="order-line" data-index="0">
+   <label>Item 
+    <select class="orderItemSelect"></select>
+    <small class="line-price muted"></small>
+   </label>
+   <label>Qty<input type="number" class="orderQtyInput" min="1" value="1"/></label>
+   <label>Color(s)<select class="orderLineColorsSelect" multiple size="4"></select></label>
+   <button type="button" class="removeLine" title="Remove line">✕</button>
+  </div>
  </div>
  <button type="button" id="addLineBtn" class="btn-secondary">+ Add Line</button>
  <button type="submit">Add / Update Order</button>
@@ -55,6 +56,7 @@
  <div class="table-wrap"><table id="adminOrdersTableWrap"><thead><tr><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Date Ordered</th><th>Order Due</th><th>Items (Name × Qty)</th><th>Subtotal ($)</th><th>Adj (-)</th><th>Surch (+)</th><th>Total ($)</th><th>Paid</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="adminOrdersTableShipped"></tbody></table></div>
  </div>
 </details>
+<!-- COLORS (collapsed by default) -->
 <details class="panel">
  <summary><span class="twisty">▶</span><strong>Colors</strong> <span class="badge muted" id="adminCountColors">0</span></summary>
  <div class="panel-body">
@@ -94,13 +96,13 @@
  </div>
 </details>
 <details class="panel" open>
- <summary><span class="twisty">▶</span><strong>Backup & Restore</strong></summary>
+ <summary><span class="twisty">▶</span><strong>Backup &amp; Restore</strong></summary>
  <div class="panel-body">
  <div class="backup-controls"><button id="downloadBackup">Download Backup (JSON)</button><label class="upload">Restore from JSON<input id="restoreFile" type="file" accept="application/json"/></label><button id="clearAll" class="danger">Clear All Data</button></div>
  </div>
 </details>
 </section></main>
 <footer class="site-footer">Admin — CajunVeteran 3D Printing</footer>
-<script src="script.js"></script>
+<script src="script.js?v=1014"></script>
 <script>document.addEventListener('DOMContentLoaded',()=>{ setupAdmin(); });</script>
 </body></html>
