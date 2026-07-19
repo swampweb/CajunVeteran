@@ -73,14 +73,27 @@ window.__mobileDataReady = (async function () {
 alert('FETCH WORKED');
         const data = rows && rows[0] && rows[0].data ? rows[0].data : {};
 alert('ABOUT TO SAVE');
-        localStorage.setItem(
-            STORE_KEY,
-            JSON.stringify({
-                items: Array.isArray(data.items) ? data.items : [],
-                orders: Array.isArray(data.orders) ? data.orders : [],
-                colors: Array.isArray(data.colors) ? data.colors : []
-            })
-        );
+try {
+
+    localStorage.setItem(
+        STORE_KEY,
+        JSON.stringify({
+            items: Array.isArray(data.items) ? data.items : [],
+            orders: Array.isArray(data.orders) ? data.orders : [],
+            colors: Array.isArray(data.colors) ? data.colors : []
+        })
+    );
+
+    alert('SAVE SUCCESS');
+
+} catch (err) {
+
+    alert(
+        'SAVE FAILED: ' +
+        err.message
+    );
+
+}
 
 alert(
     'Saved Orders=' +
