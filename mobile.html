@@ -44,10 +44,11 @@
 <script>
 setTimeout(() => {
     alert(
-        'Orders=' +
+        'Supabase=' + typeof CajunVeteranSupabase +
+        '\nOrders=' +
         ((JSON.parse(localStorage.getItem('inventory_orders_store_v9') || '{}').orders || []).length)
     );
-}, 3000);
+}, 5000);
 </script>
 <script>
 const STORE_KEY='inventory_orders_store_v9', WOOD_JOBS_KEY='cv_woodworking_jobs_v1', WOOD_ITEMS_KEY='cv_woodworking_items_v1';
