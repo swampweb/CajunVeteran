@@ -99,12 +99,6 @@ window.__mobileDataReady = (async function () {
 
 } catch (e) {
     window.__mobileSupabaseLoaded = false;
-
-    alert(
-        'Mobile Supabase Error:\n' +
-        (e && e.message ? e.message : JSON.stringify(e))
-    );
-
     console.warn('Mobile Supabase load failed', e);
 }
 
