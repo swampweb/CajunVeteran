@@ -97,14 +97,17 @@ window.__mobileDataReady = (async function () {
 
         window.__mobileSupabaseLoaded = true;
 
-    } catch (e) {
+} catch (e) {
+    window.__mobileSupabaseLoaded = false;
 
-        window.__mobileSupabaseLoaded = false;
+    alert(
+        'Mobile Supabase Error:\n' +
+        e.message
+    );
 
-        alert('Mobile Supabase load failed: ' + e.message);
+    console.warn('Mobile Supabase load failed', e);
+}
 
-        console.warn('Mobile Supabase load failed', e);
-    }
 
 })();
 })();
