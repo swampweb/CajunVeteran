@@ -70,8 +70,9 @@ window.__mobileDataReady = (async function () {
         }
 
         const rows = await res.json();
+alert('FETCH WORKED');
         const data = rows && rows[0] && rows[0].data ? rows[0].data : {};
-
+alert('ABOUT TO SAVE');
         localStorage.setItem(
             STORE_KEY,
             JSON.stringify({
