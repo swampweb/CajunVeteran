@@ -43,10 +43,15 @@
 <script src="supabase-data.js?v=iphone7"></script>
 <script>
 setTimeout(() => {
-    alert(
-        'Bridge=' + typeof window.CajunVeteranSupabase
+    const data = JSON.parse(
+        localStorage.getItem('inventory_orders_store_v9') || '{}'
     );
-}, 3000);
+
+    alert(
+        'Orders=' + ((data.orders || []).length) +
+        '\nItems=' + ((data.items || []).length)
+    );
+}, 5000);
 </script>
 <script>
 const STORE_KEY='inventory_orders_store_v9', WOOD_JOBS_KEY='cv_woodworking_jobs_v1', WOOD_ITEMS_KEY='cv_woodworking_items_v1';
