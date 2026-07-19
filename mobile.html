@@ -69,6 +69,7 @@ window.__mobileDataReady = (async function () {
         }
 
         const rows = await res.json();
+alert('Supabase rows returned: ' + rows.length);
         const data = rows && rows[0] && rows[0].data ? rows[0].data : {};
 
         localStorage.setItem(
@@ -102,7 +103,7 @@ window.__mobileDataReady = (async function () {
 
     alert(
         'Mobile Supabase Error:\n' +
-        e.message
+        (e && e.message ? e.message : JSON.stringify(e))
     );
 
     console.warn('Mobile Supabase load failed', e);
