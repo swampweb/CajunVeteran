@@ -80,6 +80,11 @@ window.__mobileDataReady = (async function () {
             })
         );
 
+alert(
+    'Saved Orders=' +
+    JSON.parse(localStorage.getItem(STORE_KEY)).orders.length
+);
+
         localStorage.setItem(
             WOOD_JOBS_KEY,
             JSON.stringify(Array.isArray(data.woodworkingJobs) ? data.woodworkingJobs : [])
