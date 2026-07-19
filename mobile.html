@@ -187,7 +187,6 @@ function gather(){const store=load(STORE_KEY,{items:[],orders:[],colors:[]});con
 plaqueName:j.plaqueName||'',
 plaqueRank:j.plaqueRank||'',
 plaqueMonthPromoted:j.plaqueMonthPromoted||'',
-plaques:Array.isArray(j.plaques)?j.plaques:[],
 files:Array.isArray(j.files)?j.files:[],plans:Array.isArray(match.plans)?match.plans:[],total:num(j.total)})});return jobs}
 function saveJob(job,patch){if(job.type==='print'){const store=load(STORE_KEY,{items:[],orders:[],colors:[]});const o=(store.orders||[]).find(x=>String(x.orderId)===String(job.id));if(o){Object.assign(o,patch);save(STORE_KEY,store)}}else{const arr=load(WOOD_JOBS_KEY,[]);const j=arr.find(x=>String(x.id)===String(job.sourceId));if(j){Object.assign(j,patch);save(WOOD_JOBS_KEY,arr)}}render()}
 function counts(){const all=gather();$('countNew').textContent=all.filter(j=>isActive(j)&&j.status==='new').length;$('countProgress').textContent=all.filter(j=>isActive(j)&&j.status==='in_progress').length;$('countComplete').textContent=all.filter(j=>isActive(j)&&j.status==='completed').length;$('countWood').textContent=all.filter(j=>j.type==='wood'&&isActive(j)).length;$('countPrint').textContent=all.filter(j=>j.type==='print'&&isActive(j)).length}
@@ -203,24 +202,18 @@ function buildStatsHtml(){const all=gather().filter(isActive);const newCount=all
 document.addEventListener('click',e=>{const bottom=e.target.closest('[data-bottom]');if(bottom){const action=bottom.dataset.bottom;setBottomActive(action);if(action==='jobs'){document.querySelector('.top')?.scrollIntoView({behavior:'smooth',block:'start'});render()}if(action==='search'){$('search').focus();document.querySelector('.top')?.scrollIntoView({behavior:'smooth',block:'start'})}if(action==='stats'){openInfo('Stats',buildStatsHtml())}if(action==='more'){openInfo('More','<div class="file-card"><strong>Mobile Quick View</strong><br><br>This mobile page is set up for quick job monitoring, status changes, paid checks, notes, files, and search. Desktop Admin, Woodworking, and Reports links were removed from the bottom bar because they are hard to use on a phone.</div>')}return;}const t=e.target.closest('[data-tab]');if(t){currentTab=t.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));render()}const n=e.target.closest('[data-notes]');if(n){const j=findJob(n.dataset.notes);if(j){currentNotes=j;$('notesTitle').textContent='Notes - '+(j.id||'Job');
 let noteText = '';
 
-if (Array.isArray(j.plaques) && j.plaques.length) {
-    j.plaques.forEach((p, idx) => {
-        noteText += 'PLAQUE ' + (idx + 1) + '\n';
-        if (p.name) noteText += 'NAME\n' + p.name + '\n';
-        if (p.rank) noteText += 'RANK\n' + p.rank + '\n';
-        if (p.monthPromoted) noteText += 'MONTH PROMOTED\n' + p.monthPromoted + '\n';
-        noteText += '\n';
-    });
-} else {
-    if (j.plaqueName) {
-        noteText += 'NAME\n' + j.plaqueName + '\n\n';
-    }
-    if (j.plaqueRank) {
-        noteText += 'RANK\n' + j.plaqueRank + '\n\n';
-    }
-    if (j.plaqueMonthPromoted) {
-        noteText += 'MONTH PROMOTED\n' + j.plaqueMonthPromoted + '\n\n';
-    }
+let noteText = '';
+
+if (j.plaqueName) {
+    noteText += 'NAME\n' + j.plaqueName + '\n\n';
+}
+
+if (j.plaqueRank) {
+    noteText += 'RANK\n' + j.plaqueRank + '\n\n';
+}
+
+if (j.plaqueMonthPromoted) {
+    noteText += 'MONTH PROMOTED\n' + j.plaqueMonthPromoted + '\n\n';
 }
 
 if (j.notes) {
@@ -231,6 +224,8 @@ if (j.files && j.files.length) {
     noteText += 'JOB FILES\n' +
         j.files.map(f => f.name || f.storedName || 'File').join('\n');
 }
+
+$('notesText').value = noteText.trim();
 
 $('notesText').value = noteText.trim();
 open('notesModal')}}const f=e.target.closest('[data-files]');if(f){const j=findJob(f.dataset.files);if(j){$('filesTitle').textContent='Files - '+(j.id||'Job');const files=[...(j.files||[]),...(j.plans||[])];$('filesBody').innerHTML=files.length?files.map(fileCard).join(''):'<p>No files attached.</p>';open('filesModal')}}if(e.target.closest('[data-close]'))close('notesModal');if(e.target.closest('[data-close-files]'))close('filesModal');if(e.target.closest('[data-close-info]'))close('mobileInfoModal')});
@@ -264,5 +259,6 @@ if (window.__mobileDataReady) {
 }
 
 </script>
+<script src="notes-format-update.js?v=notes11"></script>
 </body>
 </html>

@@ -368,7 +368,6 @@ details.card:not([open]){min-height:0}details.card:not([open]) summary{border-bo
 </div>
 
 <footer class="site-footer">★ CajunVeteran Workshop • Woodworking Admin • Built With Pride ★</footer>
-<script src="supabase-data.js?v=phase1"></script>
 <script>
 const KEY='cv_woodworking_jobs_v1';
 function loadJobs(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return []}}
@@ -570,13 +569,12 @@ document.addEventListener('change',e=>{const paid=e.target.closest('[data-toggle
       dimensions:document.getElementById('dimensions').value.trim(),
       materialUses,
       jobMaterialCost:jobMaterialUseTotal(materialUses),
-      plaques:(typeof getPlaques==='function'?getPlaques():[]),
-      total:(typeof getCalculatedJobTotal==='function'?getCalculatedJobTotal():Number(document.getElementById('total').value||0)),
+      total:Number(document.getElementById('total').value||0),
       paid:document.getElementById('paid').checked,
       materialPurchased:(oldJob?.materialPurchased)||false,
-      plaqueName:((typeof getPlaques==='function'&&getPlaques()[0]?.name)||document.getElementById('plaqueName')?.value.trim()||''),
-      plaqueRank:((typeof getPlaques==='function'&&getPlaques()[0]?.rank)||document.getElementById('plaqueRank')?.value||''),
-      plaqueMonthPromoted:((typeof getPlaques==='function'&&getPlaques()[0]?.monthPromoted)||document.getElementById('plaqueMonthPromoted')?.value.trim()||''),
+      plaqueName:document.getElementById('plaqueName')?.value.trim()||'',
+      plaqueRank:document.getElementById('plaqueRank')?.value||'',
+      plaqueMonthPromoted:document.getElementById('plaqueMonthPromoted')?.value.trim()||'',
       notes:document.getElementById('notes').value.trim(),
       files:[...window.__woodCurrentJobFiles,...uploaded]
     };
@@ -724,5 +722,6 @@ document.addEventListener('change',e=>{const paid=e.target.closest('[data-toggle
   document.getElementById('project')?.addEventListener('input',()=>{updatePlaqueDetailsVisibility();updatePlaqueTotalFromCount();});
 })();
 </script>
+<script src="notes-format-update.js?v=notes11"></script>
 </body>
 </html>
