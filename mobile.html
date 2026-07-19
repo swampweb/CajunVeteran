@@ -33,13 +33,14 @@
   <p class="footer-note">This iPhone view is for quick job monitoring and small updates. Full editing stays on Admin/Woodworking.</p>
 </div>
 <nav class="bottom">
-  <button class="active" data-bottom="jobs"><i>📋</i><span>Jobs</span></button>
-  <a href="admin.html"><i>🧰</i><span>Admin</span></a>
-  <a href="woodworking.html"><i>🪵</i><span>Wood</span></a>
-  <a href="reports.html"><i>📊</i><span>Reports</span></a>
+  <button class="active" type="button" data-bottom="jobs"><i>📋</i><span>Jobs</span></button>
+  <button type="button" data-bottom="search"><i>🔍</i><span>Search</span></button>
+  <button type="button" data-bottom="stats"><i>📊</i><span>Stats</span></button>
+  <button type="button" data-bottom="more"><i>⚙️</i><span>More</span></button>
 </nav>
 <div id="notesModal" class="modal hidden"><div class="backdrop" data-close></div><div class="box"><button class="close" data-close>×</button><h3 id="notesTitle">Notes</h3><textarea id="notesText"></textarea><div class="actions"><button class="btn" data-close>Cancel</button><button id="saveNotes" class="btn gold">Save</button></div></div></div>
 <div id="filesModal" class="modal hidden"><div class="backdrop" data-close-files></div><div class="box"><button class="close" data-close-files>×</button><h3 id="filesTitle">Files</h3><div id="filesBody"></div></div></div>
+<div id="mobileInfoModal" class="modal hidden"><div class="backdrop" data-close-info></div><div class="box"><button class="close" data-close-info>×</button><h3 id="mobileInfoTitle">Info</h3><div id="mobileInfoBody"></div></div></div>
 <script>
 window.__mobileData = {
     store: { items: [], orders: [], colors: [] },
@@ -194,7 +195,11 @@ function render(){counts();let jobs=gather().filter(isActive).filter(j=>j.status
 function findJob(key){return gather().find(j=>j.key===key)}function open(id){$(id).classList.remove('hidden')}function close(id){$(id).classList.add('hidden')}
 function isImage(f){const n=String(f.name||f.storedName||f.url||'').split('?')[0].toLowerCase();return ['png','jpg','jpeg','webp','gif','svg'].includes(n.split('.').pop())||String(f.type||'').startsWith('image/')}
 function fileCard(f){const name=f.name||f.storedName||'File';if(isImage(f))return `<div class="file-card"><a href="${f.url}" target="_blank">🖼️ ${name}</a><img src="${f.url}" alt="${name}"></div>`;return `<div class="file-card"><a href="${f.url}" target="_blank" download>📎 ${name}</a></div>`}
-document.addEventListener('click',e=>{const t=e.target.closest('[data-tab]');if(t){currentTab=t.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));render()}const n=e.target.closest('[data-notes]');if(n){const j=findJob(n.dataset.notes);if(j){currentNotes=j;$('notesTitle').textContent='Notes - '+(j.id||'Job');
+function setBottomActive(name){document.querySelectorAll('.bottom [data-bottom]').forEach(b=>b.classList.toggle('active',b.dataset.bottom===name))}
+function openInfo(title,html){$('mobileInfoTitle').textContent=title;$('mobileInfoBody').innerHTML=html;open('mobileInfoModal')}
+function buildStatsHtml(){const all=gather().filter(isActive);const newCount=all.filter(j=>j.status==='new').length;const progressCount=all.filter(j=>j.status==='in_progress').length;const completeCount=all.filter(j=>j.status==='completed').length;const printCount=all.filter(j=>j.type==='print').length;const woodCount=all.filter(j=>j.type==='wood').length;const totalValue=all.reduce((sum,j)=>sum+num(j.total),0);return `<div class="file-card"><strong>Active Work</strong><br><br>📋 Total Active: ${all.length}<br>🖨️ 3D Print: ${printCount}<br>🪵 Woodworking: ${woodCount}<br><br>🆕 New: ${newCount}<br>🔨 In Progress: ${progressCount}<br>✅ Complete: ${completeCount}<br><br>💵 Active Value: ${money(totalValue)}</div>`}
+
+document.addEventListener('click',e=>{const bottom=e.target.closest('[data-bottom]');if(bottom){const action=bottom.dataset.bottom;setBottomActive(action);if(action==='jobs'){document.querySelector('.top')?.scrollIntoView({behavior:'smooth',block:'start'});render()}if(action==='search'){$('search').focus();document.querySelector('.top')?.scrollIntoView({behavior:'smooth',block:'start'})}if(action==='stats'){openInfo('Stats',buildStatsHtml())}if(action==='more'){openInfo('More','<div class="file-card"><strong>Mobile Quick View</strong><br><br>This mobile page is set up for quick job monitoring, status changes, paid checks, notes, files, and search. Desktop Admin, Woodworking, and Reports links were removed from the bottom bar because they are hard to use on a phone.</div>')}return;}const t=e.target.closest('[data-tab]');if(t){currentTab=t.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));render()}const n=e.target.closest('[data-notes]');if(n){const j=findJob(n.dataset.notes);if(j){currentNotes=j;$('notesTitle').textContent='Notes - '+(j.id||'Job');
 let noteText = '';
 
 if (j.plaqueName) {
@@ -219,7 +224,7 @@ if (j.files && j.files.length) {
 }
 
 $('notesText').value = noteText.trim();
-open('notesModal')}}const f=e.target.closest('[data-files]');if(f){const j=findJob(f.dataset.files);if(j){$('filesTitle').textContent='Files - '+(j.id||'Job');const files=[...(j.files||[]),...(j.plans||[])];$('filesBody').innerHTML=files.length?files.map(fileCard).join(''):'<p>No files attached.</p>';open('filesModal')}}if(e.target.closest('[data-close]'))close('notesModal');if(e.target.closest('[data-close-files]'))close('filesModal')});
+open('notesModal')}}const f=e.target.closest('[data-files]');if(f){const j=findJob(f.dataset.files);if(j){$('filesTitle').textContent='Files - '+(j.id||'Job');const files=[...(j.files||[]),...(j.plans||[])];$('filesBody').innerHTML=files.length?files.map(fileCard).join(''):'<p>No files attached.</p>';open('filesModal')}}if(e.target.closest('[data-close]'))close('notesModal');if(e.target.closest('[data-close-files]'))close('filesModal');if(e.target.closest('[data-close-info]'))close('mobileInfoModal')});
 document.addEventListener('change',e=>{const s=e.target.closest('[data-status]');if(s){const j=findJob(s.dataset.status);if(j)saveJob(j,{status:s.value})}const p=e.target.closest('[data-paid]');if(p){const j=findJob(p.dataset.paid);if(j)saveJob(j,{paid:!!p.checked})}});
 $('saveNotes').addEventListener('click',()=>{if(currentNotes){saveJob(currentNotes,{notes:$('notesText').value.trim()});currentNotes=null;close('notesModal')}});
 
