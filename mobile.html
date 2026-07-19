@@ -70,6 +70,11 @@ window.__mobileDataReady = (async function () {
 
         const rows = await res.json();
 alert('Supabase rows returned: ' + rows.length);
+alert(
+  'Items=' + ((rows[0]?.data?.items || []).length) +
+  '\nOrders=' + ((rows[0]?.data?.orders || []).length) +
+  '\nWoodJobs=' + ((rows[0]?.data?.woodworkingJobs || []).length)
+);
         const data = rows && rows[0] && rows[0].data ? rows[0].data : {};
 
         localStorage.setItem(
