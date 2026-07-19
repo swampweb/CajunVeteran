@@ -154,6 +154,11 @@ if (window.__mobileDataReady) {
             JSON.parse(localStorage.getItem('inventory_orders_store_v9')).orders.length
         );
 
+alert(
+  'Orders in storage=' +
+  JSON.parse(localStorage.getItem('inventory_orders_store_v9') || '{"orders":[]}').orders.length
+);
+
         render();
 
         setTimeout(render, 500);
