@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CajunVeteran Data Export</title>
+  <style>
+    body{margin:0;background:#06111e;color:#f4f7fb;font-family:Segoe UI,Arial,sans-serif;padding:24px} .wrap{max-width:900px;margin:auto;background:#0b2136;border:1px solid #31587d;border-radius:14px;padding:20px} h1{color:#c98232;margin-top:0}.btn{border:1px solid #c98232;background:#c98232;color:#071321;border-radius:10px;padding:12px 16px;font-weight:900;cursor:pointer;margin:6px 8px 6px 0}.btn.secondary{background:#10283f;color:#fff;border-color:#3b5f83}pre{background:#07182a;border:1px solid #31587d;border-radius:10px;padding:12px;overflow:auto;max-height:420px}.ok{color:#6ee7b7}.warn{color:#ffd36a}.bad{color:#ffb4b4}code{color:#ffd36a}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>CajunVeteran Data Export</h1>
+    <p>This page exports the data currently stored in this browser into a single <code>data.json</code> file.</p>
+    <p><strong>Important:</strong> Open this page from the same site/address where the missing jobs still show up. If the jobs are on your local PC browser, open this page there first.</p>
+    <button class="btn" id="downloadData">Download data.json</button>
+    <button class="btn secondary" id="downloadBackup">Download Full localStorage Backup</button>
+    <button class="btn secondary" id="refresh">Refresh Preview</button>
+    <h2>Preview</h2>
+    <div id="summary"></div>
+    <pre id="preview"></pre>
+  </div>
+<script>
+const STORE_KEY='inventory_orders_store_v9';
+const WOOD_JOBS_KEY='cv_woodworking_jobs_v1';
+const WOOD_ITEMS_KEY='cv_woodworking_items_v1';
+const MAT_INV_KEY='cv_woodworking_material_inventory_v1';
+function readJson(key, fallback){try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback));}catch(e){return fallback;}}
+function buildData(){
+  const store=readJson(STORE_KEY,{items:[],orders:[],colors:[]});
+  return {
+    version: 2,
+    exportedAt: new Date().toISOString(),
+    source: location.href,
+    items: Array.isArray(store.items)?store.items:[],
+    orders: Array.isArray(store.orders)?store.orders:[],
+    colors: Array.isArray(store.colors)?store.colors:[],
+    woodworkingJobs: readJson(WOOD_JOBS_KEY,[]),
+    woodworkingItems: readJson(WOOD_ITEMS_KEY,[]),
+    woodworkingMaterialInventory: readJson(MAT_INV_KEY,[])
+  };
+}
+function buildFullBackup(){const o={exportedAt:new Date().toISOString(),source:location.href,localStorage:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);o.localStorage[k]=localStorage.getItem(k);}return o;}
+function download(name,obj){const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},0)}
+function render(){const d=buildData();document.getElementById('summary').innerHTML=`
+  <p class="ok">3D Print Orders: <strong>${d.orders.length}</strong></p>
+  <p class="ok">3D Print Items: <strong>${d.items.length}</strong></p>
+  <p class="ok">Woodworking Jobs: <strong>${d.woodworkingJobs.length}</strong></p>
+  <p class="ok">Woodworking Items: <strong>${d.woodworkingItems.length}</strong></p>
+  <p class="ok">Wood Materials: <strong>${d.woodworkingMaterialInventory.length}</strong></p>
+  ${d.woodworkingJobs.length===0?'<p class="bad"><strong>No woodworking jobs found in this browser storage.</strong> Make sure this page is opened from the same browser/site where those jobs show.</p>':''}
+`;
+document.getElementById('preview').textContent=JSON.stringify(d,null,2);}
+document.getElementById('downloadData').onclick=()=>download('data.json',buildData());
+document.getElementById('downloadBackup').onclick=()=>download('cajunveteran-localstorage-backup.json',buildFullBackup());
+document.getElementById('refresh').onclick=render;render();
+</script>
+</body>
+</html>
