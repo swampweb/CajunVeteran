@@ -45,8 +45,8 @@
     const active = currentPage();
     const pages = [
       ['dashboard','Dashboard','dashboard.html'],
-      ['print','3D Printing','admin.html#orders'],
-      ['wood','Woodworking','woodworking.html#jobs'],
+      ['print','3D Printing','admin.html'],
+      ['wood','Woodworking','woodworking.html'],
       ['reports','Reports','reports.html'],
       ['mobile','Mobile','mobile.html'],
       ['public','Public View','index.html']
