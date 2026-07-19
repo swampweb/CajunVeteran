@@ -43,13 +43,9 @@
 <script src="supabase-data.js?v=iphone7"></script>
 <script>
 setTimeout(() => {
-    const data = JSON.parse(
-        localStorage.getItem('inventory_orders_store_v9') || '{}'
-    );
-
     alert(
-        'Orders=' + ((data.orders || []).length) +
-        '\nItems=' + ((data.items || []).length)
+        'Keys:\n' +
+        Object.keys(localStorage).join('\n')
     );
 }, 5000);
 </script>
