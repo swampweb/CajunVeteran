@@ -42,6 +42,14 @@
 <div id="filesModal" class="modal hidden"><div class="backdrop" data-close-files></div><div class="box"><button class="close" data-close-files>×</button><h3 id="filesTitle">Files</h3><div id="filesBody"></div></div></div>
 <script src="supabase-data.js?v=supabase1"></script>
 <script>
+setTimeout(() => {
+    alert(
+        'Orders=' +
+        ((JSON.parse(localStorage.getItem('inventory_orders_store_v9') || '{}').orders || []).length)
+    );
+}, 3000);
+</script>
+<script>
 const STORE_KEY='inventory_orders_store_v9', WOOD_JOBS_KEY='cv_woodworking_jobs_v1', WOOD_ITEMS_KEY='cv_woodworking_items_v1';
 const $=id=>document.getElementById(id);let currentTab='new',currentNotes=null;
 function load(k,fb){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(fb))}catch{return fb}}function save(k,v){localStorage.setItem(k,JSON.stringify(v))}function num(n){return Number(n||0)||0}function money(n){return '$'+num(n).toFixed(2)}
