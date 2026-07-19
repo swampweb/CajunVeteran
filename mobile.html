@@ -42,6 +42,7 @@
 <div id="filesModal" class="modal hidden"><div class="backdrop" data-close-files></div><div class="box"><button class="close" data-close-files>×</button><h3 id="filesTitle">Files</h3><div id="filesBody"></div></div></div>
 <script>
 window.__mobileDataReady = (async function () {
+
     const SUPABASE_URL = 'https://fprbzavehflzqcmxvbxx.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_qjEyGhgiTpQKs-ti6yt3iQ_-AKzm3Qw';
 
@@ -95,10 +96,17 @@ window.__mobileDataReady = (async function () {
         );
 
         window.__mobileSupabaseLoaded = true;
+
     } catch (e) {
+
         window.__mobileSupabaseLoaded = false;
+
+        alert('Mobile Supabase load failed: ' + e.message);
+
         console.warn('Mobile Supabase load failed', e);
     }
+
+})();
 })();
 </script>
 
