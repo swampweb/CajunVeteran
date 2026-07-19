@@ -40,18 +40,68 @@
 </nav>
 <div id="notesModal" class="modal hidden"><div class="backdrop" data-close></div><div class="box"><button class="close" data-close>×</button><h3 id="notesTitle">Notes</h3><textarea id="notesText"></textarea><div class="actions"><button class="btn" data-close>Cancel</button><button id="saveNotes" class="btn gold">Save</button></div></div></div>
 <div id="filesModal" class="modal hidden"><div class="backdrop" data-close-files></div><div class="box"><button class="close" data-close-files>×</button><h3 id="filesTitle">Files</h3><div id="filesBody"></div></div></div>
-<script src="supabase-data.js?v=iphone7"></script>
 <script>
-setTimeout(() => {
-    const raw = localStorage.getItem('inventory_orders_store_v9');
+window.__mobileDataReady = (async function () {
+    const SUPABASE_URL = 'https://fprbzavehflzqcmxvbxx.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_qjEyGhgiTpQKs-ti6yt3iQ_-AKzm3Qw';
 
-    alert(
-        'Exists=' + (raw !== null) +
-        '\nLength=' + (raw ? raw.length : 0) +
-        '\nFirst100=' + (raw ? raw.substring(0,100) : 'null')
-    );
-}, 5000);
+    const STORE_KEY = 'inventory_orders_store_v9';
+    const WOOD_JOBS_KEY = 'cv_woodworking_jobs_v1';
+    const WOOD_ITEMS_KEY = 'cv_woodworking_items_v1';
+    const WOOD_MATERIALS_KEY = 'cv_woodworking_material_inventory_v1';
+
+    try {
+        const res = await fetch(
+            SUPABASE_URL + '/rest/v1/app_data?id=eq.main&select=data',
+            {
+                method: 'GET',
+                headers: {
+                    apikey: SUPABASE_KEY,
+                    Authorization: 'Bearer ' + SUPABASE_KEY
+                },
+                cache: 'no-store'
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error('Supabase read failed: ' + res.status);
+        }
+
+        const rows = await res.json();
+        const data = rows && rows[0] && rows[0].data ? rows[0].data : {};
+
+        localStorage.setItem(
+            STORE_KEY,
+            JSON.stringify({
+                items: Array.isArray(data.items) ? data.items : [],
+                orders: Array.isArray(data.orders) ? data.orders : [],
+                colors: Array.isArray(data.colors) ? data.colors : []
+            })
+        );
+
+        localStorage.setItem(
+            WOOD_JOBS_KEY,
+            JSON.stringify(Array.isArray(data.woodworkingJobs) ? data.woodworkingJobs : [])
+        );
+
+        localStorage.setItem(
+            WOOD_ITEMS_KEY,
+            JSON.stringify(Array.isArray(data.woodworkingItems) ? data.woodworkingItems : [])
+        );
+
+        localStorage.setItem(
+            WOOD_MATERIALS_KEY,
+            JSON.stringify(Array.isArray(data.woodworkingMaterialInventory) ? data.woodworkingMaterialInventory : [])
+        );
+
+        window.__mobileSupabaseLoaded = true;
+    } catch (e) {
+        window.__mobileSupabaseLoaded = false;
+        console.warn('Mobile Supabase load failed', e);
+    }
+})();
 </script>
+
 <script>
 const STORE_KEY='inventory_orders_store_v9', WOOD_JOBS_KEY='cv_woodworking_jobs_v1', WOOD_ITEMS_KEY='cv_woodworking_items_v1';
 const $=id=>document.getElementById(id);let currentTab='new',currentNotes=null;
@@ -69,17 +119,32 @@ function isImage(f){const n=String(f.name||f.storedName||f.url||'').split('?')[0
 function fileCard(f){const name=f.name||f.storedName||'File';if(isImage(f))return `<div class="file-card"><a href="${f.url}" target="_blank">🖼️ ${name}</a><img src="${f.url}" alt="${name}"></div>`;return `<div class="file-card"><a href="${f.url}" target="_blank" download>📎 ${name}</a></div>`}
 document.addEventListener('click',e=>{const t=e.target.closest('[data-tab]');if(t){currentTab=t.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));render()}const n=e.target.closest('[data-notes]');if(n){const j=findJob(n.dataset.notes);if(j){currentNotes=j;$('notesTitle').textContent='Notes - '+(j.id||'Job');$('notesText').value=j.notes||'';open('notesModal')}}const f=e.target.closest('[data-files]');if(f){const j=findJob(f.dataset.files);if(j){$('filesTitle').textContent='Files - '+(j.id||'Job');const files=[...(j.files||[]),...(j.plans||[])];$('filesBody').innerHTML=files.length?files.map(fileCard).join(''):'<p>No files attached.</p>';open('filesModal')}}if(e.target.closest('[data-close]'))close('notesModal');if(e.target.closest('[data-close-files]'))close('filesModal')});
 document.addEventListener('change',e=>{const s=e.target.closest('[data-status]');if(s){const j=findJob(s.dataset.status);if(j)saveJob(j,{status:s.value})}const p=e.target.closest('[data-paid]');if(p){const j=findJob(p.dataset.paid);if(j)saveJob(j,{paid:!!p.checked})}});
-
 $('saveNotes').addEventListener('click',()=>{if(currentNotes){saveJob(currentNotes,{notes:$('notesText').value.trim()});currentNotes=null;close('notesModal')}});
 
 $('search').addEventListener('input',render);
 
-if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+// Disable old iPhone service worker cache for mobile Supabase data
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations()
+        .then(regs => regs.forEach(reg => reg.unregister()))
+        .catch(()=>{});
 }
 
-// Give Supabase time to hydrate localStorage on iPhone
-setTimeout(render, 3000);
+if ('caches' in window) {
+    caches.keys()
+        .then(keys => keys.forEach(key => caches.delete(key)))
+        .catch(()=>{});
+}
+
+// Wait for Supabase data, then render mobile page
+if (window.__mobileDataReady) {
+    window.__mobileDataReady.finally(() => {
+        render();
+        setTimeout(render, 1000);
+    });
+} else {
+    render();
+}
 
 </script>
 </body>
