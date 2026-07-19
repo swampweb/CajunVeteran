@@ -182,7 +182,11 @@ function money(n){
 function fmtDate(s){if(!s)return'No date';if(/^\d{4}-\d{2}-\d{2}$/.test(s)){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString()}try{return new Date(s).toLocaleDateString()}catch{return s}}
 function cleanStatus(s){s=String(s||'new').toLowerCase();if(['quote','approved','new'].includes(s))return'new';if(['in_progress','in process','printing','cutting'].includes(s))return'in_progress';if(['completed','complete','shipped','delivered'].includes(s))return'completed';return s}
 function isActive(j){return ['new','in_progress','completed'].includes(cleanStatus(j.status))}
-function gather(){const store=load(STORE_KEY,{items:[],orders:[],colors:[]});const wood=load(WOOD_JOBS_KEY,[]);const items=load(WOOD_ITEMS_KEY,[]);const jobs=[];(store.orders||[]).forEach(o=>{const first=(o.lines||[])[0]||{};const item=(store.items||[]).find(i=>String(i.sku)===String(first.sku))||{};jobs.push({type:'print',key:'print:'+o.orderId,id:o.orderId||'',title:item.name||((o.lines||[]).map(l=>l.sku).join(', ')||'3D Print Order'),customer:o.customer||'',due:o.dueDate||o.orderDate||'',status:cleanStatus(o.status),paid:!!o.paid,notes:o.notes||'',files:Array.isArray(o.files)?o.files:[],total:(o.lines||[]).reduce((a,l)=>{const it=(store.items||[]).find(i=>String(i.sku)===String(l.sku))||{};return a+num(it.price)*num(l.qty||1)},0)})});wood.forEach(j=>{const match=items.find(i=>String(i.id)===String(j.sourceItemId)||String(i.name).trim().toLowerCase()===String(j.project).trim().toLowerCase())||{};jobs.push({type:'wood',key:'wood:'+j.id,sourceId:j.id,id:j.jobId||'',title:j.project||'',customer:j.customer||'',due:j.dueDate||'',status:cleanStatus(j.status),paid:!!j.paid,notes:j.notes||'',files:Array.isArray(j.files)?j.files:[],plans:Array.isArray(match.plans)?match.plans:[],total:num(j.total)})});return jobs}
+function gather(){const store=load(STORE_KEY,{items:[],orders:[],colors:[]});const wood=load(WOOD_JOBS_KEY,[]);const items=load(WOOD_ITEMS_KEY,[]);const jobs=[];(store.orders||[]).forEach(o=>{const first=(o.lines||[])[0]||{};const item=(store.items||[]).find(i=>String(i.sku)===String(first.sku))||{};jobs.push({type:'print',key:'print:'+o.orderId,id:o.orderId||'',title:item.name||((o.lines||[]).map(l=>l.sku).join(', ')||'3D Print Order'),customer:o.customer||'',due:o.dueDate||o.orderDate||'',status:cleanStatus(o.status),paid:!!o.paid,notes:o.notes||'',files:Array.isArray(o.files)?o.files:[],total:(o.lines||[]).reduce((a,l)=>{const it=(store.items||[]).find(i=>String(i.sku)===String(l.sku))||{};return a+num(it.price)*num(l.qty||1)},0)})});wood.forEach(j=>{const match=items.find(i=>String(i.id)===String(j.sourceItemId)||String(i.name).trim().toLowerCase()===String(j.project).trim().toLowerCase())||{};jobs.push({type:'wood',key:'wood:'+j.id,sourceId:j.id,id:j.jobId||'',title:j.project||'',customer:j.customer||'',due:j.dueDate||'',status:cleanStatus(j.status),paid:!!j.paid,notes:j.notes||'',
+plaqueName:j.plaqueName||'',
+plaqueRank:j.plaqueRank||'',
+plaqueMonthPromoted:j.plaqueMonthPromoted||'',
+files:Array.isArray(j.files)?j.files:[],plans:Array.isArray(match.plans)?match.plans:[],total:num(j.total)})});return jobs}
 function saveJob(job,patch){if(job.type==='print'){const store=load(STORE_KEY,{items:[],orders:[],colors:[]});const o=(store.orders||[]).find(x=>String(x.orderId)===String(job.id));if(o){Object.assign(o,patch);save(STORE_KEY,store)}}else{const arr=load(WOOD_JOBS_KEY,[]);const j=arr.find(x=>String(x.id)===String(job.sourceId));if(j){Object.assign(j,patch);save(WOOD_JOBS_KEY,arr)}}render()}
 function counts(){const all=gather();$('countNew').textContent=all.filter(j=>isActive(j)&&j.status==='new').length;$('countProgress').textContent=all.filter(j=>isActive(j)&&j.status==='in_progress').length;$('countComplete').textContent=all.filter(j=>isActive(j)&&j.status==='completed').length;$('countWood').textContent=all.filter(j=>j.type==='wood'&&isActive(j)).length;$('countPrint').textContent=all.filter(j=>j.type==='print'&&isActive(j)).length}
 function card(j){return `<article class="job"><div class="job-head"><div><span class="type ${j.type==='print'?'print':''}">${j.type==='wood'?'🪵 Woodworking':'🖨️ 3D Print'}</span><div class="id">${j.id||'No ID'}</div><div class="title">${j.title||'Untitled Job'}</div></div><div style="text-align:right;color:#ffd36a;font-weight:900">${money(j.total)}</div></div><div class="meta"><div>👤 <b>${j.customer||'No customer'}</b></div><div>📅 Due: <b>${fmtDate(j.due)}</b></div><div>💲 Paid: <b>${j.paid?'Yes':'No'}</b></div></div><div class="select-row"><select class="status-select" data-status="${j.key}"><option value="new" ${j.status==='new'?'selected':''}>New</option><option value="in_progress" ${j.status==='in_progress'?'selected':''}>In Progress</option><option value="completed" ${j.status==='completed'?'selected':''}>Complete</option><option value="delivered" ${j.status==='delivered'?'selected':''}>Delivered</option></select><label class="paid">Paid <input type="checkbox" data-paid="${j.key}" ${j.paid?'checked':''}></label></div><div class="actions"><button class="btn" data-notes="${j.key}">📝 Notes</button><button class="btn" data-files="${j.key}" ${(j.files.length||j.plans?.length)?'':'disabled'}>📁 Files</button></div></article>`}
@@ -190,13 +194,32 @@ function render(){counts();let jobs=gather().filter(isActive).filter(j=>j.status
 function findJob(key){return gather().find(j=>j.key===key)}function open(id){$(id).classList.remove('hidden')}function close(id){$(id).classList.add('hidden')}
 function isImage(f){const n=String(f.name||f.storedName||f.url||'').split('?')[0].toLowerCase();return ['png','jpg','jpeg','webp','gif','svg'].includes(n.split('.').pop())||String(f.type||'').startsWith('image/')}
 function fileCard(f){const name=f.name||f.storedName||'File';if(isImage(f))return `<div class="file-card"><a href="${f.url}" target="_blank">🖼️ ${name}</a><img src="${f.url}" alt="${name}"></div>`;return `<div class="file-card"><a href="${f.url}" target="_blank" download>📎 ${name}</a></div>`}
-document.addEventListener('click',e=>{const t=e.target.closest('[data-tab]');if(t){currentTab=t.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));render()}const n=e.target.closest('[data-notes]');if(n){const j=findJob(n.dataset.notes);if(j){currentNotes=j;$('notesTitle').textContent='Notes - '+(j.id||'Job');$('notesText').value =
-'Job #: ' + (j.id || '') + '\n' +
-'Customer: ' + (j.customer || '') + '\n' +
-'Status: ' + (j.status || '') + '\n' +
-'Due Date: ' + (j.due || '') + '\n\n' +
-'Notes:\n' +
-(j.notes || '');open('notesModal')}}const f=e.target.closest('[data-files]');if(f){const j=findJob(f.dataset.files);if(j){$('filesTitle').textContent='Files - '+(j.id||'Job');const files=[...(j.files||[]),...(j.plans||[])];$('filesBody').innerHTML=files.length?files.map(fileCard).join(''):'<p>No files attached.</p>';open('filesModal')}}if(e.target.closest('[data-close]'))close('notesModal');if(e.target.closest('[data-close-files]'))close('filesModal')});
+document.addEventListener('click',e=>{const t=e.target.closest('[data-tab]');if(t){currentTab=t.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));render()}const n=e.target.closest('[data-notes]');if(n){const j=findJob(n.dataset.notes);if(j){currentNotes=j;$('notesTitle').textContent='Notes - '+(j.id||'Job');
+let noteText = '';
+
+if (j.plaqueName) {
+    noteText += 'NAME\n' + j.plaqueName + '\n\n';
+}
+
+if (j.plaqueRank) {
+    noteText += 'RANK\n' + j.plaqueRank + '\n\n';
+}
+
+if (j.plaqueMonthPromoted) {
+    noteText += 'MONTH PROMOTED\n' + j.plaqueMonthPromoted + '\n\n';
+}
+
+if (j.notes) {
+    noteText += 'NOTES\n' + j.notes + '\n\n';
+}
+
+if (j.files && j.files.length) {
+    noteText += 'JOB FILES\n' +
+        j.files.map(f => f.name || f.storedName || 'File').join('\n');
+}
+
+$('notesText').value = noteText.trim();
+open('notesModal')}}const f=e.target.closest('[data-files]');if(f){const j=findJob(f.dataset.files);if(j){$('filesTitle').textContent='Files - '+(j.id||'Job');const files=[...(j.files||[]),...(j.plans||[])];$('filesBody').innerHTML=files.length?files.map(fileCard).join(''):'<p>No files attached.</p>';open('filesModal')}}if(e.target.closest('[data-close]'))close('notesModal');if(e.target.closest('[data-close-files]'))close('filesModal')});
 document.addEventListener('change',e=>{const s=e.target.closest('[data-status]');if(s){const j=findJob(s.dataset.status);if(j)saveJob(j,{status:s.value})}const p=e.target.closest('[data-paid]');if(p){const j=findJob(p.dataset.paid);if(j)saveJob(j,{paid:!!p.checked})}});
 $('saveNotes').addEventListener('click',()=>{if(currentNotes){saveJob(currentNotes,{notes:$('notesText').value.trim()});currentNotes=null;close('notesModal')}});
 
