@@ -58,7 +58,18 @@ function isImage(f){const n=String(f.name||f.storedName||f.url||'').split('?')[0
 function fileCard(f){const name=f.name||f.storedName||'File';if(isImage(f))return `<div class="file-card"><a href="${f.url}" target="_blank">🖼️ ${name}</a><img src="${f.url}" alt="${name}"></div>`;return `<div class="file-card"><a href="${f.url}" target="_blank" download>📎 ${name}</a></div>`}
 document.addEventListener('click',e=>{const t=e.target.closest('[data-tab]');if(t){currentTab=t.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));render()}const n=e.target.closest('[data-notes]');if(n){const j=findJob(n.dataset.notes);if(j){currentNotes=j;$('notesTitle').textContent='Notes - '+(j.id||'Job');$('notesText').value=j.notes||'';open('notesModal')}}const f=e.target.closest('[data-files]');if(f){const j=findJob(f.dataset.files);if(j){$('filesTitle').textContent='Files - '+(j.id||'Job');const files=[...(j.files||[]),...(j.plans||[])];$('filesBody').innerHTML=files.length?files.map(fileCard).join(''):'<p>No files attached.</p>';open('filesModal')}}if(e.target.closest('[data-close]'))close('notesModal');if(e.target.closest('[data-close-files]'))close('filesModal')});
 document.addEventListener('change',e=>{const s=e.target.closest('[data-status]');if(s){const j=findJob(s.dataset.status);if(j)saveJob(j,{status:s.value})}const p=e.target.closest('[data-paid]');if(p){const j=findJob(p.dataset.paid);if(j)saveJob(j,{paid:!!p.checked})}});
-$('saveNotes').addEventListener('click',()=>{if(currentNotes){saveJob(currentNotes,{notes:$('notesText').value.trim()});currentNotes=null;close('notesModal')}});$('search').addEventListener('input',render);if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js').catch(()=>{});}render();
+
+$('saveNotes').addEventListener('click',()=>{if(currentNotes){saveJob(currentNotes,{notes:$('notesText').value.trim()});currentNotes=null;close('notesModal')}});
+
+$('search').addEventListener('input',render);
+
+if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+}
+
+// Give Supabase time to hydrate localStorage on iPhone
+setTimeout(render, 3000);
+
 </script>
 </body>
 </html>
