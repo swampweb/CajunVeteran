@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CajunVeteran Workshop Management — 3D Print Admin</title>
+  <link rel="stylesheet" href="styles.css?v=close27"/>
+
+<style id="adminOrderFilesStyle">
+.order-files-card{grid-column:1/-1;background:#081d31;border:1px solid rgba(86,142,198,.35);border-radius:8px;padding:12px}.order-files-card strong{display:block;color:#c98232;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}.order-files-card span{display:block;color:#9fb0c4;font-size:12px;margin-bottom:8px}.order-files-card input[type=file]{width:100%;min-height:38px;padding:8px;border-radius:6px;border:1px solid #3b5f83;background:#10283f;color:#f4f7fb}.order-files-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}.order-file-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:rgba(255,255,255,.045);border:1px solid rgba(86,142,198,.25);border-radius:6px;padding:7px 9px}.order-file-row a{color:#ffd36a;text-decoration:none;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.order-file-row button{border:1px solid #b91c1c;background:#ef4444;color:#fff;border-radius:5px;cursor:pointer}.order-file-icon{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:28px;height:26px;border-radius:6px;border:1px solid rgba(148,163,184,.35);background:rgba(148,163,184,.08);color:#9fb0c4;font-size:15px;cursor:pointer}.order-file-icon.has-files{border-color:rgba(240,180,41,.55);background:rgba(240,180,41,.14);color:#ffd36a}.order-file-icon.empty{opacity:.38;cursor:default}.order-file-icon span{font-size:11px;font-weight:900;color:#071321;background:#ffd36a;border-radius:999px;min-width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px}.order-files-modal{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px}.order-files-modal.hidden{display:none}.order-files-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72)}.order-files-box{position:relative;z-index:1;width:min(760px,94vw);max-height:86vh;overflow:auto;background:#0b2136;border:1px solid rgba(240,180,41,.6);border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.55);padding:18px 20px}.order-files-box h3{margin:0 0 12px;color:#c98232;text-transform:uppercase}.order-files-close{position:absolute;right:10px;top:10px;width:38px;height:38px;border-radius:8px;border:1px solid #b91c1c;background:#ef4444;color:#fff;font-size:24px}.order-file-preview-list{display:flex;flex-direction:column;gap:10px}.order-file-preview-list a{color:#ffd36a;text-decoration:none}.order-image-preview{max-width:100%;border-radius:10px;border:1px solid #31587d;background:#07182a;margin-top:6px}.order-file-preview-card{border:1px solid rgba(86,142,198,.28);background:rgba(255,255,255,.045);border-radius:10px;padding:10px}.order-file-empty{color:#9fb0c4;font-size:12px}
+</style>
+
+<style id="adminOrderFileConfirmStyle">
+.order-confirm-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px}.order-confirm-actions button{min-width:130px;min-height:42px;border-radius:8px;border:1px solid #3b5f83;background:#10283f;color:#fff;font-weight:900;cursor:pointer}.order-confirm-actions .primary{background:linear-gradient(135deg,#c98232,#e5a91f);border-color:#e5a91f;color:#071321}.order-confirm-actions .danger{background:#ef4444;border-color:#b91c1c;color:#fff}.order-confirm-actions .cancel{background:#07182a;color:#9fb0c4}.order-confirm-file{color:#ffd36a;font-weight:900;word-break:break-word}.order-confirm-warning{border:1px solid rgba(239,68,68,.45);background:rgba(239,68,68,.1);border-radius:8px;padding:10px;margin-top:10px;color:#ffd0d0}.order-confirm-muted{color:#9fb0c4;font-size:13px}
+</style>
+
+<style id="adminCleanEditingStyle">
+/* =========================================================
+   3D Print Admin Clean Editing Layout
+   Dashboard is viewing-only; Admin is edit/manage work area.
+   ========================================================= */
+body.admin-mockup-v4 .mock-topbar{height:104px;background:linear-gradient(90deg,#06111e,#0b2136 55%,#06111e)!important;border-bottom:2px solid var(--accent,#f0b429)!important;gap:16px!important;}
+body.admin-mockup-v4 .mock-brand{min-width:0;}
+body.admin-mockup-v4 .mock-logo{height:82px!important;object-fit:contain;}
+body.admin-mockup-v4 .mock-name{font-size:32px!important;}
+body.admin-mockup-v4 .mock-sub{letter-spacing:.16em!important;}
+body.admin-mockup-v4 .mock-title strong{font-size:22px!important;}
+body.admin-mockup-v4 .mock-title span{font-size:14px!important;color:#dce8f6!important;}
+body.admin-mockup-v4 .mock-top-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-left:auto;}
+body.admin-mockup-v4 .admin-close-site{width:42px!important;height:42px!important;min-width:42px!important;border-radius:10px!important;border:1px solid rgba(239,68,68,.75)!important;background:rgba(239,68,68,.18)!important;color:#fff!important;font-size:24px!important;font-weight:900!important;line-height:1!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;box-shadow:0 4px 12px rgba(239,68,68,.16)!important;transition:background .12s ease,border-color .12s ease,transform .12s ease!important;}
+body.admin-mockup-v4 .admin-close-site:hover{background:#ef4444!important;border-color:#ff7b7b!important;transform:translateY(-1px)!important;}
+body.admin-mockup-v4 .mock-shell{grid-template-columns:230px minmax(0,1fr)!important;}
+body.admin-mockup-v4 .mock-sidebar{padding:14px 12px!important;}
+body.admin-mockup-v4 .mock-nav{font-size:16px!important;min-height:48px!important;padding:13px 14px!important;margin-bottom:9px!important;border-bottom-color:rgba(86,142,198,.16)!important;}
+body.admin-mockup-v4 .mock-nav span{font-size:20px!important;min-width:24px!important;}
+body.admin-mockup-v4 .mock-motto{border:1px solid rgba(240,180,41,.25)!important;border-radius:8px!important;padding:14px 10px!important;background:rgba(240,180,41,.045)!important;font-size:13px!important;}
+.admin-title-card{display:flex;align-items:center;gap:16px;margin-bottom:14px;padding:0 4px;}
+.admin-title-icon{width:58px;height:58px;border-radius:12px;border:1px solid rgba(240,180,41,.6);background:rgba(240,180,41,.10);display:flex;align-items:center;justify-content:center;color:#f0b429;font-size:32px;}
+.admin-title-text h1{margin:0;color:#f0b429;font-size:30px;letter-spacing:.01em;}.admin-title-text p{margin:3px 0 0;color:#cbd5e1;}
+body.admin-mockup-v4 .mock-kpis{margin-bottom:14px!important;}
+body.admin-mockup-v4 .mock-workspace.admin-edit-stack{display:flex!important;flex-direction:column!important;gap:8px!important;align-items:stretch!important;}
+body.admin-mockup-v4 .admin-edit-stack .mock-orders-card,body.admin-mockup-v4 .admin-edit-stack .mock-order-form{width:100%!important;}
+body.admin-mockup-v4 .mock-order-form{position:static!important;top:auto!important;}
+body.admin-mockup-v4 .mock-orders-card>h2{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;}
+.admin-section-label{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(240,180,41,.35);background:rgba(240,180,41,.10);color:#ffd36a;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;}
+body.admin-mockup-v4 .tab-labels{justify-content:flex-end!important;gap:10px!important;}
+body.admin-mockup-v4 .tab-labels label{min-width:auto!important;border-radius:8px!important;padding:8px 14px!important;font-size:13px!important;}
+body.admin-mockup-v4 #orderFormCard summary{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;padding:13px 16px;border-bottom:1px solid rgba(86,142,198,.35);}
+body.admin-mockup-v4 #orderFormCard summary h2{margin:0;color:#f0b429;text-transform:uppercase;letter-spacing:.03em;font-size:20px;}
+body.admin-mockup-v4 #orderFormCard summary h2:before{content:'✎';margin-right:10px;}
+body.admin-mockup-v4 #orderFormCard summary span{color:#9fb0c4;font-size:13px;}
+body.admin-mockup-v4 #orderFormCard:not([open]) summary{border-bottom:none;}
+body.admin-mockup-v4 #orderFormCard .order-form-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+body.admin-mockup-v4 #orderFormCard .order-files-card,body.admin-mockup-v4 #orderFormCard .order-lines,body.admin-mockup-v4 #orderFormCard #addLineBtn,body.admin-mockup-v4 #orderFormCard .save-order{grid-column:1/-1!important;}
+body.admin-mockup-v4 #orderFormCard input[name="notes"]{grid-column:span 2;}
+body.admin-mockup-v4 .mock-lower{display:grid!important;grid-template-columns:1fr 1fr!important;gap:14px!important;}
+body.admin-mockup-v4 #items{order:1;}body.admin-mockup-v4 #colors{order:2;}body.admin-mockup-v4 #backup{margin-top:14px!important;}
+body.admin-mockup-v4 .mock-card summary span{color:#9fb0c4!important;}
+@media(max-width:1200px){body.admin-mockup-v4 .mock-shell{grid-template-columns:1fr!important;}body.admin-mockup-v4 .mock-sidebar{position:static!important;height:auto!important;display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;}body.admin-mockup-v4 .mock-motto{display:none!important;}body.admin-mockup-v4 .mock-lower{grid-template-columns:1fr!important;}body.admin-mockup-v4 #orderFormCard .order-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
+@media(max-width:700px){body.admin-mockup-v4 .mock-topbar{height:auto!important;align-items:flex-start!important;flex-direction:column!important;}body.admin-mockup-v4 .mock-top-actions{width:100%;justify-content:flex-start;margin-left:0;}body.admin-mockup-v4 #orderFormCard .order-form-grid{grid-template-columns:1fr!important;}body.admin-mockup-v4 #orderFormCard input[name="notes"]{grid-column:1/-1;}.admin-title-card{align-items:flex-start;}}
+</style>
+
+</head>
+<body class="admin admin-mockup-v4">
+<header class="mock-topbar">
+  <div class="mock-brand">
+    <img class="mock-logo" src="CajunVeteran 3D Print Logo.png" alt="CajunVeteran 3D Print Admin"/>
+    <div class="mock-wordmark">
+      <div class="mock-name">CajunVeteran Workshop</div>
+      <div class="mock-sub">3D Print Admin</div>
+    </div>
+    <div class="mock-title">
+      <strong>3D PRINT ADMIN</strong>
+      <span>Manage orders, inventory items, colors, and backups.</span>
+    </div>
+  </div>
+  <div class="mock-top-actions">
+    <button type="button" id="adminCloseSiteBtn" class="admin-close-site" title="Close site and stop local server">✕</button>
+  </div>
+</header>
+
+<main id="adminPanels" class="mock-shell">
+  <aside class="mock-sidebar">
+    <a class="mock-nav" href="dashboard.html"><span>🏠</span>Dashboard</a>
+    <a class="mock-nav active" href="#orders"><span>📋</span>Orders</a>
+    <a class="mock-nav" href="#items"><span>📦</span>Items</a>
+    <a class="mock-nav" href="#colors"><span>🎨</span>Colors</a>
+    <a class="mock-nav" href="#backup"><span>💾</span>Backup</a>
+    <a class="mock-nav" href="reports.html"><span>📊</span>Reports</a>
+    <a class="mock-nav" href="woodworking.html#jobs"><span>🪵</span>Woodworking</a>
+    <a class="mock-nav" href="tablet.html"><span>📱</span>Tablet</a>
+    <a class="mock-nav" href="index.html"><span>🌐</span>Public</a>
+    <div class="mock-motto"><div>★</div><p><strong>CajunVeteran Workshop</strong><br/>Precision &amp; Craftsmanship<br/>Built With Pride</p></div>
+  </aside>
+
+  <section class="mock-main">
+    <section id="dashboard" class="mock-kpis">
+      <div class="mock-kpi"><div class="kpi-icon kpi-clipboard">📋</div><div><b>Open Orders</b><span>New + In Process</span><strong id="dashActiveCount">0</strong><em id="dashActiveTotal">Total: $0.00</em></div></div>
+      <div class="mock-kpi"><div class="kpi-icon ok kpi-check">✓</div><div><b>Completed</b><span>Ready / Finished</span><strong id="dashCompletedCount">0</strong><em class="ok" id="dashCompletedTotal">Total: $0.00</em></div></div>
+      <div class="mock-kpi"><div class="kpi-icon red kpi-truck">🚚</div><div><b>Shipped / Delivered</b><span>Closed Orders</span><strong id="dashShippedCount">0</strong><em class="red" id="dashShippedTotal">Total: $0.00</em></div></div>
+      <div class="mock-kpi"><div class="kpi-icon kpi-box">📦</div><div><b>Active Items</b><span>Listed Items</span><strong id="dashItemsCount">0</strong><em id="dashColorsCount">Colors: 0</em></div></div>
+    </section>
+
+    <section id="orders" class="mock-workspace admin-edit-stack">
+      <section class="mock-card mock-orders-card">
+        <h2>3D Print Orders <span class="admin-section-label">Orders</span></h2>
+        <div class="mock-tabs">
+          <input type="radio" name="orderTabs" id="tabActive" checked/>
+          <input type="radio" name="orderTabs" id="tabCompleted"/>
+          <input type="radio" name="orderTabs" id="tabShipped"/>
+          <div class="tab-labels">
+            <label for="tabActive">New + In Process <span class="badge warn" id="adminCountActive">0</span></label>
+            <label for="tabCompleted">Completed <span class="badge ok" id="adminCountCompleted">0</span></label>
+            <label for="tabShipped">Shipped <span class="badge muted" id="adminCountShipped">0</span></label>
+          </div>
+          <div class="tab-panels">
+            <div class="tab-panel active-panel"><div class="mock-table-wrap"><table class="adminOrdersTable"><thead><tr><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Due Date</th><th>Items</th><th>Total ($)</th><th>Paid</th><th>Files</th><th>Actions</th></tr></thead><tbody id="adminOrdersTableActive"></tbody></table></div></div>
+            <div class="tab-panel completed-panel"><div class="mock-table-wrap"><table class="adminOrdersTable"><thead><tr><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Due Date</th><th>Items</th><th>Total ($)</th><th>Paid</th><th>Files</th><th>Actions</th></tr></thead><tbody id="adminOrdersTableCompleted"></tbody></table></div></div>
+            <div class="tab-panel shipped-panel"><div class="mock-table-wrap"><table class="adminOrdersTable"><thead><tr><th>Priority</th><th>Order #</th><th>Customer</th><th>Status</th><th>Due Date</th><th>Items</th><th>Total ($)</th><th>Paid</th><th>Files</th><th>Actions</th></tr></thead><tbody id="adminOrdersTableShipped"></tbody></table></div></div>
+          </div>
+        </div>
+      </section>
+
+      <details id="orderFormCard" class="mock-card mock-order-form">
+        <summary><h2>Add / Edit Order</h2><span>Click Edit to Expand</span></summary>
+        <form id="orderForm" class="order-form-grid">
+          <input name="orderId" id="orderId" placeholder="Order # (Auto)"/>
+          <input name="customer" placeholder="Customer" required/>
+          <label>Order Date<input name="orderDate" type="date"/></label>
+          <label>Order Due<input name="dueDate" type="date"/></label>
+          <label>Status<select name="status"><option value="new">New</option><option value="in_progress">In Process</option><option value="completed">Completed</option><option value="shipped">Shipped/Delivered</option></select></label>
+          <label>Priority<input name="priority" type="number" min="1" max="9" value="3"/></label>
+          <label>Adjustment<select name="discountType" id="discountType"><option value="none">None</option><option value="percent">% Off</option><option value="amount">$ Off</option></select></label>
+          <input name="discountValue" id="discountValue" type="number" step="0.01" placeholder="Adj. value"/>
+          <label>Surcharge<select name="surchargeType" id="surchargeType"><option value="none">None</option><option value="percent">% Add</option><option value="amount">$ Add</option></select></label>
+          <input name="surchargeValue" id="surchargeValue" type="number" step="0.01" placeholder="Surcharge value"/>
+          <label class="paid-row"><input type="checkbox" name="paid" id="paidChk"/> Paid</label>
+          <input name="notes" placeholder="Notes (optional)"/>
+          <div class="order-files-card">
+            <strong>Order Files</strong>
+            <span>Upload customer pictures, drawings, PDFs, quotes, or reference files. Images can be viewed in the popup without downloading.</span>
+            <input id="orderInfoFiles" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.csv,.zip,image/*" />
+            <div id="orderFilesList" class="order-files-list"><span class="order-file-empty">No order files uploaded yet.</span></div>
+          </div>
+
+          <div class="order-lines"><div class="order-line" data-index="0"><label>Item<select class="orderItemSelect"></select><small class="line-price muted"></small></label><label>Qty<input type="number" class="orderQtyInput" min="1" value="1"/></label><label>Color(s)<select class="orderLineColorsSelect" multiple size="4"></select></label><button type="button" class="removeLine" title="Remove line">✕</button></div></div>
+          <button type="button" id="addLineBtn" class="btn-secondary">+ Add Line</button>
+          <button type="submit" class="save-order">Save Order</button>
+        </form>
+      </details>
+    </section>
+
+    <section class="mock-lower">
+      <details id="colors" class="mock-card">
+        <summary><h2>Colors On Hand <span class="badge muted" id="adminCountColors">0</span></h2><span>Click to collapse</span></summary>
+        <form id="colorForm" class="grid flat-inputs color-form-grid"><input type="hidden" id="colorIdx" name="colorIdx"/><input name="brand" id="brand" placeholder="Brand" required/><input name="type" id="type" placeholder="Type" required/><input name="color" id="color" placeholder="Color" required/><label class="color-swatch-picker">Swatch<input type="color" id="colorSwatch" name="swatch" value="#64748b"/></label><input id="colorHex" name="swatchHex" class="color-hex-input" placeholder="#64748b" maxlength="7"/><label class="color-active-row" title="Active"><input type="checkbox" id="colorActive" name="active" checked/></label><button type="submit">Add / Update Color</button><button type="button" id="colorFormReset" class="btn-secondary">Clear</button></form>
+        <div class="mock-table-wrap"><table><thead><tr><th>Brand</th><th>Type</th><th>Color</th><th>Active</th><th>Actions</th></tr></thead><tbody id="colorsTable"></tbody></table></div>
+      </details>
+
+      <details id="items" class="mock-card">
+        <summary><h2>Items <span class="badge muted" id="adminCountItems">0</span></h2><span>Click to collapse</span></summary>
+        <div class="items-toolbar">
+          <div class="controls admin-search-controls"><input id="adminItemSearch" placeholder="Search items by SKU, name, size, description, price, qty, or color..." /></div>
+        </div>
+        <form id="itemForm" class="item-form-clean">
+          <div class="item-form-main">
+            <div class="item-field-card identity-card">
+              <h3>Item Details</h3>
+              <div class="item-grid two-col">
+                <input name="sku" id="sku" placeholder="SKU (auto)"/>
+                <input name="name" placeholder="Item Name" required/>
+                <label>Size<select name="size" id="size"><option value="Mini">Mini</option><option value="Small">Small</option><option value="Medium">Medium</option><option value="Large">Large</option><option value="X-L">X-L</option><option value="Slim">Slim</option><option value="Regular">Regular</option><option value="Other">Other</option></select></label>
+                <input name="qty" placeholder="Qty Available" type="number" min="0"/>
+              </div>
+              <input name="desc" placeholder="Description" class="item-desc-input"/>
+            </div>
+
+            <div class="item-field-card print-card">
+              <h3>Print Info</h3><p class="item-card-help">Estimated print time and filament used for this item.</p>
+              <div class="item-grid three-col">
+                <input name="printHours" id="printHours" placeholder="Print Hours" type="number" min="0"/>
+                <input name="printMinutes" id="printMinutes" placeholder="Print Minutes" type="number" min="0" max="59"/>
+                <input name="grams" id="grams" placeholder="Filament Grams" type="number" min="0" step="0.01"/>
+              </div>
+              <div class="item-grid three-col">
+                <input name="length" placeholder="Length (mm)" type="number" step="0.01"/>
+                <input name="width" placeholder="Width (mm)" type="number" step="0.01"/>
+                <input name="height" placeholder="Height (mm)" type="number" step="0.01"/>
+              </div>
+            </div>
+
+            <div class="item-field-card pricing-card">
+              <h3>Pricing</h3>
+              <div class="item-grid two-col">
+                <input name="price" id="price" placeholder="Price ($)" type="number" step="0.50" min="0"/>
+                <input name="costMaterial" id="costMaterial" placeholder="Material Cost ($)" type="number" step="0.50" min="0"/>
+              </div>
+              <div class="profit-box"><label>Profit</label><output id="profitOut" class="profit-out">$0.00</output></div>
+            </div>
+          </div>
+
+          <aside class="item-form-side">
+            <div class="item-field-card image-card">
+              <h3>Preview Image</h3>
+              <div class="preview-frame"><img id="imgPreview" class="preview" alt="No image selected"/></div>
+              <label class="file-picker">Image (optional)<input name="image" id="itemImage" type="file" accept="image/*"/></label>
+            </div>
+            <div class="item-field-card colors-card">
+              <h3>Colors & Visibility</h3>
+              <label>Printed Colors<select id="itemColorsSelect" name="colorsSelect" multiple size="6"></select></label>
+              <label class="item-active-row" title="Active"><input type="checkbox" id="itemActive" name="visible" value="true" checked/> Active</label>
+              <button type="submit" class="item-save-btn">Add / Update Item</button>
+            </div>
+          </aside>
+        </form>
+        <div class="mock-table-wrap"><table><thead><tr><th>Image</th><th>SKU</th><th>Name</th><th>Size</th><th>Print Time</th><th>Grams</th><th>Colors</th><th>Description</th><th>Dimensions</th><th>Price</th><th>Qty</th><th>Active</th><th>Actions</th></tr></thead><tbody id="adminItemsTable"></tbody></table></div>
+      </details>
+    </section>
+
+    <details id="backup" class="mock-card mock-backup" open><summary><h2>Backup &amp; Restore</h2></summary><div class="backup-controls"><button id="downloadBackup">Download Backup (JSON)</button><label class="upload">Restore from JSON<input id="restoreFile" type="file" accept="application/json"/></label><button id="clearAll" class="danger">Clear All Data</button></div></details>
+  </section>
+</main>
+
+<div id="orderFilesModal" class="order-files-modal hidden" aria-hidden="true">
+  <div class="order-files-backdrop" data-close-order-files></div>
+  <div class="order-files-box">
+    <button type="button" class="order-files-close" data-close-order-files>×</button>
+    <h3 id="orderFilesModalTitle">Order Files</h3>
+    <div id="orderFilesModalBody" class="order-file-preview-list"></div>
+  </div>
+</div>
+
+
+<div id="orderFileConfirmModal" class="order-files-modal hidden" aria-hidden="true">
+  <div class="order-files-backdrop" data-order-confirm-cancel></div>
+  <div class="order-files-box">
+    <button type="button" class="order-files-close" data-order-confirm-cancel>×</button>
+    <h3 id="orderFileConfirmTitle">Confirm</h3>
+    <div id="orderFileConfirmBody"></div>
+    <div id="orderFileConfirmActions" class="order-confirm-actions"></div>
+  </div>
+</div>
+
+<footer class="site-footer">★ CajunVeteran Workshop • 3D Print Admin • Built With Pride ★</footer>
+<script src="script.js?v=close27"></script>
+<script>document.addEventListener('DOMContentLoaded',()=>{ setupAdmin(); });</script>
+
+<script id="adminOrderFilesScript">
+(function(){
+  if(window.__adminOrderFilesLoaded) return;
+  window.__adminOrderFilesLoaded=true;
+  window.__currentOrderFiles=[];
+  function esc(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+  function label(f){return (f&&(f.name||f.storedName||fileName(f)))||'Order file'}
+  function fileName(f){if(!f)return'';if(f.storedName)return String(f.storedName).split('/').pop();if(f.url){try{return decodeURIComponent(String(f.url).split('?')[0].split('#')[0].split('/').pop()||'')}catch(e){return String(f.url).split('/').pop()||''}}return f.name||''}
+  function ext(f){return String(label(f)).split('.').pop().toLowerCase()}
+  function icon(f){const e=ext(f);if(e==='pdf')return '📄';if(['doc','docx'].includes(e))return '📝';if(['xls','xlsx','csv'].includes(e))return '📊';if(['png','jpg','jpeg','webp','gif','svg'].includes(e))return '🖼️';if(e==='zip')return '🗜️';return '📎'}
+  function isImage(f){return ['png','jpg','jpeg','webp','gif','svg'].includes(ext(f)) || String(f?.type||'').startsWith('image/');}
+  async function post(url,payload){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload||{})});let j={};try{j=await r.json()}catch(e){}if(!r.ok||j.ok===false)throw new Error(j.error||('Request failed: '+r.status));return j}
+  async function uploadOrderFiles(orderId){const input=document.getElementById('orderInfoFiles');if(!input||!input.files||!input.files.length)return[];const fd=new FormData();Array.from(input.files).forEach(file=>fd.append('files',file));fd.append('orderId',orderId||'order');const res=await fetch('/api/upload-job-file',{method:'POST',body:fd});let data={};try{data=await res.json()}catch(e){}if(!res.ok||data.ok===false)throw new Error(data.error||'Order file upload failed. Make sure the updated server.js is copied over and restarted.');return Array.isArray(data.files)?data.files:[]}
+  function renderOrderFileEditor(files){window.__currentOrderFiles=Array.isArray(files)?files.slice():[];const list=document.getElementById('orderFilesList');if(!list)return;list.innerHTML='';if(!window.__currentOrderFiles.length){list.innerHTML='<span class="order-file-empty">No order files uploaded yet.</span>';return;}window.__currentOrderFiles.forEach((f,idx)=>{const row=document.createElement('div');row.className='order-file-row';row.innerHTML=`<a href="${f.url}" target="_blank" ${isImage(f)?'':'download'}>${icon(f)} ${esc(label(f))}</a><button type="button" data-remove-order-file="${idx}">Remove</button>`;list.appendChild(row)});}
+  function orderFileIconHtml(order){const c=Array.isArray(order?.files)?order.files.length:0;return `<button type="button" class="order-file-icon ${c?'has-files':'empty'}" data-order-files-view="${order.orderId}" title="${c?c+' file(s) attached':'No files attached'}">📁${c?`<span>${c}</span>`:''}</button>`}
+  function openOrderFiles(order){const modal=document.getElementById('orderFilesModal'),title=document.getElementById('orderFilesModalTitle'),body=document.getElementById('orderFilesModalBody');if(!modal||!title||!body)return;const files=Array.isArray(order?.files)?order.files:[];title.textContent='Order Files - '+(order?.orderId||'Order');if(!files.length){body.innerHTML='<p class="order-file-empty">No order files attached.</p>';}else{body.innerHTML=files.map(f=>{const name=esc(label(f));if(isImage(f)){return `<div class="order-file-preview-card"><a href="${f.url}" target="_blank">${icon(f)} ${name}</a><img class="order-image-preview" src="${f.url}" alt="${name}"></div>`}return `<div class="order-file-preview-card"><a href="${f.url}" target="_blank" download>${icon(f)} ${name}</a></div>`}).join('')}modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false')}
+  function closeOrderFiles(){const modal=document.getElementById('orderFilesModal');if(modal){modal.classList.add('hidden');modal.setAttribute('aria-hidden','true')}}
+
+  function orderConfirm(title,html,buttons){return new Promise(resolve=>{const modal=document.getElementById('orderFileConfirmModal'),t=document.getElementById('orderFileConfirmTitle'),b=document.getElementById('orderFileConfirmBody'),a=document.getElementById('orderFileConfirmActions');if(!modal||!t||!b||!a){resolve(null);return;}t.textContent=title||'Confirm';b.innerHTML=html||'';a.innerHTML='';let done=false;function close(v){if(done)return;done=true;modal.classList.add('hidden');modal.setAttribute('aria-hidden','true');document.removeEventListener('keydown',key,true);resolve(v)}function key(e){if(e.key==='Escape')close(null)}(buttons||[]).forEach(x=>{const btn=document.createElement('button');btn.type='button';btn.className=x.className||'';btn.textContent=x.label;btn.onclick=()=>close(x.value);a.appendChild(btn)});modal.querySelectorAll('[data-order-confirm-cancel]').forEach(x=>x.onclick=()=>close(null));document.addEventListener('keydown',key,true);modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false')})}
+
+  function wrapOrderRow(){if(typeof window.adminOrderRowHtml==='function'&&!window.adminOrderRowHtml.__filesWrapped){const old=window.adminOrderRowHtml;window.adminOrderRowHtml=function(o,s){let html=old(o,s);if(html.includes('data-order-files-view'))return html;return html.replace('<td class="action-cell">', `<td>${orderFileIconHtml(o)}</td><td class="action-cell">`)};window.adminOrderRowHtml.__filesWrapped=true;}}
+  function wrapEdit(){if(typeof window.onEditOrder==='function'&&!window.onEditOrder.__filesWrapped){const old=window.onEditOrder;window.onEditOrder=function(e){const r=old.apply(this,arguments);setTimeout(()=>{const id=String(e.target.dataset.id||'');const s=loadStore();const o=(s.orders||[]).find(x=>String(x.orderId)===id);renderOrderFileEditor(o?.files||[]);},0);return r};window.onEditOrder.__filesWrapped=true;}}
+  function wrapRender(){if(typeof window.renderAdminTables==='function'&&!window.renderAdminTables.__filesWrapped){const old=window.renderAdminTables;window.renderAdminTables=function(){wrapOrderRow();const r=old.apply(this,arguments);document.querySelectorAll('table.adminOrdersTable thead tr').forEach(tr=>{if(!tr.querySelector('[data-files-th]')){const th=document.createElement('th');th.textContent='Files';th.setAttribute('data-files-th','1');const actions=Array.from(tr.children).find(x=>x.textContent.trim()==='Actions');if(actions)tr.insertBefore(th,actions);}});return r};window.renderAdminTables.__filesWrapped=true;}}
+  async function saveOrderFilesSubmit(e){const of=document.getElementById('orderForm');if(!of||e.target!==of)return;e.preventDefault();e.stopImmediatePropagation();const fd=new FormData(of);const orderId=(fd.get('orderId')||'').toString().trim()||nextOrderId();let uploaded=[];try{uploaded=await uploadOrderFiles(orderId)}catch(err){alert(err.message);return;}const wrap=of.querySelector('.order-lines');const lines=Array.from(wrap.querySelectorAll('.order-line')).map(d=>{const sku=d.querySelector('.orderItemSelect')?.value||'';const qty=Number(d.querySelector('.orderQtyInput')?.value||1)||1;const colors=Array.from(d.querySelector('.orderLineColorsSelect')?.selectedOptions||[]).map(o=>o.value);return {sku,qty,colors};}).filter(l=>l.sku);const store=loadStore();const idx=(store.orders||[]).findIndex(o=>String(o.orderId)===String(orderId));const old=idx>=0?store.orders[idx]:{};const order={orderId,customer:(fd.get('customer')||'').toString().trim(),lines,orderDate:fd.get('orderDate')||'',dueDate:fd.get('dueDate')||'',status:fd.get('status')||'new',priority:Number(fd.get('priority')||3),discountType:(fd.get('discountType')||'none').toString(),discountValue:Number(fd.get('discountValue')||0),surchargeType:(fd.get('surchargeType')||'none').toString(),surchargeValue:Number(fd.get('surchargeValue')||0),notes:(fd.get('notes')||'').toString().trim(),paid:document.getElementById('paidChk')?.checked||false,files:[...window.__currentOrderFiles,...uploaded]};if(idx>=0)store.orders[idx]=order;else store.orders.push(order);saveStore(store);of.reset();window.__currentOrderFiles=[];renderOrderFileEditor([]);const input=document.getElementById('orderInfoFiles');if(input)input.value='';if(wrap){wrap.innerHTML='';window._cvAddOrderLine?.();}renderAdminTables?.();renderOrdersPublic?.();suggestNextOrderId?.();}
+  document.addEventListener('click',async function(e){const view=e.target.closest('[data-order-files-view]');if(view){e.preventDefault();e.stopImmediatePropagation();const s=loadStore();const o=(s.orders||[]).find(x=>String(x.orderId)===String(view.dataset.orderFilesView));openOrderFiles(o);return;}if(e.target.closest('[data-close-order-files]')){e.preventDefault();closeOrderFiles();return;}const rem=e.target.closest('[data-remove-order-file]');if(rem){e.preventDefault();e.stopImmediatePropagation();const idx=Number(rem.dataset.removeOrderFile);const f=window.__currentOrderFiles[idx];if(!f)return;const choice=await orderConfirm('Remove Order File','<p>What would you like to do with this order file?</p><p class="order-confirm-file">'+esc(label(f))+'</p><p class="order-confirm-muted">Removing from order only keeps the physical file in the JobFiles folder. Removing and deleting attempts to delete the physical file if it is not used elsewhere.</p>',[{label:'Remove From Order Only',value:'remove',className:'primary'},{label:'Remove + Delete File',value:'delete',className:'danger'},{label:'Cancel',value:null,className:'cancel'}]);if(!choice)return;if(choice==='delete'){try{const orders=(loadStore().orders||[]);await post('/api/job-files/delete-file',{file:f,jobs:orders,ignoreJobId:document.getElementById('orderId')?.value||''});}catch(err){await orderConfirm('File Not Deleted','<div class="order-confirm-warning">'+esc(err.message)+'</div><p>The file link will still be removed from this order.</p>',[{label:'OK',value:'ok',className:'primary'}]);}}window.__currentOrderFiles.splice(idx,1);renderOrderFileEditor(window.__currentOrderFiles);return;}},true);
+  document.addEventListener('submit',saveOrderFilesSubmit,true);
+  function init(){wrapOrderRow();wrapEdit();wrapRender();renderOrderFileEditor([]);try{renderAdminTables?.();}catch(e){}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,50));else setTimeout(init,50);
+})();
+</script>
+
+<script id="adminCleanEditingBehavior">
+(function(){
+  if(window.__adminCleanEditingBehaviorLoaded) return;
+  window.__adminCleanEditingBehaviorLoaded = true;
+  function openOrderForm(){
+    const card=document.getElementById('orderFormCard');
+    if(card && card.tagName && card.tagName.toLowerCase()==='details') card.open=true;
+  }
+  function closeOrderForm(){
+    const card=document.getElementById('orderFormCard');
+    if(card && card.tagName && card.tagName.toLowerCase()==='details') card.open=false;
+    document.getElementById('orders')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  document.addEventListener('click',function(e){
+    if(e.target.closest('[data-act="editOrder"]')) setTimeout(openOrderForm,20);
+  },true);
+  document.addEventListener('submit',function(e){
+    if(e.target && e.target.id==='orderForm') setTimeout(closeOrderForm,350);
+  },false);
+})();
+</script>
+
+</body>
+</html>

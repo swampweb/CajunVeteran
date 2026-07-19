@@ -1,0 +1,31 @@
+CajunVeteran Workshop PWA files
+
+Put these files in the same folder/root as your existing site files:
+
+- mobile.html
+- manifest.json
+- service-worker.js
+- apple-touch-icon.png
+- icon-192.png
+- icon-512.png
+
+Recommended iPhone setup:
+1. Open mobile.html through the hosted site URL in Safari.
+2. Tap Share.
+3. Tap Add to Home Screen.
+4. Name it CajunVeteran Workshop or Workshop.
+5. Tap Add.
+
+Important:
+- This works best when the files are served from a normal web address using HTTPS or localhost.
+- Opening directly as a file:// path will not behave like a full PWA.
+- OneDrive synced folders are fine for editing files, but the phone still needs a stable web URL to open the site.
+
+Mobile view focus:
+- New jobs
+- In Progress jobs
+- Complete jobs
+- Status updates
+- Paid toggle
+- Notes
+- Files and image previews

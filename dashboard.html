@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CajunVeteran Workshop Management — Dashboard</title>
+  <link rel="stylesheet" href="styles.css?v=dashboard1" />
+  <style>
+    body.dashboard-page{margin:0;background:#06111e;color:#f4f7fb;font:15px/1.45 "Segoe UI",Roboto,Arial,sans-serif;overflow-x:hidden}.dash-topbar{height:104px;background:linear-gradient(90deg,#06111e,#0b2136 55%,#06111e);border-bottom:2px solid var(--accent,#f0b429);display:flex;align-items:center;justify-content:space-between;padding:8px 24px;position:sticky;top:0;z-index:50;box-shadow:0 10px 28px rgba(0,0,0,.35)}.dash-brand{display:flex;align-items:center;gap:14px}.dash-logo{height:86px;width:auto;border-radius:8px;object-fit:contain}.dash-name{font-size:34px;line-height:.95;font-weight:900;color:#f0b429;text-shadow:0 2px 0 rgba(0,0,0,.45)}.dash-sub{font-size:19px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#f8ead0}.dash-title{border-left:2px solid #ef4444;margin-left:12px;padding-left:18px;display:flex;flex-direction:column}.dash-title strong{font-size:22px;color:#f0b429}.dash-title span{font-size:14px;color:#dce8f6}.dash-topnav{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:flex-end}.dash-topnav a{color:#e8eef7;text-decoration:none;font-size:16px}.dash-topnav a.active{color:#f0b429}.dash-shell{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;padding:18px 14px 20px}.dash-main{min-width:0}.view-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid rgba(240,180,41,.45);background:rgba(240,180,41,.08);border-radius:10px;padding:12px 16px;margin-bottom:14px}.view-banner strong{color:#f0b429;text-transform:uppercase;letter-spacing:.05em}.view-banner span{color:#cbd5e1;font-size:13px}.dash-heading{margin:0 0 14px}.dash-heading h1{margin:0;color:#f0b429;font-size:34px;letter-spacing:.01em}.dash-heading p{margin:4px 0 0;color:#b0bfd2}.dash-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:14px}.dash-kpi{min-height:140px;padding:18px 20px;border-radius:8px;background:linear-gradient(135deg,#0c243a,#081b2e);border:1px solid #31587d;box-shadow:0 10px 24px rgba(0,0,0,.22);display:flex;gap:16px;align-items:center}.dash-kpi-icon{font-size:38px;line-height:1;width:54px;height:54px;min-width:54px;display:flex;align-items:center;justify-content:center;border-radius:14px;background:rgba(240,180,41,.12);border:1px solid rgba(240,180,41,.32)}.dash-kpi b{text-transform:uppercase;font-size:15px}.dash-kpi span{display:block;color:#b0bfd2;font-size:13px}.dash-kpi strong{display:block;font-size:34px;line-height:1.05;margin:6px 0}.dash-kpi em{font-style:normal;color:#f0b429;font-weight:800;font-size:13px}.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.dash-card{background:linear-gradient(180deg,#092037,#07192c);border:1px solid #31587d;border-radius:8px;box-shadow:0 10px 24px rgba(0,0,0,.22);overflow:visible}.dash-card.full{grid-column:1/-1}.dash-card h2{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0;color:#f0b429;text-transform:uppercase;letter-spacing:.03em;font-size:20px;padding:13px 16px;border-bottom:1px solid rgba(86,142,198,.35)}.dash-card h2 span{font-size:12px;color:#9fb0c4;text-transform:none;letter-spacing:0}.dash-body{padding:14px}.dash-table-wrap{overflow:auto;background:#07182a;border:1px solid rgba(86,142,198,.35);border-radius:8px}.dash-table{width:100%;border-collapse:collapse;table-layout:auto}.dash-table th,.dash-table td{padding:9px 10px;border-bottom:1px solid rgba(86,142,198,.25);vertical-align:middle;white-space:nowrap}.dash-table th{background:#071321;color:#eaf2ff;font-weight:900;font-size:12px}.dash-table tr:hover td{background:rgba(240,180,41,.055)}.money{text-align:right;font-variant-numeric:tabular-nums}.status-chip{display:inline-flex;align-items:center;justify-content:center;min-width:80px;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:900}.st-new{background:#1d4f8f;color:#dbeafe}.st-in_progress,.st-approved,.st-quote{background:#9a5c14;color:#ffe8b3}.st-completed{background:#08704f;color:#d7fff1}.st-shipped,.st-delivered{background:#59677a;color:#fff}.paid{color:#6ee7b7;font-weight:900}.unpaid{color:#ffd36a;font-weight:900}.dash-action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.dash-action-row a,.dash-action-row button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:9px 14px;border-radius:7px;border:1px solid #f0b429;background:rgba(240,180,41,.10);color:#ffd36a;text-decoration:none;font-weight:900;cursor:pointer}.dash-action-row a.primary{background:linear-gradient(135deg,#f0b429,#e5a91f);color:#071321;border:0}.filter-row{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}.filter-row label{display:flex;flex-direction:column;gap:5px;color:#dce8f6;font-size:13px;font-weight:700}.multi-filter{position:relative;min-width:230px}.mf-button{width:100%;min-height:38px;border:1px solid #3b5f83;background:#10283f;color:#f4f7fb;border-radius:6px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;text-align:left;cursor:pointer}.mf-button:hover{border-color:#f0b429}.mf-menu{position:absolute;z-index:200;top:calc(100% + 5px);left:0;right:0;max-height:260px;overflow:auto;padding:6px;border:1px solid #3b5f83;border-radius:8px;background:#07182a;box-shadow:0 12px 28px rgba(0,0,0,.42)}.mf-menu.hidden{display:none}.mf-option{display:flex;align-items:center;gap:8px;padding:8px;border-radius:6px;cursor:pointer;font-size:13px}.mf-option:hover{background:rgba(240,180,41,.12)}.mf-option input{width:16px;height:16px;accent-color:#10b981}.mf-summary{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#eaf2ff}.mf-caret{color:#f0b429}.small-card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.mini-list{display:flex;flex-direction:column;gap:8px}.mini-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border:1px solid rgba(86,142,198,.25);background:rgba(255,255,255,.035);border-radius:8px;padding:8px 10px}.mini-row strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mini-row span{color:#9fb0c4;font-size:12px}.alert-text{color:#ff9b9b;font-weight:900}.ok-text{color:#6ee7b7;font-weight:900}.empty{padding:16px;color:#9fb0c4;text-align:center;border:1px dashed rgba(86,142,198,.5);border-radius:8px;background:rgba(8,22,36,.75)}@media(max-width:1250px){.dash-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.dash-grid{grid-template-columns:1fr}.small-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:1000px){.dash-topbar{height:auto;align-items:flex-start;flex-direction:column}.dash-shell{grid-template-columns:1fr}.mock-sidebar{position:static!important;height:auto!important;display:flex!important;flex-direction:row!important;flex-wrap:wrap!important}.shared-sidebar-motto{display:none}}@media(max-width:700px){.dash-kpis,.small-card-grid{grid-template-columns:1fr}.dash-logo{height:64px}.dash-name{font-size:26px}.filter-row{align-items:stretch}.multi-filter{width:100%}}
+  
+/* =========================================================
+   Dashboard Status Filter Chips v2
+   Cleaner dashboard-style status filters, replacing dropdown UI.
+   ========================================================= */
+.filter-row{align-items:center!important;margin-bottom:12px!important}.status-filter-wrap{display:flex;flex-direction:column;gap:7px;width:100%}.status-filter-label{color:#dce8f6;font-size:13px;font-weight:800;letter-spacing:.02em}.status-chip-filter-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.status-filter-chip{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 12px;border-radius:999px;border:1px solid rgba(86,142,198,.55);background:#10283f;color:#dce8f6;font-weight:900;font-size:12px;cursor:pointer;transition:background .12s ease,border-color .12s ease,color .12s ease,transform .12s ease}.status-filter-chip:hover{border-color:#f0b429;color:#ffd36a;transform:translateY(-1px)}.status-filter-chip.active{border-color:rgba(240,180,41,.75);background:linear-gradient(135deg,rgba(240,180,41,.24),rgba(201,130,50,.18));color:#ffd36a;box-shadow:0 0 0 1px rgba(240,180,41,.08) inset}.status-filter-chip.all-chip{border-color:rgba(148,163,184,.45);background:rgba(148,163,184,.10)}.status-filter-chip.all-chip.active{border-color:#f0b429;background:linear-gradient(135deg,#f0b429,#e5a91f);color:#071321}.status-filter-chip .check{font-size:12px;line-height:1;opacity:.95}.filter-summary-text{color:#9fb0c4;font-size:12px;margin-top:1px}@media(max-width:700px){.status-filter-chip{flex:1 1 auto}.status-chip-filter-row{gap:7px}}
+
+  .view-banner{margin-bottom:14px!important}.dash-kpis{margin-top:0!important}
+  
+/* =========================================================
+   Dashboard Header Close Button v3
+   Removes top-right nav and restores red close-site button.
+   ========================================================= */
+.dash-topbar{gap:16px!important}.dash-top-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-left:auto}.dashboard-close-site{width:42px;height:42px;min-width:42px;border-radius:10px;border:1px solid rgba(239,68,68,.75);background:rgba(239,68,68,.18);color:#fff;font-size:24px;font-weight:900;line-height:1;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(239,68,68,.16);transition:background .12s ease,border-color .12s ease,transform .12s ease}.dashboard-close-site:hover{background:#ef4444;border-color:#ff7b7b;transform:translateY(-1px)}.dashboard-close-message-mode .dash-topbar,.dashboard-close-message-mode .dash-shell,.dashboard-close-message-mode .site-footer{filter:blur(2px);opacity:.35}.dashboard-close-message{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99999;max-width:520px;width:calc(100% - 32px);background:#07182a;border:1px solid #3b5f83;border-radius:14px;padding:22px;box-shadow:0 18px 48px rgba(0,0,0,.55);color:#eaf2ff;text-align:center}.dashboard-close-message h2{margin:0 0 8px;color:#f0b429}.dashboard-close-message code{color:#f0b429}.dashboard-page .dash-shell{padding-top:18px!important}@media(max-width:700px){.dash-top-actions{width:100%;justify-content:flex-start}.dashboard-close-site{width:40px;height:40px;min-width:40px}}
+
+  </style>
+</head>
+<body class="dashboard-page admin-mockup-v4">
+<header class="dash-topbar">
+  <div class="dash-brand">
+    <img class="dash-logo" src="CajunVeteran 3D Print Logo.png" alt="CajunVeteran Workshop" onerror="this.style.display='none'" />
+    <div><div class="dash-name">CajunVeteran Workshop</div><div class="dash-sub">Workshop Management</div></div>
+    <div class="dash-title"><strong>DASHBOARD</strong><span>View orders, jobs, inventory, and activity</span></div>
+  </div>
+  <div class="dash-top-actions"><button type="button" id="dashboardCloseSiteBtn" class="dashboard-close-site" title="Close site and stop local server">✕</button></div>
+</header>
+<main class="dash-shell">
+  <aside id="sharedSidebar" class="mock-sidebar" data-nav-style="admin" data-shared-sidebar></aside>
+  <section class="dash-main">
+<span id="dashUpdated">Updated: --</span></div>
+    <section class="dash-kpis">
+      <div class="dash-kpi"><div class="dash-kpi-icon">🖨️</div><div><b>Open 3D Print Orders</b><span>Filtered open order count</span><strong id="kpiPrintOpen">0</strong><em id="kpiPrintOpenValue">$0.00 open value</em></div></div>
+      <div class="dash-kpi"><div class="dash-kpi-icon">🪵</div><div><b>Open Woodworking Jobs</b><span>Filtered active job count</span><strong id="kpiWoodOpen">0</strong><em id="kpiWoodOpenValue">$0.00 open value</em></div></div>
+      <div class="dash-kpi"><div class="dash-kpi-icon">💵</div><div><b>Total Revenue</b><span>3D + Woodworking</span><strong id="kpiRevenue">$0.00</strong><em id="kpiRevenueDetail">All records</em></div></div>
+      <div class="dash-kpi"><div class="dash-kpi-icon">⚠️</div><div><b>Inventory Alerts</b><span>Low items + materials</span><strong id="kpiAlerts">0</strong><em id="kpiAlertsDetail">Needs review</em></div></div>
+    </section>
+
+    <section class="dash-grid">
+      <section class="dash-card">
+        <h2>Recent 3D Print Orders <span id="orderFilterBadge">All statuses</span></h2>
+        <div class="dash-body">
+          <div class="filter-row">
+            <div class="status-filter-wrap">
+              <div class="status-filter-label">Order Status Filter</div>
+              <div id="orderStatusFilter" class="status-chip-filter-row"></div>
+              <div class="filter-summary-text" id="orderFilterSummary">Showing all order statuses</div>
+            </div>
+          </div>
+          <div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>Order #</th><th>Customer</th><th>Status</th><th>Due</th><th>Total</th><th>Paid</th></tr></thead><tbody id="ordersDashTable"></tbody></table></div>
+          <div class="dash-action-row"><a class="primary" href="admin.html#orders">View / Edit Orders →</a><a href="reports.html">Open Reports</a></div>
+        </div>
+      </section>
+      <section class="dash-card">
+        <h2>Recent Woodworking Jobs <span id="jobFilterBadge">All statuses</span></h2>
+        <div class="dash-body">
+          <div class="filter-row">
+            <div class="status-filter-wrap">
+              <div class="status-filter-label">Job Status Filter</div>
+              <div id="jobStatusFilter" class="status-chip-filter-row"></div>
+              <div class="filter-summary-text" id="jobFilterSummary">Showing all job statuses</div>
+            </div>
+          </div>
+          <div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>Job #</th><th>Customer</th><th>Project</th><th>Status</th><th>Due</th><th>Total</th><th>Paid</th></tr></thead><tbody id="jobsDashTable"></tbody></table></div>
+          <div class="dash-action-row"><a class="primary" href="woodworking.html#jobs">View / Edit Jobs →</a><a href="reports.html">Open Reports</a></div>
+        </div>
+      </section>
+      <section class="dash-card full">
+        <h2>Workshop Snapshot <span>Inventory, due dates, and files</span></h2>
+        <div class="dash-body small-card-grid">
+          <section><h3 style="color:#f0b429;margin:0 0 8px">Low 3D Inventory</h3><div class="mini-list" id="lowPrintInventory"></div></section>
+          <section><h3 style="color:#f0b429;margin:0 0 8px">Low Material Inventory</h3><div class="mini-list" id="lowMaterialInventory"></div></section>
+          <section><h3 style="color:#f0b429;margin:0 0 8px">Upcoming Due Dates</h3><div class="mini-list" id="dueDatesList"></div></section>
+          <section><h3 style="color:#f0b429;margin:0 0 8px">Attached Files</h3><div class="mini-list" id="fileActivityList"></div></section>
+        </div>
+      </section>
+    </section>
+  </section>
+</main>
+<footer class="site-footer">★ CajunVeteran Workshop Management • Unified Dashboard ★</footer>
+<script src="script.js?v=close27"></script>
+<script src="sidebar.js?v=clean1"></script>
+<script>
+(function(){
+  const PRINT_KEY='inventory_orders_store_v9', JOB_KEY='cv_woodworking_jobs_v1', MAT_KEY='cv_woodworking_material_inventory_v1';
+  const money=n=>'$'+(Number(n||0)||0).toFixed(2); const num=n=>Number(n||0)||0;
+  const esc=v=>String(v||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const load=(key,fb)=>{try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fb))}catch{return fb}};
+  function store(){return typeof loadStore==='function'?loadStore():load(PRINT_KEY,{items:[],orders:[],colors:[]})}
+  function orderTotal(s,o){return typeof orderFinalTotal==='function'?orderFinalTotal(s,o):0}
+  function statusLabel(s){return {new:'New',in_progress:'In Process',completed:'Completed',ready:'Completed',shipped:'Shipped',quote:'Quote',approved:'Approved',delivered:'Delivered'}[s]||s||''}
+  function statusClass(s){return 'status-chip st-'+String(s||'new').replace('_','-')}
+  function fmtDate(s){if(!s)return'';if(/^\d{4}-\d{2}-\d{2}$/.test(s)){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString()}try{return new Date(s).toLocaleDateString()}catch{return s}}
+  function isOpenOrder(o){return !['completed','ready','shipped'].includes(String(o.status||'new'))}
+  function isOpenJob(j){return !['completed','delivered'].includes(String(j.status||'quote'))}
+  function makeStatusChips(containerId, options, onChange){
+    const el=document.getElementById(containerId); if(!el) return;
+    const summary=document.getElementById(containerId==='orderStatusFilter'?'orderFilterSummary':'jobFilterSummary');
+    const state={values:['all']};
+    function selectedLabels(){return state.values.includes('all')?['All']:state.values.map(v=>options.find(o=>o.value===v)?.label||v)}
+    function updateSummary(){
+      if(summary){
+        if(state.values.includes('all')) summary.textContent = containerId==='orderStatusFilter' ? 'Showing all order statuses' : 'Showing all job statuses';
+        else summary.textContent = 'Showing: '+selectedLabels().join(', ');
+      }
+    }
+    function render(){
+      el.innerHTML = options.map(o=>{
+        const active=state.values.includes(o.value);
+        const cls='status-filter-chip '+(o.value==='all'?'all-chip ':'')+(active?'active':'');
+        const check=active?'<span class="check">✓</span>':'';
+        return `<button type="button" class="${cls}" data-status-value="${o.value}">${check}<span>${o.label}</span></button>`;
+      }).join('');
+      updateSummary();
+    }
+    el.addEventListener('click',function(e){
+      const btn=e.target.closest('[data-status-value]'); if(!btn) return;
+      const v=btn.getAttribute('data-status-value');
+      if(v==='all') state.values=['all'];
+      else{
+        state.values=state.values.filter(x=>x!=='all');
+        if(state.values.includes(v)) state.values=state.values.filter(x=>x!==v);
+        else state.values.push(v);
+        if(state.values.length===0) state.values=['all'];
+      }
+      render(); onChange(state.values.slice());
+    });
+    el.getValues=()=>state.values.slice();
+    render();
+  }
+  function selectedStatuses(id){return document.getElementById(id)?.getValues?.()||['all']}
+  function statusMatches(status, vals){return vals.includes('all')||vals.includes(status)}
+  function emptyRow(cols,msg){return `<tr><td colspan="${cols}" class="empty">${msg}</td></tr>`}
+  function miniEmpty(msg){return `<div class="empty">${msg}</div>`}
+  function renderMini(id, rows){document.getElementById(id).innerHTML=rows.length?rows.join(''):miniEmpty('No records found.')}
+  function build(){
+    const s=store(), orders=Array.isArray(s.orders)?s.orders:[], jobs=load(JOB_KEY,[]), mats=load(MAT_KEY,[]), items=Array.isArray(s.items)?s.items:[];
+    const orderStatuses=selectedStatuses('orderStatusFilter'), jobStatuses=selectedStatuses('jobStatusFilter');
+    const fo=orders.filter(o=>statusMatches(o.status||'new',orderStatuses));
+    const fj=jobs.filter(j=>statusMatches(j.status||'quote',jobStatuses));
+    const openOrders=fo.filter(isOpenOrder), openJobs=fj.filter(isOpenJob);
+    const revenue=fo.reduce((a,o)=>a+orderTotal(s,o),0)+fj.reduce((a,j)=>a+num(j.total),0);
+    const lowItems=items.filter(i=>num(i.qty)<=0 || i.visible===false), lowMats=mats.filter(m=>num(m.onHand)<=0);
+    document.getElementById('kpiPrintOpen').textContent=openOrders.length; document.getElementById('kpiPrintOpenValue').textContent=money(openOrders.reduce((a,o)=>a+orderTotal(s,o),0))+' open value';
+    document.getElementById('kpiWoodOpen').textContent=openJobs.length; document.getElementById('kpiWoodOpenValue').textContent=money(openJobs.reduce((a,j)=>a+num(j.total),0))+' open value';
+    document.getElementById('kpiRevenue').textContent=money(revenue); document.getElementById('kpiRevenueDetail').textContent='Filtered dashboard view';
+    document.getElementById('kpiAlerts').textContent=lowItems.length+lowMats.length; document.getElementById('kpiAlertsDetail').textContent=`${lowItems.length} 3D item(s) • ${lowMats.length} material(s)`;
+    document.getElementById('orderFilterBadge').textContent=orderStatuses.includes('all')?'All statuses':orderStatuses.map(statusLabel).join(', ');
+    document.getElementById('jobFilterBadge').textContent=jobStatuses.includes('all')?'All statuses':jobStatuses.map(statusLabel).join(', ');
+    const orderRows=fo.slice().sort((a,b)=>String(b.dueDate||b.orderDate||'').localeCompare(String(a.dueDate||a.orderDate||''))).slice(0,8).map(o=>`<tr><td><strong>${esc(o.orderId)}</strong></td><td>${esc(o.customer)}</td><td><span class="${statusClass(o.status)}">${statusLabel(o.status)}</span></td><td>${fmtDate(o.dueDate)}</td><td class="money">${money(orderTotal(s,o))}</td><td>${o.paid?'<span class="paid">Paid</span>':'<span class="unpaid">Unpaid</span>'}</td></tr>`);
+    document.getElementById('ordersDashTable').innerHTML=orderRows.length?orderRows.join(''):emptyRow(6,'No orders match the selected status filter.');
+    const jobRows=fj.slice().sort((a,b)=>String(b.dueDate||'').localeCompare(String(a.dueDate||''))).slice(0,8).map(j=>`<tr><td><strong>${esc(j.jobId)}</strong></td><td>${esc(j.customer)}</td><td>${esc(j.project)}</td><td><span class="${statusClass(j.status)}">${statusLabel(j.status)}</span></td><td>${fmtDate(j.dueDate)}</td><td class="money">${money(j.total)}</td><td>${j.paid?'<span class="paid">Paid</span>':'<span class="unpaid">Unpaid</span>'}</td></tr>`);
+    document.getElementById('jobsDashTable').innerHTML=jobRows.length?jobRows.join(''):emptyRow(7,'No jobs match the selected status filter.');
+    renderMini('lowPrintInventory', lowItems.slice(0,6).map(i=>`<div class="mini-row"><div><strong>${esc(i.name||i.sku)}</strong><br><span>${esc(i.sku)} • Qty ${num(i.qty)}</span></div><div class="alert-text">${i.visible===false?'Inactive':'Low'}</div></div>`));
+    renderMini('lowMaterialInventory', lowMats.slice(0,6).map(m=>`<div class="mini-row"><div><strong>${esc(m.name)}</strong><br><span>On hand ${num(m.onHand)}</span></div><div class="alert-text">Low</div></div>`));
+    const due=[...orders.map(o=>({type:'3D Order',id:o.orderId,date:o.dueDate,title:o.customer,status:o.status})),...jobs.map(j=>({type:'Wood Job',id:j.jobId,date:j.dueDate,title:j.project,status:j.status}))].filter(x=>x.date).sort((a,b)=>String(a.date).localeCompare(String(b.date))).slice(0,7);
+    renderMini('dueDatesList', due.map(d=>`<div class="mini-row"><div><strong>${esc(d.id)} • ${esc(d.title)}</strong><br><span>${d.type} • ${fmtDate(d.date)}</span></div><div class="ok-text">${statusLabel(d.status)}</div></div>`));
+    const files=[]; orders.forEach(o=>(o.files||[]).forEach(f=>files.push({name:f.name||f.storedName||'Order file',type:'Order',owner:o.orderId}))); jobs.forEach(j=>(j.files||[]).forEach(f=>files.push({name:f.name||f.storedName||'Job file',type:'Job',owner:j.jobId}))); 
+    renderMini('fileActivityList', files.slice(-7).reverse().map(f=>`<div class="mini-row"><div><strong>${esc(f.name)}</strong><br><span>${f.type} • ${esc(f.owner)}</span></div><div class="ok-text">Attached</div></div>`));
+    document.getElementById('dashUpdated').textContent='Updated: '+new Date().toLocaleString();
+  }
+  document.addEventListener('DOMContentLoaded',()=>{
+    makeStatusChips('orderStatusFilter', [{value:'all',label:'All'},{value:'new',label:'New'},{value:'in_progress',label:'In Process'},{value:'completed',label:'Completed'},{value:'shipped',label:'Shipped / Delivered'}], build);
+    makeStatusChips('jobStatusFilter', [{value:'all',label:'All'},{value:'quote',label:'Quote'},{value:'approved',label:'Approved'},{value:'in_progress',label:'In Process'},{value:'completed',label:'Completed'},{value:'delivered',label:'Delivered'}], build);
+    setTimeout(build,250);
+  });
+  setTimeout(build,500);
+})();
+</script>
+
+<script id="dashboardCloseSiteScript">
+(function(){
+  if(window.__dashboardCloseSiteLoaded) return;
+  window.__dashboardCloseSiteLoaded = true;
+  async function tryShutdownServer(){
+    const urls=['/api/shutdown','/shutdown'];
+    for(const url of urls){
+      try{ await fetch(url,{method:'POST',keepalive:true,cache:'no-store'}); return true; }catch(e){}
+    }
+    return false;
+  }
+  async function closeDashboardSite(){
+    const ok=confirm('Close the Dashboard tab and stop the local site server if shutdown is enabled?');
+    if(!ok) return;
+    tryShutdownServer();
+    setTimeout(function(){
+      try{ window.open('','_self'); }catch(e){}
+      try{ window.close(); }catch(e){}
+      setTimeout(function(){
+        if(!window.closed){
+          document.body.classList.add('dashboard-close-message-mode');
+          const msg=document.createElement('div');
+          msg.className='dashboard-close-message';
+          msg.innerHTML='<h2>Site close requested</h2><p>If this tab did not close automatically, close this browser tab manually.</p><p>If the command window is still open, the local server needs a shutdown route in <code>server.js</code>.</p>';
+          document.body.appendChild(msg);
+        }
+      },400);
+    },350);
+  }
+  document.addEventListener('click',function(e){
+    const btn=e.target.closest('#dashboardCloseSiteBtn');
+    if(btn){ e.preventDefault(); closeDashboardSite(); }
+  });
+})();
+</script>
+
+</body>
+</html>

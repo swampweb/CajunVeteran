@@ -1,0 +1,1890 @@
+:root{--bg:#06111e;--panel:#0b2136;--panel2:#081a2c;--muted:#b0bfd2;--text:#f4f7fb;--accent:#f0b429;--danger:#ef4444;--ok:#10b981;--yellow:#f59e0b;--line:#31587d}*{box-sizing:border-box}html,body{margin:0}body.admin-mockup-v4{background:var(--bg);color:var(--text);font:15px/1.45 "Segoe UI",Roboto,Arial,sans-serif;overflow-x:hidden}.hidden{display:none!important}.muted{color:var(--muted)}.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12px}.badge.ok{background:rgba(16,185,129,.25);color:#65e7b7}.badge.warn{background:rgba(245,158,11,.25);color:#ffd36a}.badge.muted{background:rgba(148,163,184,.25);color:#d0d9e6}.mock-topbar{height:100px;background:linear-gradient(90deg,#06111e,#0b2136 55%,#06111e);border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;padding:8px 24px;position:sticky;top:0;z-index:50;box-shadow:0 10px 28px rgba(0,0,0,.35)}.mock-brand{display:flex;align-items:center;gap:14px}.mock-logo{height:86px;width:auto;border-radius:8px}.mock-name{font-size:34px;line-height:.95;font-weight:900;color:var(--accent);text-shadow:0 2px 0 rgba(0,0,0,.45)}.mock-sub{font-size:19px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#f8ead0}.mock-title{border-left:2px solid #ef4444;margin-left:12px;padding-left:18px;display:flex;flex-direction:column}.mock-title strong{font-size:23px;color:var(--accent)}.mock-title span{font-size:16px;color:#f5e7bd}.layout-badge{font-size:11px;border:1px solid rgba(240,180,41,.55);border-radius:999px;padding:2px 7px}.mock-topnav a{color:#e8eef7;text-decoration:none;margin-left:22px;font-size:16px}.mock-topnav a.active{color:var(--accent)}.mock-shell{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;padding:18px 14px 20px;max-width:100%;width:100%}.mock-sidebar{position:sticky;top:118px;height:calc(100vh - 140px);background:linear-gradient(180deg,rgba(5,15,28,.98),rgba(4,12,22,.98));border:1px solid rgba(86,142,198,.35);border-radius:10px;padding:14px;box-shadow:0 12px 30px rgba(0,0,0,.28);display:flex;flex-direction:column}.mock-nav{display:flex;align-items:center;gap:14px;color:#fff;text-decoration:none;padding:16px;margin-bottom:10px;border:1px solid transparent;border-bottom-color:rgba(100,140,180,.2);border-radius:8px;font-size:18px;font-weight:700}.mock-nav span{width:24px;text-align:center;color:var(--accent);font-size:22px}.mock-nav:hover,.mock-nav.active{color:var(--accent);background:rgba(240,180,41,.13);border-color:rgba(240,180,41,.45);border-left:5px solid #ef4444}.mock-motto{margin-top:auto;text-align:center;border-top:1px solid #2a415c;padding-top:18px;font-size:16px;line-height:1.35}.mock-motto div,.mock-motto strong{color:var(--accent)}.mock-main{min-width:0}.mock-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:14px}.mock-kpi{height:145px;padding:18px 20px;border-radius:8px;background:linear-gradient(135deg,#0c243a,#081b2e);border:1px solid var(--line);box-shadow:0 10px 24px rgba(0,0,0,.22);display:flex;gap:16px;align-items:center}.kpi-icon{font-size:46px;color:var(--accent);font-weight:900}.kpi-icon.ok{color:#6dd15f}.kpi-icon.red{color:#ef4444}.mock-kpi b{text-transform:uppercase;font-size:16px}.mock-kpi span{display:block;color:var(--muted);font-size:14px}.mock-kpi strong{display:block;font-size:42px;line-height:1.05;margin:6px 0}.mock-kpi em{font-style:normal;color:var(--accent);font-weight:800}.mock-kpi em.ok{color:#6ee7b7}.mock-kpi em.red{color:#ff6b6b}.mock-workspace{display:grid;grid-template-columns:minmax(0,1fr) 410px;gap:14px;align-items:start}.mock-card{background:linear-gradient(180deg,rgba(13,31,50,.98),rgba(8,22,36,.98));border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 24px rgba(0,0,0,.22);overflow:hidden}.mock-card h2,.mock-card summary h2{margin:0;color:var(--accent);text-transform:uppercase;letter-spacing:.03em;font-size:20px}.mock-orders-card>h2,.mock-order-form>h2{padding:13px 16px;border-bottom:1px solid rgba(86,142,198,.35)}.mock-orders-card>h2:before{content:'▣';margin-right:10px}.mock-order-form>h2:before{content:'✎';margin-right:10px}.mock-tabs input{display:none}.tab-labels{display:flex;gap:8px;padding:12px 14px;border-bottom:1px solid rgba(86,142,198,.35)}.tab-labels label{padding:10px 20px;border:1px solid rgba(86,142,198,.5);border-radius:10px;cursor:pointer;background:#07182a;font-weight:800}#tabActive:checked~.tab-labels label[for=tabActive],#tabCompleted:checked~.tab-labels label[for=tabCompleted],#tabShipped:checked~.tab-labels label[for=tabShipped]{background:linear-gradient(135deg,#b91c1c,#ef4444);border-color:#ff735f;color:#fff}.tab-panel{display:none}.active-panel{display:block}#tabCompleted:checked~.tab-panels .active-panel,#tabShipped:checked~.tab-panels .active-panel{display:none}#tabCompleted:checked~.tab-panels .completed-panel,#tabShipped:checked~.tab-panels .shipped-panel{display:block}.mock-table-wrap{overflow-x:hidden;background:#07182a}.mock-table-wrap table,.adminOrdersTable{width:100%;table-layout:fixed;border-collapse:collapse}.mock-table-wrap th,.mock-table-wrap td,.adminOrdersTable th,.adminOrdersTable td{padding:10px;border-bottom:1px solid rgba(86,142,198,.25);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;overflow-wrap:anywhere}.mock-table-wrap th,.adminOrdersTable th{background:#071321;color:#eaf2ff;font-weight:900}.adminOrdersTable th:nth-child(1),.adminOrdersTable td:nth-child(1){width:70px}.adminOrdersTable th:nth-child(2),.adminOrdersTable td:nth-child(2){width:95px}.adminOrdersTable th:nth-child(3),.adminOrdersTable td:nth-child(3){width:130px}.adminOrdersTable th:nth-child(4),.adminOrdersTable td:nth-child(4){width:125px}.adminOrdersTable th:nth-child(5),.adminOrdersTable td:nth-child(5){width:100px}.adminOrdersTable th:nth-child(7),.adminOrdersTable td:nth-child(7){width:95px;text-align:right}.adminOrdersTable th:nth-child(8),.adminOrdersTable td:nth-child(8){width:72px}.adminOrdersTable th:nth-child(9),.adminOrdersTable td:nth-child(9){width:95px}.adminOrdersTable button{padding:5px 9px;border-radius:4px;border:1px solid var(--line);background:#102a45;color:#fff;margin:1px}.danger{background:#ef4444!important;color:#fff!important;border-color:#b91c1c!important}.mock-order-form{position:sticky;top:118px}.order-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}.order-form-grid input,.order-form-grid select,.order-form-grid button,.grid input,.grid select,.grid button{width:100%;min-height:38px;padding:9px 10px;border-radius:6px;border:1px solid #3b5f83;background:#10283f;color:var(--text);font-size:14px}.order-form-grid label,.grid label{display:flex;flex-direction:column;gap:5px}.paid-row{display:flex!important;flex-direction:row!important;align-items:center;gap:8px}.order-lines,#addLineBtn,.save-order{grid-column:1/-1}.order-lines{display:flex;flex-direction:column;gap:10px}.order-line{display:grid;grid-template-columns:minmax(0,1fr) 82px 34px;gap:8px;align-items:start;padding:9px;border:1px solid rgba(86,142,198,.35);border-radius:8px;background:#0a1f34}.order-line label:nth-of-type(3){grid-column:1/-1}.orderLineColorsSelect{min-height:92px}.removeLine{grid-column:3;align-self:end;background:#ef4444!important;color:white!important}.line-price{font-size:12px;color:var(--muted);margin-top:4px}.save-order,#addLineBtn,.grid button{background:linear-gradient(135deg,var(--accent),#e5a91f)!important;color:#071321!important;font-weight:900;border:none!important}.mock-lower{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.mock-lower summary,.mock-backup summary{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid rgba(86,142,198,.35);cursor:pointer}.mock-lower summary span{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;padding:12px}.admin-search-controls{padding:12px 12px 0}.admin-search-controls input{width:100%;max-width:650px;padding:9px 10px;border-radius:6px;border:1px solid #3b5f83;background:#10283f;color:var(--text)}.profit-box{display:flex;align-items:center;gap:8px;background:#10283f;border:1px solid #3b5f83;border-radius:6px;padding:8px}.profit-out{font-weight:900;color:var(--accent)}.preview,.img-thumb{width:64px;height:64px;object-fit:cover;border-radius:6px;border:1px solid var(--line);background:#0a1827}.img-cell{display:flex;align-items:center;gap:8px}.desc{color:var(--muted)}tr.st-new td{background:rgba(148,163,184,.08)}tr.st-in_progress td{background:rgba(245,158,11,.10)}tr.st-completed td{background:rgba(16,185,129,.10)}.mock-backup{margin-top:14px}.backup-controls{padding:12px;display:flex;gap:10px;flex-wrap:wrap}.backup-controls button,.backup-controls .upload{padding:9px 12px;border-radius:6px;border:1px solid #315375;background:#102a45;color:#fff}.site-footer{padding:12px 18px;color:var(--muted);border-top:2px solid var(--accent);text-align:center}@media(max-width:1350px){.mock-workspace{grid-template-columns:1fr}.mock-order-form{position:static}}@media(max-width:1100px){.mock-shell{grid-template-columns:1fr}.mock-sidebar{position:static;height:auto;display:flex;flex-direction:row;flex-wrap:wrap}.mock-motto{display:none}.mock-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.mock-lower{grid-template-columns:1fr}}@media(max-width:700px){.mock-topbar{position:static;height:auto;align-items:flex-start;flex-direction:column}.mock-kpis{grid-template-columns:1fr}.order-form-grid{grid-template-columns:1fr}.order-line{grid-template-columns:1fr 80px}.removeLine{grid-column:2}.mock-name{font-size:26px}.mock-logo{height:64px}.tab-labels{flex-direction:column}}
+
+/* =========================================================
+   TABLE CLEAN v5 - make Admin Orders match the clean mockup
+   ========================================================= */
+body.admin-mockup-v4 .mock-orders-card,
+body.admin-mockup-v4 .mock-order-form,
+body.admin-mockup-v4 .mock-card{
+  background:linear-gradient(180deg,#092037,#07192c)!important;
+}
+body.admin-mockup-v4 .mock-orders-card>h2,
+body.admin-mockup-v4 .mock-order-form>h2{
+  padding:12px 16px!important;
+  font-size:20px!important;
+}
+body.admin-mockup-v4 .tab-labels{
+  padding:10px 14px!important;
+  gap:8px!important;
+}
+body.admin-mockup-v4 .tab-labels label{
+  min-width:150px;
+  text-align:center;
+  padding:9px 16px!important;
+  border-radius:9px!important;
+}
+body.admin-mockup-v4 .mock-table-wrap{
+  overflow-x:hidden!important;
+  border-top:1px solid rgba(86,142,198,.28)!important;
+}
+body.admin-mockup-v4 .adminOrdersTable{
+  table-layout:fixed!important;
+  font-size:13px!important;
+}
+body.admin-mockup-v4 .adminOrdersTable th,
+body.admin-mockup-v4 .adminOrdersTable td{
+  padding:8px 9px!important;
+  line-height:1.15!important;
+  height:42px!important;
+  border-bottom:1px solid rgba(86,142,198,.24)!important;
+  vertical-align:middle!important;
+}
+body.admin-mockup-v4 .adminOrdersTable th{
+  font-size:12px!important;
+  letter-spacing:.01em!important;
+  white-space:nowrap!important;
+  color:#eaf2ff!important;
+}
+body.admin-mockup-v4 .adminOrdersTable td{
+  color:#f3f7fc!important;
+}
+body.admin-mockup-v4 .adminOrdersTable th:nth-child(1),
+body.admin-mockup-v4 .adminOrdersTable td:nth-child(1){width:62px!important;}
+body.admin-mockup-v4 .adminOrdersTable th:nth-child(2),
+body.admin-mockup-v4 .adminOrdersTable td:nth-child(2){width:88px!important;}
+body.admin-mockup-v4 .adminOrdersTable th:nth-child(3),
+body.admin-mockup-v4 .adminOrdersTable td:nth-child(3){width:120px!important;}
+body.admin-mockup-v4 .adminOrdersTable th:nth-child(4),
+body.admin-mockup-v4 .adminOrdersTable td:nth-child(4){width:116px!important;}
+body.admin-mockup-v4 .adminOrdersTable th:nth-child(5),
+body.admin-mockup-v4 .adminOrdersTable td:nth-child(5){width:94px!important;}
+body.admin-mockup-v4 .adminOrdersTable th:nth-child(6),
+body.admin-mockup-v4 .adminOrdersTable td:nth-child(6){width:auto!important;}
+body.admin-mockup-v4 .adminOrdersTable th:nth-child(7),
+body.admin-mockup-v4 .adminOrdersTable td:nth-child(7){width:86px!important;text-align:right!important;}
+body.admin-mockup-v4 .adminOrdersTable th:nth-child(8),
+body.admin-mockup-v4 .adminOrdersTable td:nth-child(8){width:76px!important;text-align:center!important;}
+body.admin-mockup-v4 .adminOrdersTable th:nth-child(9),
+body.admin-mockup-v4 .adminOrdersTable td:nth-child(9){width:96px!important;}
+body.admin-mockup-v4 .items-cell{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.admin-mockup-v4 .customer-cell,
+body.admin-mockup-v4 .order-id,
+body.admin-mockup-v4 .due-cell{
+  white-space:nowrap!important;
+}
+body.admin-mockup-v4 .priority-chip{
+  min-width:24px;
+  height:24px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:5px;
+  background:linear-gradient(135deg,#ef4444,#f59e0b);
+  color:#fff;font-weight:900;
+  box-shadow:0 1px 0 rgba(0,0,0,.35);
+}
+body.admin-mockup-v4 .status-badge{
+  display:inline-block;
+  min-width:72px;
+  text-align:center;
+  padding:4px 8px;
+  border-radius:5px;
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap!important;
+}
+body.admin-mockup-v4 .status-new{background:#2563a6;color:#fff;}
+body.admin-mockup-v4 .status-in_progress{background:#f0b429;color:#071321;}
+body.admin-mockup-v4 .status-completed{background:#08704f;color:#d7fff1;}
+body.admin-mockup-v4 .status-shipped{background:#59677a;color:#fff;}
+body.admin-mockup-v4 .paid-dot{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:42px;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap;
+}
+body.admin-mockup-v4 .paid-dot.paid{background:rgba(16,185,129,.25);color:#74f0c2;}
+body.admin-mockup-v4 .paid-dot.unpaid{background:rgba(148,163,184,.18);color:#c8d4e3;}
+body.admin-mockup-v4 .action-cell{
+  display:flex;
+  gap:5px;
+  align-items:center;
+  justify-content:center;
+  height:42px;
+}
+body.admin-mockup-v4 .mini-action{
+  padding:5px 7px!important;
+  min-height:26px!important;
+  line-height:1!important;
+  font-size:12px!important;
+  border-radius:5px!important;
+  margin:0!important;
+}
+body.admin-mockup-v4 .edit-action{border-color:#f0b429!important;color:#ffd36a!important;background:#102a45!important;}
+body.admin-mockup-v4 .delete-action{background:#ef4444!important;color:#fff!important;border-color:#b91c1c!important;}
+body.admin-mockup-v4 tr.st-completed td,
+body.admin-mockup-v4 tr.st-in_progress td,
+body.admin-mockup-v4 tr.st-new td{
+  background:transparent!important;
+}
+body.admin-mockup-v4 .adminOrdersTable tr:hover td{
+  background:rgba(240,180,41,.06)!important;
+}
+/* Add/Edit order card tighter and more like mockup */
+body.admin-mockup-v4 .order-form-grid{
+  gap:9px!important;
+}
+body.admin-mockup-v4 .order-form-grid input,
+body.admin-mockup-v4 .order-form-grid select{
+  min-height:37px!important;
+}
+body.admin-mockup-v4 .order-line{
+  grid-template-columns:minmax(0,1fr) 72px 30px!important;
+  padding:8px!important;
+}
+body.admin-mockup-v4 .orderLineColorsSelect{
+  min-height:82px!important;
+}
+
+
+/* =========================================================
+   Admin Order Controls v6
+   ========================================================= */
+body.admin-mockup-v4 .priority-chip.priority-p1{background:linear-gradient(135deg,#dc2626,#ef4444)!important;color:#fff!important;}
+body.admin-mockup-v4 .priority-chip.priority-p2{background:linear-gradient(135deg,#f97316,#f59e0b)!important;color:#fff!important;}
+body.admin-mockup-v4 .priority-chip.priority-p3{background:linear-gradient(135deg,#eab308,#facc15)!important;color:#071321!important;}
+body.admin-mockup-v4 .priority-chip.priority-p4{background:linear-gradient(135deg,#64748b,#94a3b8)!important;color:#fff!important;}
+body.admin-mockup-v4 .priority-chip.priority-p5{background:linear-gradient(135deg,#334155,#64748b)!important;color:#fff!important;}
+body.admin-mockup-v4 .admin-paid-check{display:inline-flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;font-size:11px;white-space:nowrap;color:#c8d4e3;}
+body.admin-mockup-v4 .admin-paid-check input{width:16px;height:16px;accent-color:#10b981;cursor:pointer;}
+body.admin-mockup-v4 .admin-paid-check input:checked + span{color:#74f0c2;font-weight:800;}
+body.admin-mockup-v4 .icon-action{width:28px;height:28px;padding:0!important;display:inline-flex!important;align-items:center;justify-content:center;font-size:15px!important;}
+body.admin-mockup-v4 .action-cell{gap:6px!important;}
+body.admin-mockup-v4 .admin-pager{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;background:#071321;border-top:1px solid rgba(86,142,198,.28);font-size:12px;color:#c8d4e3;}
+body.admin-mockup-v4 .pager-buttons{display:flex;align-items:center;gap:6px;}
+body.admin-mockup-v4 .pager-buttons button{min-width:28px;height:28px;border-radius:5px;border:1px solid #294869;background:#0d2238;color:#dce8f6;cursor:pointer;}
+body.admin-mockup-v4 .pager-buttons button.active{background:#b91c1c;color:#fff;border-color:#ef4444;}
+body.admin-mockup-v4 .pager-buttons button:disabled{opacity:.45;cursor:not-allowed;}
+body.admin-mockup-v4 .pager-info{white-space:nowrap;}
+
+
+/* =========================================================
+   Color Section Clean v7
+   ========================================================= */
+body.admin-mockup-v4 .color-cell,
+body.admin .color-cell{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  white-space:nowrap;
+}
+body.admin-mockup-v4 .color-swatch,
+body.admin .color-swatch{
+  width:18px;
+  height:18px;
+  min-width:18px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:0 0 0 2px rgba(0,0,0,.22), inset 0 0 8px rgba(0,0,0,.18);
+  display:inline-block;
+}
+body.admin-mockup-v4 .color-name-text,
+body.admin .color-name-text{
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+body.admin-mockup-v4 .color-actions,
+body.admin .color-actions{
+  justify-content:flex-start;
+}
+body.admin-mockup-v4 #colorsTable .icon-action,
+body.admin #colorsTable .icon-action{
+  width:28px;
+  height:28px;
+  padding:0!important;
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  font-size:15px!important;
+  border-radius:5px!important;
+  margin:0 3px 0 0!important;
+}
+body.admin-mockup-v4 #colorsTable .edit-action,
+body.admin #colorsTable .edit-action{
+  border-color:#f0b429!important;
+  color:#ffd36a!important;
+  background:#102a45!important;
+}
+body.admin-mockup-v4 #colorsTable .delete-action,
+body.admin #colorsTable .delete-action{
+  background:#ef4444!important;
+  color:#fff!important;
+  border-color:#b91c1c!important;
+}
+
+
+/* =========================================================
+   Color Active + Pagination v8
+   ========================================================= */
+body.admin-mockup-v4 #colorsTable td,
+body.admin #colorsTable td{
+  vertical-align:middle!important;
+  padding:9px 10px!important;
+}
+body.admin-mockup-v4 #colorsTable th:nth-child(1),
+body.admin-mockup-v4 #colorsTable td:nth-child(1),
+body.admin #colorsTable th:nth-child(1),
+body.admin #colorsTable td:nth-child(1){width:24%;}
+body.admin-mockup-v4 #colorsTable th:nth-child(2),
+body.admin-mockup-v4 #colorsTable td:nth-child(2),
+body.admin #colorsTable th:nth-child(2),
+body.admin #colorsTable td:nth-child(2){width:18%;}
+body.admin-mockup-v4 #colorsTable th:nth-child(3),
+body.admin-mockup-v4 #colorsTable td:nth-child(3),
+body.admin #colorsTable th:nth-child(3),
+body.admin #colorsTable td:nth-child(3){width:34%;}
+body.admin-mockup-v4 #colorsTable th:nth-child(4),
+body.admin-mockup-v4 #colorsTable td:nth-child(4),
+body.admin #colorsTable th:nth-child(4),
+body.admin #colorsTable td:nth-child(4){width:12%;text-align:center;}
+body.admin-mockup-v4 #colorsTable th:nth-child(5),
+body.admin-mockup-v4 #colorsTable td:nth-child(5),
+body.admin #colorsTable th:nth-child(5),
+body.admin #colorsTable td:nth-child(5){width:12%;}
+body.admin-mockup-v4 .color-cell,
+body.admin .color-cell{display:flex!important;align-items:center!important;gap:9px!important;white-space:nowrap!important;}
+body.admin-mockup-v4 .color-actions,
+body.admin .color-actions{white-space:nowrap!important;text-align:left!important;}
+body.admin-mockup-v4 .color-active-check,
+body.admin .color-active-check{display:inline-flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;font-size:11px;color:#c8d4e3;white-space:nowrap;}
+body.admin-mockup-v4 .color-active-check input,
+body.admin .color-active-check input{width:16px;height:16px;accent-color:#10b981;cursor:pointer;}
+body.admin-mockup-v4 .color-active-check input:checked + span,
+body.admin .color-active-check input:checked + span{color:#74f0c2;font-weight:800;}
+body.admin-mockup-v4 .color-inactive-row td,
+body.admin .color-inactive-row td{opacity:.55;}
+body.admin-mockup-v4 .color-active-row,
+body.admin .color-active-row{display:flex!important;flex-direction:row!important;align-items:center;gap:8px;min-height:38px;align-self:end;}
+body.admin-mockup-v4 .color-active-row input,
+body.admin .color-active-row input{width:16px!important;height:16px!important;}
+body.admin-mockup-v4 .color-pager,
+body.admin .color-pager{border-top:1px solid rgba(86,142,198,.28);}
+
+
+/* =========================================================
+   Color Swatch Edit v9
+   ========================================================= */
+body.admin-mockup-v4 #colorsTable,
+body.admin #colorsTable{
+  table-layout:fixed!important;
+  width:100%!important;
+}
+body.admin-mockup-v4 #colorsTable th:nth-child(1),
+body.admin-mockup-v4 #colorsTable td:nth-child(1),
+body.admin #colorsTable th:nth-child(1),
+body.admin #colorsTable td:nth-child(1){width:20%!important;}
+body.admin-mockup-v4 #colorsTable th:nth-child(2),
+body.admin-mockup-v4 #colorsTable td:nth-child(2),
+body.admin #colorsTable th:nth-child(2),
+body.admin #colorsTable td:nth-child(2){width:14%!important;}
+body.admin-mockup-v4 #colorsTable th:nth-child(3),
+body.admin-mockup-v4 #colorsTable td:nth-child(3),
+body.admin #colorsTable th:nth-child(3),
+body.admin #colorsTable td:nth-child(3){width:42%!important;}
+body.admin-mockup-v4 #colorsTable th:nth-child(4),
+body.admin-mockup-v4 #colorsTable td:nth-child(4),
+body.admin #colorsTable th:nth-child(4),
+body.admin #colorsTable td:nth-child(4){width:12%!important;text-align:center;}
+body.admin-mockup-v4 #colorsTable th:nth-child(5),
+body.admin-mockup-v4 #colorsTable td:nth-child(5),
+body.admin #colorsTable th:nth-child(5),
+body.admin #colorsTable td:nth-child(5){width:12%!important;}
+body.admin-mockup-v4 .color-cell,
+body.admin .color-cell{
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  min-width:0!important;
+  white-space:nowrap!important;
+}
+body.admin-mockup-v4 .color-name-text,
+body.admin .color-name-text{
+  display:inline-block!important;
+  max-width:calc(100% - 32px)!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  vertical-align:middle!important;
+}
+body.admin-mockup-v4 .color-swatch-picker,
+body.admin .color-swatch-picker{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  gap:10px!important;
+  align-self:end!important;
+  min-height:38px!important;
+}
+body.admin-mockup-v4 .color-swatch-picker input[type="color"],
+body.admin .color-swatch-picker input[type="color"]{
+  width:56px!important;
+  min-width:56px!important;
+  height:38px!important;
+  padding:3px!important;
+  cursor:pointer;
+}
+body.admin-mockup-v4 .color-swatch,
+body.admin .color-swatch{
+  width:20px!important;
+  height:20px!important;
+  min-width:20px!important;
+}
+
+
+/* =========================================================
+   Color HEX + Name Width v10
+   ========================================================= */
+body.admin-mockup-v4 #colors .mock-table-wrap,
+body.admin #colors .mock-table-wrap,
+body.admin-mockup-v4 #colors .cv-table-wrap,
+body.admin #colors .cv-table-wrap{
+  overflow-x: hidden !important;
+}
+body.admin-mockup-v4 #colorsTable,
+body.admin #colorsTable{
+  table-layout: fixed !important;
+  width: 100% !important;
+}
+/* Give the Color column the room it needs */
+body.admin-mockup-v4 #colorsTable th:nth-child(1),
+body.admin-mockup-v4 #colorsTable td:nth-child(1),
+body.admin #colorsTable th:nth-child(1),
+body.admin #colorsTable td:nth-child(1){width:18%!important;}
+body.admin-mockup-v4 #colorsTable th:nth-child(2),
+body.admin-mockup-v4 #colorsTable td:nth-child(2),
+body.admin #colorsTable th:nth-child(2),
+body.admin #colorsTable td:nth-child(2){width:12%!important;}
+body.admin-mockup-v4 #colorsTable th:nth-child(3),
+body.admin-mockup-v4 #colorsTable td:nth-child(3),
+body.admin #colorsTable th:nth-child(3),
+body.admin #colorsTable td:nth-child(3){width:48%!important;}
+body.admin-mockup-v4 #colorsTable th:nth-child(4),
+body.admin-mockup-v4 #colorsTable td:nth-child(4),
+body.admin #colorsTable th:nth-child(4),
+body.admin #colorsTable td:nth-child(4){width:10%!important;}
+body.admin-mockup-v4 #colorsTable th:nth-child(5),
+body.admin-mockup-v4 #colorsTable td:nth-child(5),
+body.admin #colorsTable th:nth-child(5),
+body.admin #colorsTable td:nth-child(5){width:12%!important;}
+body.admin-mockup-v4 .color-name-text,
+body.admin .color-name-text{
+  max-width: none !important;
+  width: auto !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+body.admin-mockup-v4 .color-cell,
+body.admin .color-cell{
+  overflow: visible !important;
+  min-width: 0 !important;
+}
+.color-hex-input{
+  text-transform: uppercase;
+  font-family: Consolas, Monaco, monospace;
+  letter-spacing: .04em;
+}
+body.admin-mockup-v4 .color-swatch-picker,
+body.admin .color-swatch-picker{
+  min-width: 110px !important;
+}
+body.admin-mockup-v4 .color-hex-input,
+body.admin .color-hex-input{
+  max-width: 130px !important;
+}
+
+
+/* =========================================================
+   Color Active + Edit Scroll v11
+   ========================================================= */
+body.admin-mockup-v4 .color-active-check,
+body.admin .color-active-check{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  gap:0!important;
+  font-size:0!important;
+}
+body.admin-mockup-v4 .color-active-check input,
+body.admin .color-active-check input{
+  width:18px!important;
+  height:18px!important;
+  margin:0!important;
+  accent-color:#10b981;
+}
+body.admin-mockup-v4 .color-active-row,
+body.admin .color-active-row{
+  justify-content:center!important;
+  min-width:44px!important;
+  max-width:70px!important;
+  padding:0!important;
+}
+body.admin-mockup-v4 .color-active-row input,
+body.admin .color-active-row input{
+  width:18px!important;
+  height:18px!important;
+  margin:0!important;
+  accent-color:#10b981;
+}
+body.admin-mockup-v4 .editing-color-form,
+body.admin .editing-color-form{
+  outline:2px solid rgba(240,180,41,.8);
+  outline-offset:6px;
+  border-radius:8px;
+  animation: colorEditPulse 1.4s ease-in-out 1;
+}
+@keyframes colorEditPulse{
+  0%{box-shadow:0 0 0 0 rgba(240,180,41,.0)}
+  35%{box-shadow:0 0 0 8px rgba(240,180,41,.18)}
+  100%{box-shadow:0 0 0 0 rgba(240,180,41,.0)}
+}
+
+
+/* =========================================================
+   Add/Edit Order Cleanup v12
+   ========================================================= */
+body.admin-mockup-v4 .mock-order-form,
+body.admin .mock-order-form{
+  max-height:none!important;
+}
+body.admin-mockup-v4 .order-form-grid,
+body.admin .order-form-grid{
+  gap:10px!important;
+  padding:14px!important;
+}
+body.admin-mockup-v4 .order-form-grid label,
+body.admin .order-form-grid label{
+  font-size:13px!important;
+  color:#dce8f6!important;
+}
+body.admin-mockup-v4 .paid-row,
+body.admin .paid-row{
+  display:flex!important;
+  flex-direction:row!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-height:38px!important;
+  background:#10283f;
+  border:1px solid #3b5f83;
+  border-radius:6px;
+  padding:8px 10px!important;
+}
+body.admin-mockup-v4 .paid-row input,
+body.admin .paid-row input{
+  width:18px!important;
+  height:18px!important;
+  min-height:18px!important;
+  margin:0!important;
+  accent-color:#10b981;
+}
+body.admin-mockup-v4 .order-lines,
+body.admin .order-lines{
+  gap:10px!important;
+}
+body.admin-mockup-v4 .order-line,
+body.admin .order-line{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 78px 36px!important;
+  gap:8px!important;
+  background:#0a1f34!important;
+  border:1px solid rgba(86,142,198,.45)!important;
+  border-radius:8px!important;
+  padding:10px!important;
+}
+body.admin-mockup-v4 .order-line label:nth-of-type(3),
+body.admin .order-line label:nth-of-type(3){
+  grid-column:1/-1!important;
+}
+body.admin-mockup-v4 .order-line .removeLine,
+body.admin .order-line .removeLine{
+  grid-column:3!important;
+  width:34px!important;
+  min-width:34px!important;
+  height:34px!important;
+  padding:0!important;
+  align-self:end!important;
+}
+.native-color-select-hidden{
+  position:absolute!important;
+  left:-9999px!important;
+  width:1px!important;
+  height:1px!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+.multi-color-dropdown{
+  position:relative;
+  width:100%;
+}
+.mcd-button{
+  width:100%;
+  min-height:39px;
+  border:1px solid #3b5f83;
+  background:#10283f;
+  color:#f4f7fb;
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  text-align:left;
+  cursor:pointer;
+}
+.mcd-button:hover{border-color:#f0b429;}
+.mcd-summary-swatches{display:flex;align-items:center;gap:4px;min-width:0;}
+.mcd-mini-swatch,.mcd-swatch{
+  width:16px;
+  height:16px;
+  min-width:16px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.62);
+  box-shadow:0 0 0 1px rgba(0,0,0,.35), inset 0 0 5px rgba(0,0,0,.2);
+}
+.mcd-summary-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#eaf2ff;}
+.mcd-caret{color:#f0b429;font-size:12px;}
+.mcd-menu{
+  position:absolute;
+  z-index:200;
+  top:calc(100% + 5px);
+  left:0;
+  right:0;
+  max-height:245px;
+  overflow:auto;
+  padding:6px;
+  border:1px solid #3b5f83;
+  border-radius:8px;
+  background:#07182a;
+  box-shadow:0 12px 28px rgba(0,0,0,.42);
+}
+.mcd-option{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:7px 8px!important;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:13px!important;
+  color:#f4f7fb!important;
+}
+.mcd-option:hover{background:rgba(240,180,41,.12);}
+.mcd-option input{
+  width:15px!important;
+  height:15px!important;
+  min-height:15px!important;
+  accent-color:#10b981;
+}
+.mcd-label{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body.admin-mockup-v4 .orderLineColorsSelect,
+body.admin .orderLineColorsSelect{
+  min-height:0!important;
+}
+body.admin-mockup-v4 .line-price,
+body.admin .line-price{
+  color:#aebece!important;
+  font-size:12px!important;
+  margin-top:4px!important;
+}
+@media(max-width:700px){
+  body.admin-mockup-v4 .order-line,
+  body.admin .order-line{grid-template-columns:1fr 78px!important;}
+  body.admin-mockup-v4 .order-line .removeLine,
+  body.admin .order-line .removeLine{grid-column:2!important;}
+}
+
+
+/* =========================================================
+   Order Line Time/Grams v13
+   ========================================================= */
+body.admin-mockup-v4 .order-form-grid input#discountValue,
+body.admin-mockup-v4 .order-form-grid input#surchargeValue,
+body.admin .order-form-grid input#discountValue,
+body.admin .order-form-grid input#surchargeValue{
+  height:38px!important;
+  min-height:38px!important;
+  max-height:38px!important;
+  padding:8px 10px!important;
+  align-self:end!important;
+}
+body.admin-mockup-v4 .order-form-grid label:has(+ #discountValue),
+body.admin-mockup-v4 .order-form-grid label:has(+ #surchargeValue){
+  align-self:end!important;
+}
+body.admin-mockup-v4 .order-line,
+body.admin .order-line{
+  grid-template-columns:minmax(0,1fr) 66px 66px 62px 72px 34px!important;
+  gap:8px!important;
+  align-items:start!important;
+}
+body.admin-mockup-v4 .order-line label:nth-of-type(6),
+body.admin .order-line label:nth-of-type(6){
+  grid-column:1/-1!important;
+}
+body.admin-mockup-v4 .order-line .removeLine,
+body.admin .order-line .removeLine{
+  grid-column:6!important;
+  align-self:end!important;
+}
+body.admin-mockup-v4 .orderHoursInput,
+body.admin-mockup-v4 .orderMinutesInput,
+body.admin-mockup-v4 .orderGramsInput,
+body.admin .orderHoursInput,
+body.admin .orderMinutesInput,
+body.admin .orderGramsInput{
+  text-align:center!important;
+  padding-left:6px!important;
+  padding-right:6px!important;
+}
+body.admin-mockup-v4 .mock-order-form,
+body.admin .mock-order-form{
+  scroll-margin-top:120px;
+}
+@media(max-width:900px){
+  body.admin-mockup-v4 .order-line,
+  body.admin .order-line{grid-template-columns:1fr 66px 66px!important;}
+  body.admin-mockup-v4 .order-line label:nth-of-type(5),
+  body.admin .order-line label:nth-of-type(5){grid-column:1/3!important;}
+  body.admin-mockup-v4 .order-line label:nth-of-type(6),
+  body.admin .order-line label:nth-of-type(6){grid-column:1/-1!important;}
+  body.admin-mockup-v4 .order-line .removeLine,
+  body.admin .order-line .removeLine{grid-column:3!important;}
+}
+
+
+/* =========================================================
+   Item Print Time / Grams v14
+   ========================================================= */
+body.admin-mockup-v4 .order-line,
+body.admin .order-line{
+  grid-template-columns:minmax(0,1fr) 78px 36px!important;
+}
+body.admin-mockup-v4 .order-line label:nth-of-type(3),
+body.admin .order-line label:nth-of-type(3){
+  grid-column:1/-1!important;
+}
+body.admin-mockup-v4 .order-line .removeLine,
+body.admin .order-line .removeLine{
+  grid-column:3!important;
+}
+body.admin-mockup-v4 #printHours,
+body.admin-mockup-v4 #printMinutes,
+body.admin-mockup-v4 #grams,
+body.admin #printHours,
+body.admin #printMinutes,
+body.admin #grams{
+  text-align:center;
+}
+body.admin-mockup-v4 #adminItemsTable th,
+body.admin-mockup-v4 #adminItemsTable td,
+body.admin #adminItemsTable th,
+body.admin #adminItemsTable td{
+  white-space:nowrap;
+}
+
+
+/* =========================================================
+   Items Section Cleanup v15
+   ========================================================= */
+body.admin-mockup-v4 .items-toolbar,
+body.admin .items-toolbar{
+  padding:12px 14px 0;
+}
+body.admin-mockup-v4 .item-form-clean,
+body.admin .item-form-clean{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 285px;
+  gap:14px;
+  padding:12px 14px 14px;
+  border-bottom:1px solid rgba(86,142,198,.28);
+}
+body.admin-mockup-v4 .item-form-main,
+body.admin .item-form-main{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  min-width:0;
+}
+body.admin-mockup-v4 .item-form-side,
+body.admin .item-form-side{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  min-width:0;
+}
+body.admin-mockup-v4 .item-field-card,
+body.admin .item-field-card{
+  background:#081d31;
+  border:1px solid rgba(86,142,198,.35);
+  border-radius:9px;
+  padding:12px;
+  min-width:0;
+}
+body.admin-mockup-v4 .item-field-card h3,
+body.admin .item-field-card h3{
+  margin:0 0 10px;
+  color:#f0b429;
+  font-size:15px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+body.admin-mockup-v4 .identity-card,
+body.admin .identity-card{
+  grid-column:1/-1;
+}
+body.admin-mockup-v4 .item-grid,
+body.admin .item-grid{
+  display:grid;
+  gap:10px;
+}
+body.admin-mockup-v4 .item-grid.two-col,
+body.admin .item-grid.two-col{
+  grid-template-columns:1fr 1fr;
+}
+body.admin-mockup-v4 .item-grid.three-col,
+body.admin .item-grid.three-col{
+  grid-template-columns:repeat(3,1fr);
+}
+body.admin-mockup-v4 .item-form-clean input,
+body.admin-mockup-v4 .item-form-clean select,
+body.admin-mockup-v4 .item-form-clean button,
+body.admin .item-form-clean input,
+body.admin .item-form-clean select,
+body.admin .item-form-clean button{
+  width:100%;
+  min-height:38px;
+  padding:9px 10px;
+  border-radius:6px;
+  border:1px solid #3b5f83;
+  background:#10283f;
+  color:#f4f7fb;
+  font-size:14px;
+}
+body.admin-mockup-v4 .item-form-clean label,
+body.admin .item-form-clean label{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  color:#dce8f6;
+  font-size:13px;
+}
+body.admin-mockup-v4 .item-desc-input,
+body.admin .item-desc-input{
+  margin-top:10px;
+}
+body.admin-mockup-v4 .preview-frame,
+body.admin .preview-frame{
+  width:100%;
+  aspect-ratio:1/1;
+  border:1px dashed #3b5f83;
+  border-radius:10px;
+  background:linear-gradient(135deg,#07182a,#0c243a);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  margin-bottom:10px;
+}
+body.admin-mockup-v4 .preview-frame .preview,
+body.admin .preview-frame .preview{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:#0a1827;
+}
+body.admin-mockup-v4 .file-picker,
+body.admin .file-picker{
+  display:block!important;
+}
+body.admin-mockup-v4 .colors-card select,
+body.admin .colors-card select{
+  min-height:118px;
+}
+body.admin-mockup-v4 .item-save-btn,
+body.admin .item-save-btn{
+  margin-top:10px;
+  background:linear-gradient(135deg,#f0b429,#e5a91f)!important;
+  color:#071321!important;
+  font-weight:900!important;
+  border:none!important;
+}
+body.admin-mockup-v4 #adminItemsTable,
+body.admin #adminItemsTable{
+  table-layout:auto;
+}
+body.admin-mockup-v4 #adminItemsTable th,
+body.admin-mockup-v4 #adminItemsTable td,
+body.admin #adminItemsTable th,
+body.admin #adminItemsTable td{
+  padding:8px 9px;
+  vertical-align:middle;
+}
+body.admin-mockup-v4 #adminItemsTable .img-thumb,
+body.admin #adminItemsTable .img-thumb{
+  width:42px!important;
+  height:42px!important;
+}
+@media(max-width:1200px){
+  body.admin-mockup-v4 .item-form-clean,
+  body.admin .item-form-clean{grid-template-columns:1fr;}
+  body.admin-mockup-v4 .item-form-side,
+  body.admin .item-form-side{display:grid;grid-template-columns:260px 1fr;}
+}
+@media(max-width:760px){
+  body.admin-mockup-v4 .item-form-main,
+  body.admin .item-form-main,
+  body.admin-mockup-v4 .item-form-side,
+  body.admin .item-form-side{grid-template-columns:1fr;}
+  body.admin-mockup-v4 .item-grid.two-col,
+  body.admin .item-grid.two-col,
+  body.admin-mockup-v4 .item-grid.three-col,
+  body.admin .item-grid.three-col{grid-template-columns:1fr;}
+}
+
+
+/* =========================================================
+   Items Cleanup v16
+   ========================================================= */
+body.admin-mockup-v4 .item-card-help,
+body.admin .item-card-help{
+  margin:-4px 0 10px;
+  color:#9fb0c4;
+  font-size:12px;
+  line-height:1.25;
+}
+body.admin-mockup-v4 .item-active-row,
+body.admin .item-active-row{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:8px!important;
+  min-height:38px!important;
+  background:#10283f;
+  border:1px solid #3b5f83;
+  border-radius:6px;
+  padding:8px 10px!important;
+}
+body.admin-mockup-v4 .item-active-row input,
+body.admin .item-active-row input{
+  width:18px!important;
+  height:18px!important;
+  min-height:18px!important;
+  margin:0!important;
+  accent-color:#10b981;
+}
+body.admin-mockup-v4 .image-card,
+body.admin .image-card{
+  max-width:230px;
+  margin:0 auto;
+  width:100%;
+}
+body.admin-mockup-v4 .preview-frame,
+body.admin .preview-frame{
+  max-width:180px!important;
+  width:180px!important;
+  height:180px!important;
+  aspect-ratio:auto!important;
+  margin:0 auto 10px!important;
+}
+body.admin-mockup-v4 .preview-frame .preview,
+body.admin .preview-frame .preview{
+  width:180px!important;
+  height:180px!important;
+}
+body.admin-mockup-v4 .colors-card .native-color-select-hidden,
+body.admin .colors-card .native-color-select-hidden{
+  position:absolute!important;
+  left:-9999px!important;
+  width:1px!important;
+  height:1px!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+body.admin-mockup-v4 .item-color-dropdown,
+body.admin .item-color-dropdown{
+  width:100%;
+  margin-top:3px;
+}
+body.admin-mockup-v4 .item-color-dropdown .mcd-menu,
+body.admin .item-color-dropdown .mcd-menu{
+  max-height:260px;
+}
+body.admin-mockup-v4 #price,
+body.admin-mockup-v4 #costMaterial,
+body.admin #price,
+body.admin #costMaterial{
+  -moz-appearance:textfield;
+}
+/* Keep browser arrows but make .50 the spinner increment via HTML step=.50 */
+body.admin-mockup-v4 .pricing-card input[type="number"],
+body.admin .pricing-card input[type="number"]{
+  font-weight:650;
+}
+@media(max-width:1200px){
+  body.admin-mockup-v4 .image-card,
+  body.admin .image-card{max-width:100%;}
+  body.admin-mockup-v4 .preview-frame,
+  body.admin .preview-frame{width:160px!important;height:160px!important;}
+  body.admin-mockup-v4 .preview-frame .preview,
+  body.admin .preview-frame .preview{width:160px!important;height:160px!important;}
+}
+
+
+/* =========================================================
+   Items Bottom Layout v17
+   ========================================================= */
+body.admin-mockup-v4 .mock-lower,
+body.admin .mock-lower{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:14px!important;
+  margin-top:14px!important;
+}
+body.admin-mockup-v4 #colors,
+body.admin-mockup-v4 #items,
+body.admin #colors,
+body.admin #items{
+  width:100%!important;
+}
+body.admin-mockup-v4 #colors:not([open]),
+body.admin-mockup-v4 #items:not([open]),
+body.admin #colors:not([open]),
+body.admin #items:not([open]){
+  min-height:0!important;
+}
+body.admin-mockup-v4 .item-active-check,
+body.admin .item-active-check{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  margin:0!important;
+  cursor:pointer;
+}
+body.admin-mockup-v4 .item-active-check input,
+body.admin .item-active-check input{
+  width:18px!important;
+  height:18px!important;
+  margin:0!important;
+  accent-color:#10b981;
+}
+body.admin-mockup-v4 .item-actions,
+body.admin .item-actions{
+  justify-content:flex-start!important;
+  gap:6px!important;
+  white-space:nowrap!important;
+}
+body.admin-mockup-v4 #adminItemsTable .icon-action,
+body.admin #adminItemsTable .icon-action{
+  width:28px!important;
+  height:28px!important;
+  padding:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:15px!important;
+  border-radius:5px!important;
+  margin:0 3px 0 0!important;
+}
+body.admin-mockup-v4 #adminItemsTable .edit-action,
+body.admin #adminItemsTable .edit-action{
+  border-color:#f0b429!important;
+  color:#ffd36a!important;
+  background:#102a45!important;
+}
+body.admin-mockup-v4 #adminItemsTable .delete-action,
+body.admin #adminItemsTable .delete-action{
+  background:#ef4444!important;
+  color:#fff!important;
+  border-color:#b91c1c!important;
+}
+body.admin-mockup-v4 .item-active-row,
+body.admin .item-active-row{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:8px!important;
+  min-height:38px!important;
+  background:#10283f;
+  border:1px solid #3b5f83;
+  border-radius:6px;
+  padding:8px 10px!important;
+}
+body.admin-mockup-v4 .item-active-row input,
+body.admin .item-active-row input{
+  width:18px!important;
+  height:18px!important;
+  min-height:18px!important;
+  margin:0!important;
+  accent-color:#10b981;
+}
+
+
+/* =========================================================
+   Items Table Paging + Readability v18
+   ========================================================= */
+body.admin-mockup-v4 #itemForm input[name="qty"],
+body.admin #itemForm input[name="qty"]{
+  height:38px!important;
+  min-height:38px!important;
+  max-height:38px!important;
+  align-self:end!important;
+}
+body.admin-mockup-v4 #adminItemsTable,
+body.admin #adminItemsTable{
+  table-layout:fixed!important;
+  width:100%!important;
+  font-size:13px!important;
+}
+body.admin-mockup-v4 #adminItemsTable th,
+body.admin-mockup-v4 #adminItemsTable td,
+body.admin #adminItemsTable th,
+body.admin #adminItemsTable td{
+  padding:7px 8px!important;
+  line-height:1.2!important;
+  vertical-align:middle!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.admin-mockup-v4 #adminItemsTable th,
+body.admin #adminItemsTable th{
+  white-space:nowrap!important;
+  font-size:12px!important;
+}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(1), body.admin-mockup-v4 #adminItemsTable td:nth-child(1),
+body.admin #adminItemsTable th:nth-child(1), body.admin #adminItemsTable td:nth-child(1){width:52px!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(2), body.admin-mockup-v4 #adminItemsTable td:nth-child(2),
+body.admin #adminItemsTable th:nth-child(2), body.admin #adminItemsTable td:nth-child(2){width:90px!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(3), body.admin-mockup-v4 #adminItemsTable td:nth-child(3),
+body.admin #adminItemsTable th:nth-child(3), body.admin #adminItemsTable td:nth-child(3){width:180px!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(4), body.admin-mockup-v4 #adminItemsTable td:nth-child(4),
+body.admin #adminItemsTable th:nth-child(4), body.admin #adminItemsTable td:nth-child(4){width:78px!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(5), body.admin-mockup-v4 #adminItemsTable td:nth-child(5),
+body.admin #adminItemsTable th:nth-child(5), body.admin #adminItemsTable td:nth-child(5){width:90px!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(6), body.admin-mockup-v4 #adminItemsTable td:nth-child(6),
+body.admin #adminItemsTable th:nth-child(6), body.admin #adminItemsTable td:nth-child(6){width:70px!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(7), body.admin-mockup-v4 #adminItemsTable td:nth-child(7),
+body.admin #adminItemsTable th:nth-child(7), body.admin #adminItemsTable td:nth-child(7){width:180px!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(8), body.admin-mockup-v4 #adminItemsTable td:nth-child(8),
+body.admin #adminItemsTable th:nth-child(8), body.admin #adminItemsTable td:nth-child(8){width:210px!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(9), body.admin-mockup-v4 #adminItemsTable td:nth-child(9),
+body.admin #adminItemsTable th:nth-child(9), body.admin #adminItemsTable td:nth-child(9){width:105px!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(10), body.admin-mockup-v4 #adminItemsTable td:nth-child(10),
+body.admin #adminItemsTable th:nth-child(10), body.admin #adminItemsTable td:nth-child(10){width:78px!important;text-align:right!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(11), body.admin-mockup-v4 #adminItemsTable td:nth-child(11),
+body.admin #adminItemsTable th:nth-child(11), body.admin #adminItemsTable td:nth-child(11){width:46px!important;text-align:center!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(12), body.admin-mockup-v4 #adminItemsTable td:nth-child(12),
+body.admin #adminItemsTable th:nth-child(12), body.admin #adminItemsTable td:nth-child(12){width:62px!important;text-align:center!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(13), body.admin-mockup-v4 #adminItemsTable td:nth-child(13),
+body.admin #adminItemsTable th:nth-child(13), body.admin #adminItemsTable td:nth-child(13){width:78px!important;}
+body.admin-mockup-v4 #adminItemsTable .item-name-cell,
+body.admin-mockup-v4 #adminItemsTable .item-colors-cell,
+body.admin-mockup-v4 #adminItemsTable .desc-cell,
+body.admin #adminItemsTable .item-name-cell,
+body.admin #adminItemsTable .item-colors-cell,
+body.admin #adminItemsTable .desc-cell{
+  white-space:nowrap!important;
+}
+body.admin-mockup-v4 #adminItemsTable .qty-cell,
+body.admin #adminItemsTable .qty-cell{
+  font-weight:800;
+  text-align:center!important;
+}
+body.admin-mockup-v4 #adminItemsTable .dim-badge[title],
+body.admin #adminItemsTable .dim-badge[title]{
+  cursor:help;
+  border-bottom:1px dotted rgba(240,180,41,.75);
+}
+body.admin-mockup-v4 .items-pager,
+body.admin .items-pager{
+  border-top:1px solid rgba(86,142,198,.28);
+}
+body.admin-mockup-v4 #adminItemsTable .img-thumb,
+body.admin #adminItemsTable .img-thumb{
+  width:38px!important;
+  height:38px!important;
+}
+@media(max-width:1200px){
+  body.admin-mockup-v4 #adminItemsTable th:nth-child(8), body.admin-mockup-v4 #adminItemsTable td:nth-child(8),
+  body.admin #adminItemsTable th:nth-child(8), body.admin #adminItemsTable td:nth-child(8){display:none!important;}
+}
+
+
+/* =========================================================
+   Items Nav / Image / Color Chips v19
+   ========================================================= */
+body.admin-mockup-v4 #adminItemsTable th:nth-child(3), body.admin-mockup-v4 #adminItemsTable td:nth-child(3),
+body.admin #adminItemsTable th:nth-child(3), body.admin #adminItemsTable td:nth-child(3){width:240px!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(7), body.admin-mockup-v4 #adminItemsTable td:nth-child(7),
+body.admin #adminItemsTable th:nth-child(7), body.admin #adminItemsTable td:nth-child(7){width:230px!important;}
+body.admin-mockup-v4 #adminItemsTable th:nth-child(8), body.admin-mockup-v4 #adminItemsTable td:nth-child(8),
+body.admin #adminItemsTable th:nth-child(8), body.admin #adminItemsTable td:nth-child(8){width:170px!important;}
+body.admin-mockup-v4 #adminItemsTable .item-name-cell,
+body.admin #adminItemsTable .item-name-cell{
+  font-weight:700;
+  color:#f4f7fb;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.item-color-chip-wrap{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  gap:5px!important;
+  align-items:center!important;
+  overflow:hidden!important;
+}
+.item-color-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  max-width:92px;
+  min-width:0;
+  padding:2px 6px;
+  border-radius:999px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(86,142,198,.26);
+  color:#eaf2ff;
+  font-size:11px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.item-color-chip span:last-child{
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.item-color-dot{
+  width:12px;
+  height:12px;
+  min-width:12px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:0 0 0 1px rgba(0,0,0,.35);
+}
+.admin-item-thumb{
+  cursor:pointer;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.admin-item-thumb:hover{
+  transform:scale(1.18);
+  box-shadow:0 0 0 2px rgba(240,180,41,.65),0 8px 18px rgba(0,0,0,.35);
+  z-index:5;
+  position:relative;
+}
+.admin-img-modal.hidden{display:none!important;}
+.admin-img-modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.admin-img-modal-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.72);
+}
+.admin-img-modal-box{
+  position:relative;
+  z-index:1;
+  margin:0;
+  max-width:min(860px,92vw);
+  max-height:90vh;
+  background:#07182a;
+  border:1px solid #3b5f83;
+  border-radius:12px;
+  padding:14px;
+  box-shadow:0 18px 48px rgba(0,0,0,.55);
+}
+.admin-img-modal-box img{
+  display:block;
+  max-width:100%;
+  max-height:78vh;
+  border-radius:8px;
+  object-fit:contain;
+}
+.admin-img-modal-box figcaption{
+  color:#dce8f6;
+  text-align:center;
+  margin-top:8px;
+  font-weight:700;
+}
+.admin-img-close{
+  position:absolute;
+  right:9px;
+  top:9px;
+  width:34px;
+  height:34px;
+  border-radius:8px;
+  border:1px solid #3b5f83;
+  background:#10283f;
+  color:#fff;
+  font-size:22px;
+  line-height:1;
+  cursor:pointer;
+}
+.mock-nav[href="#items"],.mock-nav[href="#colors"],.cv-nav[href="#items"],.cv-nav[href="#colors"],.side-link[href="#items"],.side-link[href="#colors"]{
+  cursor:pointer;
+}
+@media(max-width:1200px){
+  body.admin-mockup-v4 #adminItemsTable th:nth-child(8), body.admin-mockup-v4 #adminItemsTable td:nth-child(8),
+  body.admin #adminItemsTable th:nth-child(8), body.admin #adminItemsTable td:nth-child(8){display:table-cell!important;width:120px!important;}
+}
+
+
+/* =========================================================
+   Colors Row v20
+   Force item colors to display horizontally in one row
+   ========================================================= */
+body.admin-mockup-v4 #adminItemsTable .item-colors-cell,
+body.admin #adminItemsTable .item-colors-cell{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-chip-wrap,
+body.admin #adminItemsTable .item-color-chip-wrap{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  gap:6px!important;
+  white-space:nowrap!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  max-width:100%!important;
+  padding-bottom:2px;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-chip,
+body.admin #adminItemsTable .item-color-chip{
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  align-items:center!important;
+  gap:5px!important;
+  max-width:none!important;
+  width:auto!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-chip span:last-child,
+body.admin #adminItemsTable .item-color-chip span:last-child{
+  overflow:visible!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-dot,
+body.admin #adminItemsTable .item-color-dot{
+  flex:0 0 12px!important;
+}
+/* Make the colors column wider so more color chips fit on one line */
+body.admin-mockup-v4 #adminItemsTable th:nth-child(7),
+body.admin-mockup-v4 #adminItemsTable td:nth-child(7),
+body.admin #adminItemsTable th:nth-child(7),
+body.admin #adminItemsTable td:nth-child(7){
+  width:300px!important;
+}
+
+
+/* =========================================================
+   Item Colors Bullets v21
+   Show item colors like: ● Purple  ● Green  ● Yellow
+   ========================================================= */
+body.admin-mockup-v4 #adminItemsTable .item-colors-cell,
+body.admin #adminItemsTable .item-colors-cell{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-chip-wrap,
+body.admin #adminItemsTable .item-color-chip-wrap{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  gap:12px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  max-width:100%!important;
+  padding:0!important;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-chip,
+body.admin #adminItemsTable .item-color-chip{
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  align-items:center!important;
+  gap:5px!important;
+  max-width:none!important;
+  width:auto!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#eaf2ff!important;
+  font-size:12px!important;
+  line-height:1.2!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-chip span:last-child,
+body.admin #adminItemsTable .item-color-chip span:last-child{
+  overflow:visible!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-dot,
+body.admin #adminItemsTable .item-color-dot{
+  width:10px!important;
+  height:10px!important;
+  min-width:10px!important;
+  flex:0 0 10px!important;
+  border-radius:50%!important;
+  border:1px solid rgba(255,255,255,.65)!important;
+  box-shadow:0 0 0 1px rgba(0,0,0,.35)!important;
+}
+/* Keep more room for the bullet list */
+body.admin-mockup-v4 #adminItemsTable th:nth-child(7),
+body.admin-mockup-v4 #adminItemsTable td:nth-child(7),
+body.admin #adminItemsTable th:nth-child(7),
+body.admin #adminItemsTable td:nth-child(7){
+  width:330px!important;
+}
+
+
+/* =========================================================
+   Item Colors Vertical Bullets v22
+   Show item colors vertically:
+   ● Purple
+   ● Green
+   ● Yellow
+   ========================================================= */
+body.admin-mockup-v4 #adminItemsTable .item-colors-cell,
+body.admin #adminItemsTable .item-colors-cell{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  vertical-align:top!important;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-chip-wrap,
+body.admin #adminItemsTable .item-color-chip-wrap{
+  display:flex!important;
+  flex-direction:column!important;
+  flex-wrap:nowrap!important;
+  align-items:flex-start!important;
+  gap:4px!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  max-width:100%!important;
+  padding:0!important;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-chip,
+body.admin #adminItemsTable .item-color-chip{
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  align-items:center!important;
+  gap:6px!important;
+  max-width:100%!important;
+  width:auto!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#eaf2ff!important;
+  font-size:12px!important;
+  line-height:1.25!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-chip span:last-child,
+body.admin #adminItemsTable .item-color-chip span:last-child{
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+body.admin-mockup-v4 #adminItemsTable .item-color-dot,
+body.admin #adminItemsTable .item-color-dot{
+  width:10px!important;
+  height:10px!important;
+  min-width:10px!important;
+  flex:0 0 10px!important;
+  border-radius:50%!important;
+  border:1px solid rgba(255,255,255,.65)!important;
+  box-shadow:0 0 0 1px rgba(0,0,0,.35)!important;
+}
+/* keep the colors column wide enough for vertical names */
+body.admin-mockup-v4 #adminItemsTable th:nth-child(7),
+body.admin-mockup-v4 #adminItemsTable td:nth-child(7),
+body.admin #adminItemsTable th:nth-child(7),
+body.admin #adminItemsTable td:nth-child(7){
+  width:190px!important;
+}
+
+
+/* =========================================================
+   KPI Icons + Public View Style v23
+   ========================================================= */
+.kpi-icon.kpi-clipboard,
+.kpi-icon.kpi-truck,
+.kpi-icon.kpi-box{
+  font-size:42px!important;
+  line-height:1!important;
+  width:54px;
+  height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  background:rgba(240,180,41,.12);
+  border:1px solid rgba(240,180,41,.32);
+}
+.kpi-icon.kpi-truck{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.38);}
+.kpi-icon.kpi-box{background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.38);}
+
+body.public-mockup-v23{
+  background:#06111e;
+  color:#f4f7fb;
+  font:15px/1.45 "Segoe UI",Roboto,Arial,sans-serif;
+  overflow-x:hidden;
+}
+.public-shell{
+  display:grid;
+  grid-template-columns:230px minmax(0,1fr);
+  gap:18px;
+  padding:18px 14px 20px;
+  max-width:100%;
+  width:100%;
+}
+.public-sidebar{top:118px;}
+.public-main{min-width:0;}
+.public-kpis{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+.public-card{
+  margin-top:14px;
+}
+.public-card>h2{
+  margin:0;
+  color:#f0b429;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  font-size:20px;
+  padding:13px 16px;
+  border-bottom:1px solid rgba(86,142,198,.35);
+}
+.public-orders-card>h2:before{content:'📋';margin-right:10px;}
+.public-card-body{padding:12px 14px 14px;}
+.public-details-card summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  cursor:pointer;
+  padding:13px 16px;
+  border-bottom:1px solid rgba(86,142,198,.35);
+}
+.public-details-card summary h2{
+  margin:0;
+  color:#f0b429;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  font-size:20px;
+}
+.public-details-card summary span{
+  color:#9fb0c4;
+  font-size:13px;
+}
+.public-controls-row{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:end;
+  margin-bottom:12px;
+}
+.public-controls-row label{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  color:#dce8f6;
+  font-size:13px;
+}
+.public-controls-row input,
+.public-controls-row select{
+  min-height:38px;
+  padding:9px 10px;
+  border-radius:6px;
+  border:1px solid #3b5f83;
+  background:#10283f;
+  color:#f4f7fb;
+}
+.public-controls-row input{min-width:280px;}
+.public-table-wrap{
+  border:1px solid rgba(86,142,198,.35);
+  border-radius:8px;
+  overflow:auto;
+  background:#07182a;
+}
+.publicOrdersTable,
+.publicItemsTable{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:auto;
+  font-size:14px;
+}
+.publicOrdersTable th,
+.publicOrdersTable td,
+.publicItemsTable th,
+.publicItemsTable td{
+  padding:9px 10px;
+  border-bottom:1px solid rgba(86,142,198,.25);
+  vertical-align:middle;
+}
+.publicOrdersTable th,
+.publicItemsTable th{
+  background:#071321;
+  color:#eaf2ff;
+  font-weight:900;
+  white-space:nowrap;
+}
+.publicOrdersTable tr:hover td,
+.publicItemsTable tr:hover td{
+  background:rgba(240,180,41,.055);
+}
+.publicOrdersTable select{
+  min-height:30px;
+  border-radius:5px;
+}
+.publicItemsTable .img-thumb{
+  width:46px!important;
+  height:46px!important;
+  cursor:pointer;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.publicItemsTable .img-thumb:hover{
+  transform:scale(1.16);
+  box-shadow:0 0 0 2px rgba(240,180,41,.65),0 8px 18px rgba(0,0,0,.35);
+}
+.publicItemsTable .colors-list{
+  max-width:260px;
+}
+.publicItemsTable .desc{
+  max-width:360px;
+  display:inline-block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media(max-width:1100px){
+  .public-shell{grid-template-columns:1fr;}
+  .public-sidebar{position:static;height:auto;display:flex;flex-direction:row;flex-wrap:wrap;}
+  .public-sidebar .mock-motto{display:none;}
+  .public-kpis{grid-template-columns:1fr!important;}
+}
+@media(max-width:700px){
+  .public-topbar{position:static;height:auto;align-items:flex-start;flex-direction:column;}
+  .public-controls-row input{min-width:100%;}
+}
+
+
+/* =========================================================
+   KPI + Public Orders Cleanup v24
+   ========================================================= */
+.kpi-icon.kpi-check{
+  font-size:40px!important;
+  line-height:1!important;
+  width:54px;
+  height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  background:rgba(16,185,129,.12)!important;
+  border:1px solid rgba(16,185,129,.38)!important;
+  color:#6ee7b7!important;
+}
+.publicOrdersTable .public-items-col{
+  min-width:240px;
+  max-width:360px;
+}
+.public-order-items{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  max-width:100%;
+}
+.public-order-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  min-width:0;
+  padding:3px 7px;
+  border-radius:6px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(86,142,198,.20);
+}
+.public-order-item .poi-name{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#eef6ff;
+  font-weight:650;
+}
+.public-order-item .poi-qty{
+  flex:0 0 auto;
+  color:#f0b429;
+  font-weight:900;
+  font-size:12px;
+}
+.public-order-empty{
+  color:#9fb0c4;
+  font-size:12px;
+}
+.public-total-col{
+  text-align:right;
+  white-space:nowrap;
+  font-weight:800;
+}
+.public-completed-pager{
+  border-top:1px solid rgba(86,142,198,.28);
+  background:#071321;
+}
+.public-completed-pager .pager-info{
+  color:#c8d4e3;
+}
+.public-completed-pager .pager-buttons button{
+  min-width:28px;
+  height:28px;
+  border-radius:5px;
+  border:1px solid #294869;
+  background:#0d2238;
+  color:#dce8f6;
+  cursor:pointer;
+}
+.public-completed-pager .pager-buttons button.active{
+  background:#b91c1c;
+  color:#fff;
+  border-color:#ef4444;
+}
+.public-completed-pager .pager-buttons button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+@media(max-width:900px){
+  .publicOrdersTable .public-items-col{min-width:220px;}
+}
+
+
+/* =========================================================
+   Public Items Cleanup v25
+   ========================================================= */
+.publicItemsTable{
+  table-layout:fixed!important;
+  width:100%!important;
+  font-size:13px!important;
+}
+.publicItemsTable th,
+.publicItemsTable td{
+  padding:8px 9px!important;
+  line-height:1.2!important;
+  vertical-align:top!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.publicItemsTable th:nth-child(1),.publicItemsTable td:nth-child(1){width:54px!important;}
+.publicItemsTable th:nth-child(2),.publicItemsTable td:nth-child(2){width:90px!important;}
+.publicItemsTable th:nth-child(3),.publicItemsTable td:nth-child(3){width:220px!important;}
+.publicItemsTable th:nth-child(4),.publicItemsTable td:nth-child(4){width:230px!important;}
+.publicItemsTable th:nth-child(5),.publicItemsTable td:nth-child(5){width:80px!important;}
+.publicItemsTable th:nth-child(6),.publicItemsTable td:nth-child(6){width:110px!important;}
+.publicItemsTable th:nth-child(7),.publicItemsTable td:nth-child(7){width:190px!important;}
+.publicItemsTable th:nth-child(8),.publicItemsTable td:nth-child(8){width:78px!important;text-align:right!important;}
+.publicItemsTable th:nth-child(9),.publicItemsTable td:nth-child(9){width:120px!important;}
+.public-item-name-cell{
+  font-weight:750;
+  color:#f4f7fb;
+  white-space:nowrap!important;
+}
+.public-desc-cell .desc{
+  display:block!important;
+  max-width:100%!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.public-dims-cell .dim-badge[title]{
+  cursor:help;
+  border-bottom:1px dotted rgba(240,180,41,.75);
+}
+.public-color-list{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:4px!important;
+  align-items:flex-start!important;
+  white-space:normal!important;
+  overflow:visible!important;
+}
+.public-color-bullet{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  max-width:100%!important;
+  color:#eaf2ff;
+  font-size:12px;
+  line-height:1.25;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.public-color-bullet span:last-child{
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.public-color-dot{
+  width:10px;
+  height:10px;
+  min-width:10px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.65);
+  box-shadow:0 0 0 1px rgba(0,0,0,.35);
+}
+.public-item-thumb{
+  cursor:pointer;
+  transition:transform .12s ease,box-shadow .12s ease;
+}
+.public-item-thumb:hover{
+  transform:scale(1.16);
+  box-shadow:0 0 0 2px rgba(240,180,41,.65),0 8px 18px rgba(0,0,0,.35);
+}
+.public-items-pager{
+  border-top:1px solid rgba(86,142,198,.28);
+  background:#071321;
+}
+.public-items-pager .pager-info{color:#c8d4e3;}
+.public-items-pager .pager-buttons button{
+  min-width:28px;
+  height:28px;
+  border-radius:5px;
+  border:1px solid #294869;
+  background:#0d2238;
+  color:#dce8f6;
+  cursor:pointer;
+}
+.public-items-pager .pager-buttons button.active{
+  background:#b91c1c;
+  color:#fff;
+  border-color:#ef4444;
+}
+.public-items-pager .pager-buttons button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+@media(max-width:900px){
+  .publicItemsTable th:nth-child(4),.publicItemsTable td:nth-child(4){display:none!important;}
+  .publicItemsTable th:nth-child(7),.publicItemsTable td:nth-child(7){width:150px!important;}
+}
+
+
+/* Public Collapse Counts v26 */
+.public-details-card summary h2 .badge{
+  vertical-align:middle;
+  margin-left:8px;
+  font-size:12px;
+  text-transform:none;
+  letter-spacing:0;
+}
+
+
+/* =========================================================
+   Admin Close Button v27
+   ========================================================= */
+.admin-close-site{
+  width:38px;
+  height:38px;
+  min-width:38px;
+  border-radius:10px;
+  border:1px solid rgba(239,68,68,.7);
+  background:rgba(239,68,68,.18);
+  color:#fff;
+  font-size:22px;
+  font-weight:900;
+  line-height:1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  margin-left:14px;
+  box-shadow:0 4px 12px rgba(239,68,68,.16);
+}
+.admin-close-site:hover{
+  background:#ef4444;
+  border-color:#ff7b7b;
+  transform:translateY(-1px);
+}
+.site-close-message-mode .mock-topbar,
+.site-close-message-mode .mock-shell,
+.site-close-message-mode .site-footer{
+  filter:blur(2px);
+  opacity:.35;
+}
+.site-close-message{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index:99999;
+  max-width:520px;
+  width:calc(100% - 32px);
+  background:#07182a;
+  border:1px solid #3b5f83;
+  border-radius:14px;
+  padding:22px;
+  box-shadow:0 18px 48px rgba(0,0,0,.55);
+  color:#eaf2ff;
+  text-align:center;
+}
+.site-close-message h2{
+  margin:0 0 8px;
+  color:#f0b429;
+}
+.site-close-message code{
+  color:#f0b429;
+}
+@media(max-width:700px){
+  .admin-close-site{margin-left:0;margin-top:8px;}
+}

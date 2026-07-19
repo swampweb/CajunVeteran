@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CajunVeteran Workshop Management — Reports</title>
+  <link rel="stylesheet" href="styles.css?v=reports1" />
+  <style>
+    body.reports-page{background:#06111e;color:#f4f7fb;font:15px/1.45 "Segoe UI",Roboto,Arial,sans-serif;margin:0;overflow-x:hidden}.reports-shell{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;padding:18px 14px 20px}.reports-main{min-width:0}.reports-topbar{height:104px;background:linear-gradient(90deg,#06111e,#0b2136 55%,#06111e);border-bottom:2px solid var(--accent,#f0b429);display:flex;align-items:center;justify-content:space-between;padding:8px 24px;position:sticky;top:0;z-index:50;box-shadow:0 10px 28px rgba(0,0,0,.35)}.reports-brand{display:flex;align-items:center;gap:14px}.reports-logo{height:86px;width:auto;border-radius:8px;object-fit:contain}.reports-name{font-size:34px;line-height:.95;font-weight:900;color:var(--accent,#f0b429);text-shadow:0 2px 0 rgba(0,0,0,.45)}.reports-sub{font-size:19px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#f8ead0}.reports-title{border-left:2px solid #ef4444;margin-left:12px;padding-left:18px;display:flex;flex-direction:column}.reports-title strong{font-size:22px;color:var(--accent,#f0b429)}.reports-title span{font-size:14px;color:#dce8f6}.reports-topnav{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:flex-end}.reports-topnav a{color:#e8eef7;text-decoration:none;font-size:16px}.reports-topnav a.active{color:var(--accent,#f0b429)}.reports-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:14px}.report-kpi{min-height:142px;padding:18px 20px;border-radius:8px;background:linear-gradient(135deg,#0c243a,#081b2e);border:1px solid #31587d;box-shadow:0 10px 24px rgba(0,0,0,.22);display:flex;gap:16px;align-items:center}.report-kpi-icon{font-size:39px;line-height:1;width:54px;height:54px;min-width:54px;display:flex;align-items:center;justify-content:center;border-radius:14px;background:rgba(240,180,41,.12);border:1px solid rgba(240,180,41,.32)}.report-kpi b{text-transform:uppercase;font-size:15px}.report-kpi span{display:block;color:#b0bfd2;font-size:13px}.report-kpi strong{display:block;font-size:34px;line-height:1.05;margin:6px 0}.report-kpi em{font-style:normal;color:#f0b429;font-weight:800;font-size:13px}.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.report-card{background:linear-gradient(180deg,#092037,#07192c);border:1px solid #31587d;border-radius:8px;box-shadow:0 10px 24px rgba(0,0,0,.22);overflow:hidden}.report-card.full{grid-column:1/-1}.report-card h2,.report-card summary h2{margin:0;color:#f0b429;text-transform:uppercase;letter-spacing:.03em;font-size:20px}.report-card>h2,.report-card summary{padding:13px 16px;border-bottom:1px solid rgba(86,142,198,.35)}.report-card summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer}.report-card summary span{color:#9fb0c4;font-size:13px}.report-body{padding:14px}.mini-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.mini-stat{background:#081d31;border:1px solid rgba(86,142,198,.35);border-radius:8px;padding:12px}.mini-stat span{display:block;color:#9fb0c4;font-size:12px;text-transform:uppercase}.mini-stat strong{font-size:25px;color:#f0b429}.report-table-wrap{overflow:auto;background:#07182a;border:1px solid rgba(86,142,198,.35);border-radius:8px}.report-table{width:100%;border-collapse:collapse;table-layout:auto}.report-table th,.report-table td{padding:9px 10px;border-bottom:1px solid rgba(86,142,198,.25);vertical-align:middle;white-space:nowrap}.report-table th{background:#071321;color:#eaf2ff;font-weight:900;font-size:12px}.report-table tr:hover td{background:rgba(240,180,41,.055)}.money{text-align:right;font-variant-numeric:tabular-nums}.ok-text{color:#6ee7b7;font-weight:800}.warn-text{color:#ffd36a;font-weight:800}.bad-text{color:#ff9b9b;font-weight:800}.muted-small{color:#9fb0c4;font-size:12px}.report-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.report-actions button{min-height:38px;border:1px solid #3b5f83;background:#10283f;color:#fff;border-radius:6px;padding:8px 12px;font-weight:900;cursor:pointer}.report-actions button.primary{background:linear-gradient(135deg,#f0b429,#e5a91f);color:#071321;border:0}.empty-report{padding:18px;color:#9fb0c4;text-align:center;border:1px dashed rgba(86,142,198,.5);border-radius:8px;background:rgba(8,22,36,.75)}@media(max-width:1200px){.reports-topbar{height:auto;align-items:flex-start;flex-direction:column}.reports-shell{grid-template-columns:1fr}.reports-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.report-grid{grid-template-columns:1fr}.mock-sidebar{position:static!important;height:auto!important;display:flex!important;flex-direction:row!important;flex-wrap:wrap!important}.shared-sidebar-motto{display:none}}@media(max-width:700px){.reports-kpis{grid-template-columns:1fr}.mini-stats{grid-template-columns:1fr}.reports-logo{height:64px}.reports-name{font-size:26px}}
+  
+.report-filter-card{margin-bottom:14px}.report-filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;align-items:end}.report-filters label{display:flex;flex-direction:column;gap:5px;color:#dce8f6;font-size:13px;font-weight:700}.report-filters input,.report-filters select{min-height:38px;padding:9px 10px;border-radius:6px;border:1px solid #3b5f83;background:#10283f;color:#f4f7fb;font-size:14px}.filter-actions{display:flex;gap:8px;align-items:end}.filter-actions button{min-height:38px;border:1px solid #3b5f83;background:#10283f;color:#fff;border-radius:6px;padding:8px 12px;font-weight:900;cursor:pointer}.filter-actions .primary{background:linear-gradient(135deg,#f0b429,#e5a91f);color:#071321;border:0}.filter-chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.filter-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(240,180,41,.35);background:rgba(240,180,41,.10);color:#ffd36a;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:900}.filter-chip.muted{border-color:rgba(148,163,184,.35);background:rgba(148,163,184,.10);color:#cbd5e1}@media(max-width:1300px){.report-filters{grid-template-columns:repeat(3,minmax(0,1fr));}}@media(max-width:760px){.report-filters{grid-template-columns:1fr}.filter-actions{flex-direction:column;align-items:stretch}.filter-actions button{width:100%}}
+
+  
+/* =========================================================
+   Print-Friendly Reports v2
+   ========================================================= */
+.print-only{display:none!important}.print-report-header{display:none}.print-summary-grid{display:none}.print-meta{display:none}.print-button-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.report-actions button.print-btn{background:linear-gradient(135deg,#10b981,#6ee7b7);color:#071321;border:0}
+@media print{
+  @page{size:letter portrait;margin:.45in;}
+  html,body{background:#fff!important;color:#111827!important;font:10.5pt/1.35 Arial,Helvetica,sans-serif!important;}
+  .reports-topbar,.mock-sidebar,.reports-shell>aside,.site-footer,.report-filter-card,.report-actions,.shared-sidebar-motto{display:none!important;}
+  .reports-shell{display:block!important;padding:0!important;margin:0!important;}
+  .reports-main{display:block!important;width:100%!important;}
+  .print-only,.print-report-header,.print-summary-grid,.print-meta{display:block!important;}
+  .print-report-header{border-bottom:2px solid #111827;margin:0 0 12px;padding:0 0 8px;}
+  .print-report-header h1{font-size:18pt;margin:0 0 2px;color:#111827!important;letter-spacing:.03em;text-transform:uppercase;}
+  .print-report-header p{margin:2px 0;color:#374151!important;font-size:9.5pt;}
+  .print-meta{display:flex!important;justify-content:space-between;gap:12px;margin:6px 0 0;color:#374151!important;font-size:9pt;}
+  .reports-kpis{grid-template-columns:repeat(4,1fr)!important;gap:6px!important;margin:8px 0 10px!important;page-break-inside:avoid;}
+  .report-kpi{min-height:auto!important;padding:8px!important;border:1px solid #9ca3af!important;background:#fff!important;box-shadow:none!important;color:#111827!important;}
+  .report-kpi-icon{display:none!important;}
+  .report-kpi b{font-size:8pt!important;color:#374151!important;}
+  .report-kpi span,.report-kpi em{font-size:7.5pt!important;color:#4b5563!important;}
+  .report-kpi strong{font-size:15pt!important;color:#111827!important;margin:2px 0!important;}
+  .report-grid{display:block!important;}
+  .report-card,.report-card.full{display:block!important;break-inside:avoid;page-break-inside:avoid;background:#fff!important;border:1px solid #9ca3af!important;box-shadow:none!important;border-radius:0!important;margin:0 0 10px!important;overflow:visible!important;}
+  .report-card h2,.report-card summary h2{font-size:12pt!important;color:#111827!important;letter-spacing:.02em;}
+  .report-card>h2,.report-card summary{padding:6px 8px!important;border-bottom:1px solid #9ca3af!important;background:#f3f4f6!important;}
+  .report-card summary span{display:none!important;}
+  details.report-card{display:block!important;}
+  details.report-card > *{display:block!important;}
+  details.report-card summary{display:block!important;list-style:none!important;}
+  details.report-card summary::-webkit-details-marker{display:none!important;}
+  .report-body{padding:8px!important;}
+  .mini-stats{grid-template-columns:repeat(3,1fr)!important;gap:6px!important;}
+  .mini-stat{background:#fff!important;border:1px solid #d1d5db!important;border-radius:0!important;padding:6px!important;}
+  .mini-stat span{font-size:7.5pt!important;color:#4b5563!important;}.mini-stat strong{font-size:13pt!important;color:#111827!important;}.muted-small{font-size:7.5pt!important;color:#6b7280!important;}
+  .report-table-wrap{overflow:visible!important;border:0!important;background:#fff!important;}
+  .report-table{width:100%!important;border-collapse:collapse!important;table-layout:auto!important;font-size:8pt!important;}
+  .report-table th,.report-table td{border:1px solid #d1d5db!important;padding:4px 5px!important;color:#111827!important;white-space:normal!important;vertical-align:top!important;}
+  .report-table th{background:#f3f4f6!important;color:#111827!important;font-weight:700!important;}
+  .money{text-align:right!important;white-space:nowrap!important;}.ok-text,.warn-text,.bad-text{color:#111827!important;font-weight:700!important;}
+  .empty-report{border:1px dashed #9ca3af!important;background:#fff!important;color:#4b5563!important;padding:8px!important;}
+  .report-card:nth-of-type(n+5){break-before:auto;}
+  a[href]:after{content:''!important;}
+}
+
+  </style>
+</head>
+<body class="reports-page admin-mockup-v4">
+<header class="reports-topbar">
+  <div class="reports-brand">
+    <img class="reports-logo" src="CajunVeteran 3D Print Logo.png" alt="CajunVeteran Workshop Management" onerror="this.style.display='none'" />
+    <div><div class="reports-name">CajunVeteran</div><div class="reports-sub">Workshop</div></div>
+    <div class="reports-title"><strong>REPORTS CENTER</strong><span>3D Printing • Woodworking • Materials • Revenue</span></div>
+  </div>
+  <nav class="reports-topnav"><a href="index.html">Public View</a><a href="admin.html">Admin</a><a href="woodworking.html">Woodworking</a><a class="active" href="reports.html">Reports</a><a href="tablet.html">Tablet Mode</a></nav>
+</header>
+<main class="reports-shell">
+  <aside id="sharedSidebar" class="mock-sidebar" data-nav-style="admin" data-shared-sidebar></aside>
+  <section class="reports-main">
+    <section class="print-report-header print-only">
+      <h1>CajunVeteran Workshop Management Report</h1>
+      <p>3D Printing • Woodworking • Materials • Revenue</p>
+      <div class="print-meta"><span id="printGeneratedDate">Generated: --</span><span id="printFilterSummary">Filters: All available report data</span></div>
+    </section>
+
+    <section class="reports-kpis">
+      <div class="report-kpi"><div class="report-kpi-icon">💵</div><div><b>Total Revenue</b><span>3D + Woodworking</span><strong id="kpiTotalRevenue">$0.00</strong><em id="kpiRevenueDetails">All known sales</em></div></div>
+      <div class="report-kpi"><div class="report-kpi-icon">🖨️</div><div><b>Open 3D Orders</b><span>New + In Process</span><strong id="kpiOpenOrders">0</strong><em id="kpiOpenOrdersValue">$0.00 open value</em></div></div>
+      <div class="report-kpi"><div class="report-kpi-icon">🪵</div><div><b>Open Wood Jobs</b><span>Quote + In Process</span><strong id="kpiOpenJobs">0</strong><em id="kpiOpenJobsValue">$0.00 open value</em></div></div>
+      <div class="report-kpi"><div class="report-kpi-icon">⚠️</div><div><b>Alerts</b><span>Inventory + unpaid</span><strong id="kpiAlerts">0</strong><em id="kpiAlertsDetails">Needs review</em></div></div>
+    </section>
+
+    <section class="report-card report-filter-card">
+      <h2>Report Filters</h2>
+      <div class="report-body">
+        <div class="report-filters">
+          <label>Report Type
+            <select id="filterType">
+              <option value="all">All Reports</option>
+              <option value="print">3D Printing Only</option>
+              <option value="wood">Woodworking Only</option>
+            </select>
+          </label>
+          <label>Status
+            <select id="filterStatus">
+              <option value="all">All Statuses</option>
+              <option value="open">Open Only</option>
+              <option value="completed">Completed / Ready</option>
+              <option value="shipped_delivered">Shipped / Delivered</option>
+              <option value="quote">Quote</option>
+              <option value="approved">Approved</option>
+              <option value="in_progress">In Process</option>
+              <option value="new">New</option>
+            </select>
+          </label>
+          <label>Payment
+            <select id="filterPaid">
+              <option value="all">Paid + Unpaid</option>
+              <option value="paid">Paid Only</option>
+              <option value="unpaid">Unpaid Only</option>
+            </select>
+          </label>
+          <label>Start Date
+            <input id="filterStartDate" type="date" />
+          </label>
+          <label>End Date
+            <input id="filterEndDate" type="date" />
+          </label>
+          <label>Search Customer / Project
+            <input id="filterSearch" placeholder="Customer, order #, job #, project..." />
+          </label>
+        </div>
+        <div class="filter-chip-row" id="activeFilterChips"><span class="filter-chip muted">Showing all available report data</span></div>
+        <div class="filter-actions" style="margin-top:12px">
+          <button class="primary" id="applyReportFiltersBtn">Apply Filters</button>
+          <button id="resetReportFiltersBtn">Reset Filters</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="report-grid">
+      <section class="report-card">
+        <h2>3D Printing Summary</h2>
+        <div class="report-body"><div class="mini-stats" id="printSummary"></div></div>
+      </section>
+      <section class="report-card">
+        <h2>Woodworking Summary</h2>
+        <div class="report-body"><div class="mini-stats" id="woodSummary"></div></div>
+      </section>
+      <section class="report-card full">
+        <h2>Recent Activity</h2>
+        <div class="report-body">
+          <div class="report-actions"><button class="primary" id="refreshReportsBtn">Refresh Reports</button><button id="downloadReportsBtn">Download Report JSON</button><button class="print-btn" id="printReportsBtn">Print / Save PDF</button></div>
+          <div class="report-grid">
+            <div><h3 style="color:#f0b429;margin:0 0 8px">Recent 3D Orders</h3><div class="report-table-wrap"><table class="report-table"><thead><tr><th>Order #</th><th>Customer</th><th>Status</th><th>Due</th><th>Total</th><th>Paid</th></tr></thead><tbody id="recentOrdersTable"></tbody></table></div></div>
+            <div><h3 style="color:#f0b429;margin:0 0 8px">Recent Wood Jobs</h3><div class="report-table-wrap"><table class="report-table"><thead><tr><th>Job #</th><th>Customer</th><th>Project</th><th>Status</th><th>Due</th><th>Total</th><th>Paid</th></tr></thead><tbody id="recentJobsTable"></tbody></table></div></div>
+          </div>
+        </div>
+      </section>
+      <section class="report-card">
+        <h2>Top / Low Inventory</h2>
+        <div class="report-body"><div id="inventoryReport"></div></div>
+      </section>
+      <section class="report-card">
+        <h2>Material Inventory</h2>
+        <div class="report-body"><div id="materialReport"></div></div>
+      </section>
+      <details class="report-card full" open>
+        <summary><h2>Monthly Revenue</h2><span>Grouped by order/job date</span></summary>
+        <div class="report-body"><div class="report-table-wrap"><table class="report-table"><thead><tr><th>Month</th><th>3D Revenue</th><th>Wood Revenue</th><th>Total Revenue</th><th>Wood Profit</th></tr></thead><tbody id="monthlyReportTable"></tbody></table></div></div>
+      </details>
+    </section>
+  </section>
+</main>
+<footer class="site-footer">★ CajunVeteran Workshop Management • Reports Center ★</footer>
+<script src="script.js?v=close27"></script>
+<script src="sidebar.js?v=shared1"></script>
+<script>
+(function(){
+  const PRINT_KEY='inventory_orders_store_v9';
+  const WOOD_JOBS_KEY='cv_woodworking_jobs_v1';
+  const WOOD_ITEMS_KEY='cv_woodworking_items_v1';
+  const MAT_INV_KEY='cv_woodworking_material_inventory_v1';
+  const money=n=>'$'+(Number(n||0)||0).toFixed(2);
+  const num=n=>Number(n||0)||0;
+  const esc=v=>String(v||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const load=(key, fallback)=>{try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}catch{return fallback}};
+  function store(){return typeof loadStore==='function'?loadStore():load(PRINT_KEY,{items:[],orders:[],colors:[]});}
+  function statusText(s){return {new:'New',in_progress:'In Process',completed:'Completed',ready:'Completed',shipped:'Shipped',quote:'Quote',approved:'Approved',delivered:'Delivered'}[s]||s||''}
+  function isPrintOpen(o){return !['completed','ready','shipped'].includes(String(o.status||'new'))}
+  function isWoodOpen(j){return !['completed','delivered'].includes(String(j.status||'quote'))}
+  function fmtDate(s){if(!s)return'';if(/^\d{4}-\d{2}-\d{2}$/.test(s)){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString()}try{return new Date(s).toLocaleDateString()}catch{return s}}
+  function monthKey(s){if(!s)return'No Date';if(/^\d{4}-\d{2}/.test(s))return s.slice(0,7);const d=new Date(s);return isNaN(d)?'No Date':String(d.getFullYear())+'-'+String(d.getMonth()+1).padStart(2,'0')}
+  function orderTotal(s,o){return typeof orderFinalTotal==='function'?orderFinalTotal(s,o):0}
+  function renderMini(id, rows){document.getElementById(id).innerHTML=rows.map(r=>`<div class="mini-stat"><span>${r.label}</span><strong>${r.value}</strong><div class="muted-small">${r.note||''}</div></div>`).join('')}
+  function tableRows(id, rows, emptyCols){document.getElementById(id).innerHTML=rows.length?rows.join(''):`<tr><td colspan="${emptyCols}" class="empty-report">No records found.</td></tr>`}
+  function renderListBox(id, title, rows){const el=document.getElementById(id);if(!rows.length){el.innerHTML='<div class="empty-report">No alerts found.</div>';return;}el.innerHTML=`<div class="report-table-wrap"><table class="report-table"><thead><tr>${title.map(t=>`<th>${t}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`}
+  function getFilters(){
+    return {
+      type:document.getElementById('filterType')?.value||'all',
+      status:document.getElementById('filterStatus')?.value||'all',
+      paid:document.getElementById('filterPaid')?.value||'all',
+      start:document.getElementById('filterStartDate')?.value||'',
+      end:document.getElementById('filterEndDate')?.value||'',
+      search:(document.getElementById('filterSearch')?.value||'').trim().toLowerCase()
+    };
+  }
+  function recordDate(value){
+    if(!value) return '';
+    if(/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+    const d=new Date(value);
+    if(isNaN(d)) return '';
+    return d.toISOString().slice(0,10);
+  }
+  function withinDate(dateValue, filters){
+    const d=recordDate(dateValue);
+    if(filters.start && (!d || d < filters.start)) return false;
+    if(filters.end && (!d || d > filters.end)) return false;
+    return true;
+  }
+  function matchesStatus(kind, status, filters){
+    if(filters.status==='all') return true;
+    status=String(status||'');
+    if(filters.status==='open') return kind==='print' ? isPrintOpen({status}) : isWoodOpen({status});
+    if(filters.status==='completed') return ['completed','ready'].includes(status);
+    if(filters.status==='shipped_delivered') return kind==='print' ? status==='shipped' : status==='delivered';
+    return status===filters.status;
+  }
+  function matchesPaid(paid, filters){
+    if(filters.paid==='all') return true;
+    if(filters.paid==='paid') return !!paid;
+    if(filters.paid==='unpaid') return !paid;
+    return true;
+  }
+  function textMatch(text, filters){
+    if(!filters.search) return true;
+    return String(text||'').toLowerCase().includes(filters.search);
+  }
+  function renderFilterChips(filters, counts){
+    const chips=[];
+    if(filters.type!=='all') chips.push(filters.type==='print'?'3D Printing Only':'Woodworking Only');
+    if(filters.status!=='all') chips.push('Status: '+filters.status.replace('_',' / '));
+    if(filters.paid!=='all') chips.push(filters.paid==='paid'?'Paid Only':'Unpaid Only');
+    if(filters.start) chips.push('From: '+filters.start);
+    if(filters.end) chips.push('To: '+filters.end);
+    if(filters.search) chips.push('Search: '+filters.search);
+    chips.push(`${counts.print} 3D order(s)`);
+    chips.push(`${counts.wood} woodworking job(s)`);
+    const el=document.getElementById('activeFilterChips');
+    if(el) el.innerHTML = chips.length ? chips.map(c=>`<span class="filter-chip">${esc(c)}</span>`).join('') : '<span class="filter-chip muted">Showing all available report data</span>';
+  }
+  function buildReport(){
+    const filters=getFilters();
+    const s=store();
+    const allOrders=Array.isArray(s.orders)?s.orders:[];
+    const items=Array.isArray(s.items)?s.items:[];
+    const allJobs=load(WOOD_JOBS_KEY,[]);
+    const woodItems=load(WOOD_ITEMS_KEY,[]);
+    const mats=load(MAT_INV_KEY,[]);
+
+    const orders = filters.type==='wood' ? [] : allOrders.filter(o=>
+      withinDate(o.orderDate||o.dueDate, filters) &&
+      matchesStatus('print', o.status, filters) &&
+      matchesPaid(o.paid, filters) &&
+      textMatch(`${o.orderId} ${o.customer} ${(o.lines||[]).map(l=>l.sku).join(' ')}`, filters)
+    );
+    const jobs = filters.type==='print' ? [] : allJobs.filter(j=>
+      withinDate(j.dueDate, filters) &&
+      matchesStatus('wood', j.status, filters) &&
+      matchesPaid(j.paid, filters) &&
+      textMatch(`${j.jobId} ${j.customer} ${j.project} ${j.woodType} ${j.notes}`, filters)
+    );
+
+    const printRevenue=orders.reduce((a,o)=>a+orderTotal(s,o),0);
+    const woodRevenue=jobs.reduce((a,j)=>a+num(j.total),0);
+    const woodProfit=jobs.reduce((a,j)=>a+(num(j.total)-num(j.jobMaterialCost)),0);
+    const openOrders=orders.filter(isPrintOpen);
+    const openJobs=jobs.filter(isWoodOpen);
+    const unpaidOrders=orders.filter(o=>!o.paid);
+    const unpaidJobs=jobs.filter(j=>!j.paid);
+    const lowItems=filters.type==='wood'?[]:items.filter(i=>num(i.qty)<=0 || i.visible===false);
+    const lowMats=filters.type==='print'?[]:mats.filter(m=>num(m.onHand)<=0);
+    const alerts=unpaidOrders.length+unpaidJobs.length+lowItems.length+lowMats.length;
+
+    renderFilterChips(filters,{print:orders.length,wood:jobs.length});
+    updatePrintMeta(filters);
+    document.getElementById('kpiTotalRevenue').textContent=money(printRevenue+woodRevenue);
+    document.getElementById('kpiRevenueDetails').textContent=`3D ${money(printRevenue)} + Wood ${money(woodRevenue)}`;
+    document.getElementById('kpiOpenOrders').textContent=openOrders.length;
+    document.getElementById('kpiOpenOrdersValue').textContent=money(openOrders.reduce((a,o)=>a+orderTotal(s,o),0))+' open value';
+    document.getElementById('kpiOpenJobs').textContent=openJobs.length;
+    document.getElementById('kpiOpenJobsValue').textContent=money(openJobs.reduce((a,j)=>a+num(j.total),0))+' open value';
+    document.getElementById('kpiAlerts').textContent=alerts;
+    document.getElementById('kpiAlertsDetails').textContent=`${unpaidOrders.length+unpaidJobs.length} unpaid • ${lowItems.length+lowMats.length} inventory`;
+
+    renderMini('printSummary',[
+      {label:'Orders',value:orders.length,note:'Filtered 3D orders'},
+      {label:'Revenue',value:money(printRevenue),note:'Filtered order totals'},
+      {label:'Unpaid',value:unpaidOrders.length,note:money(unpaidOrders.reduce((a,o)=>a+orderTotal(s,o),0))}
+    ]);
+    renderMini('woodSummary',[
+      {label:'Jobs',value:jobs.length,note:'Filtered woodworking jobs'},
+      {label:'Revenue',value:money(woodRevenue),note:'Filtered job totals'},
+      {label:'Profit',value:money(woodProfit),note:'Revenue - job material cost'}
+    ]);
+
+    const recentOrders=orders.slice().sort((a,b)=>String(b.dueDate||b.orderDate||'').localeCompare(String(a.dueDate||a.orderDate||''))).slice(0,10);
+    tableRows('recentOrdersTable', recentOrders.map(o=>`<tr><td><strong>${esc(o.orderId)}</strong></td><td>${esc(o.customer)}</td><td>${statusText(o.status)}</td><td>${fmtDate(o.dueDate)}</td><td class="money">${money(orderTotal(s,o))}</td><td>${o.paid?'<span class="ok-text">Paid</span>':'<span class="warn-text">Unpaid</span>'}</td></tr>`),6);
+    const recentJobs=jobs.slice().sort((a,b)=>String(b.dueDate||'').localeCompare(String(a.dueDate||''))).slice(0,10);
+    tableRows('recentJobsTable', recentJobs.map(j=>`<tr><td><strong>${esc(j.jobId)}</strong></td><td>${esc(j.customer)}</td><td>${esc(j.project)}</td><td>${statusText(j.status)}</td><td>${fmtDate(j.dueDate)}</td><td class="money">${money(j.total)}</td><td>${j.paid?'<span class="ok-text">Paid</span>':'<span class="warn-text">Unpaid</span>'}</td></tr>`),7);
+
+    renderListBox('inventoryReport',['SKU','Item','Qty','Status'], lowItems.slice(0,12).map(i=>`<tr><td>${esc(i.sku)}</td><td>${esc(i.name)}</td><td>${num(i.qty)}</td><td>${i.visible===false?'<span class="warn-text">Inactive</span>':'<span class="bad-text">Out / Low</span>'}</td></tr>`));
+    renderListBox('materialReport',['Material','On Hand','Cost Each','Status'], lowMats.slice(0,12).map(m=>{const cost=num(m.purchaseCost||m.cost)/(num(m.yieldQty||m.yield)||1);return `<tr><td>${esc(m.name)}</td><td>${num(m.onHand)}</td><td class="money">${money(cost)}</td><td><span class="bad-text">Out / Low</span></td></tr>`}));
+
+    const months={};
+    orders.forEach(o=>{const k=monthKey(o.orderDate||o.dueDate);months[k]=months[k]||{p:0,w:0,profit:0};months[k].p+=orderTotal(s,o)});
+    jobs.forEach(j=>{const k=monthKey(j.dueDate);months[k]=months[k]||{p:0,w:0,profit:0};months[k].w+=num(j.total);months[k].profit+=(num(j.total)-num(j.jobMaterialCost))});
+    const monthRows=Object.keys(months).sort().reverse().slice(0,18).map(k=>`<tr><td><strong>${k}</strong></td><td class="money">${money(months[k].p)}</td><td class="money">${money(months[k].w)}</td><td class="money">${money(months[k].p+months[k].w)}</td><td class="money">${money(months[k].profit)}</td></tr>`);
+    tableRows('monthlyReportTable', monthRows, 5);
+    window.__cvLatestReport={generated:new Date().toISOString(),filters,print:{orders:orders.length,revenue:printRevenue,open:openOrders.length,unpaid:unpaidOrders.length},wood:{jobs:jobs.length,revenue:woodRevenue,profit:woodProfit,open:openJobs.length,unpaid:unpaidJobs.length},alerts:{total:alerts,lowItems:lowItems.length,lowMaterials:lowMats.length}};
+  }
+
+  function updatePrintMeta(filters){
+    const gen=document.getElementById('printGeneratedDate');
+    const fs=document.getElementById('printFilterSummary');
+    if(gen) gen.textContent='Generated: '+new Date().toLocaleString();
+    if(fs){
+      const parts=[];
+      if(filters.type && filters.type!=='all') parts.push(filters.type==='print'?'3D Printing Only':'Woodworking Only');
+      if(filters.status && filters.status!=='all') parts.push('Status '+filters.status.replace('_',' / '));
+      if(filters.paid && filters.paid!=='all') parts.push(filters.paid==='paid'?'Paid Only':'Unpaid Only');
+      if(filters.start) parts.push('From '+filters.start);
+      if(filters.end) parts.push('To '+filters.end);
+      if(filters.search) parts.push('Search '+filters.search);
+      fs.textContent='Filters: '+(parts.length?parts.join(' • '):'All available report data');
+    }
+  }
+
+  function downloadReport(){const data=window.__cvLatestReport||{};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='cajunveteran_workshop_report.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+  document.getElementById('refreshReportsBtn').addEventListener('click',buildReport);
+  document.getElementById('downloadReportsBtn').addEventListener('click',downloadReport);
+  document.getElementById('printReportsBtn')?.addEventListener('click',()=>{buildReport();setTimeout(()=>window.print(),150);});
+  document.getElementById('applyReportFiltersBtn')?.addEventListener('click',buildReport);
+  document.getElementById('resetReportFiltersBtn')?.addEventListener('click',()=>{['filterType','filterStatus','filterPaid'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='all'});['filterStartDate','filterEndDate','filterSearch'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});buildReport();});
+  ['filterType','filterStatus','filterPaid','filterStartDate','filterEndDate'].forEach(id=>document.getElementById(id)?.addEventListener('change',buildReport));
+  document.getElementById('filterSearch')?.addEventListener('input',()=>{clearTimeout(window.__reportFilterTimer);window.__reportFilterTimer=setTimeout(buildReport,250);});
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(buildReport,250));
+  setTimeout(buildReport,500);
+})();
+</script>
+</body>
+</html>

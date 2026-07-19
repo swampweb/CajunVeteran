@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CajunVeteran Workshop Management — Public View</title>
+  <link rel="stylesheet" href="styles.css?v=public-clean1" />
+  <style>
+    body.public-clean{margin:0;background:#06111e;color:#f4f7fb;font:15px/1.45 "Segoe UI",Roboto,Arial,sans-serif;overflow-x:hidden}.public-topbar-clean{height:104px;background:linear-gradient(90deg,#06111e,#0b2136 55%,#06111e);border-bottom:2px solid #f0b429;display:flex;align-items:center;justify-content:space-between;padding:8px 24px;position:sticky;top:0;z-index:50;box-shadow:0 10px 28px rgba(0,0,0,.35)}.public-brand-clean{display:flex;align-items:center;gap:14px}.public-logo-clean{height:86px;width:auto;border-radius:8px;object-fit:contain}.public-name-clean{font-size:34px;line-height:.95;font-weight:900;color:#f0b429;text-shadow:0 2px 0 rgba(0,0,0,.45)}.public-sub-clean{font-size:19px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#f8ead0}.public-title-clean{border-left:2px solid #ef4444;margin-left:12px;padding-left:18px;display:flex;flex-direction:column}.public-title-clean strong{font-size:22px;color:#f0b429}.public-title-clean span{font-size:14px;color:#dce8f6}.public-date{display:flex;align-items:center;gap:10px;color:#dce8f6}.public-date .date-icon{font-size:26px;color:#f0b429}.public-shell-clean{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;padding:18px 14px 20px}.public-sidebar-clean{position:sticky;top:122px;height:calc(100vh - 142px);background:linear-gradient(180deg,rgba(5,15,28,.98),rgba(4,12,22,.98));border:1px solid rgba(86,142,198,.35);border-radius:10px;padding:14px 12px;box-shadow:0 12px 30px rgba(0,0,0,.28);display:flex;flex-direction:column}.public-nav{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;padding:13px 14px;margin-bottom:9px;border:1px solid transparent;border-bottom-color:rgba(100,140,180,.16);border-radius:8px;font-size:16px;font-weight:800}.public-nav span{font-size:20px;min-width:24px;text-align:center}.public-nav:hover,.public-nav.active{color:#f0b429;background:rgba(240,180,41,.13);border-color:rgba(240,180,41,.45);border-left:5px solid #ef4444}.public-motto{margin-top:auto;text-align:center;border:1px solid rgba(240,180,41,.25);border-radius:8px;padding:14px 10px;color:#cbd5e1;background:rgba(240,180,41,.045)}.public-motto div,.public-motto strong{color:#f0b429}.public-motto p{margin:6px 0 0;font-size:13px;line-height:1.35}.public-main-clean{min-width:0}.public-hero{margin-bottom:14px;padding:0 4px}.public-hero h1{margin:0;color:#f0b429;font-size:34px;letter-spacing:.01em}.public-hero p{margin:4px 0 0;color:#dce8f6}.public-kpis-clean{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:14px}.public-kpi-clean{min-height:132px;padding:18px 20px;border-radius:8px;background:linear-gradient(135deg,#0c243a,#081b2e);border:1px solid #31587d;box-shadow:0 10px 24px rgba(0,0,0,.22);display:flex;gap:16px;align-items:center}.public-kpi-icon{font-size:38px;line-height:1;width:54px;height:54px;min-width:54px;display:flex;align-items:center;justify-content:center;border-radius:14px;background:rgba(240,180,41,.12);border:1px solid rgba(240,180,41,.32)}.public-kpi-clean b{text-transform:uppercase;font-size:15px}.public-kpi-clean span{display:block;color:#b0bfd2;font-size:13px}.public-kpi-clean strong{display:block;font-size:34px;line-height:1.05;margin:6px 0}.public-kpi-clean em{font-style:normal;color:#f0b429;font-weight:800;font-size:13px}.public-card-clean{background:linear-gradient(180deg,#092037,#07192c);border:1px solid #31587d;border-radius:8px;box-shadow:0 10px 24px rgba(0,0,0,.22);overflow:hidden;margin-bottom:14px}.public-card-clean h2{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0;color:#f0b429;text-transform:uppercase;letter-spacing:.03em;font-size:20px;padding:13px 16px;border-bottom:1px solid rgba(86,142,198,.35)}.public-card-clean h2 span{font-size:12px;color:#9fb0c4;text-transform:none;letter-spacing:0}.public-body-clean{padding:14px}.public-controls-clean{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}.public-controls-clean input{min-height:38px;min-width:280px;flex:1;padding:9px 10px;border-radius:6px;border:1px solid #3b5f83;background:#10283f;color:#f4f7fb}.public-chip-row{display:flex;gap:8px;flex-wrap:wrap}.public-chip{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 12px;border-radius:999px;border:1px solid rgba(86,142,198,.55);background:#10283f;color:#dce8f6;font-weight:900;font-size:12px;cursor:pointer}.public-chip:hover,.public-chip.active{border-color:#f0b429;color:#ffd36a;background:rgba(240,180,41,.14)}.public-chip.active.all{background:linear-gradient(135deg,#f0b429,#e5a91f);color:#071321}.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}.product-card{border:1px solid rgba(86,142,198,.35);border-radius:10px;background:linear-gradient(180deg,#0c243a,#081c30);overflow:hidden;box-shadow:0 8px 18px rgba(0,0,0,.18)}.product-img-frame{height:150px;background:linear-gradient(135deg,#111827,#0b2136);display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid rgba(86,142,198,.25)}.product-img-frame img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:transform .12s ease}.product-img-frame img:hover{transform:scale(1.05)}.product-placeholder{font-size:54px;color:#6b7280}.product-info{padding:11px}.product-info h3{margin:0 0 6px;font-size:15px;color:#fff;line-height:1.2}.product-price{font-weight:900;color:#f4f7fb}.product-meta{margin-top:6px;color:#9fb0c4;font-size:12px}.color-dots{display:flex;gap:5px;align-items:center;margin:7px 0}.color-dot{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,.65);box-shadow:0 0 0 1px rgba(0,0,0,.35)}.stock-badge,.status-badge{display:inline-flex;align-items:center;justify-content:center;min-width:72px;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:900}.stock-in,.status-completed,.status-delivered{background:rgba(16,185,129,.22);color:#6ee7b7}.stock-low,.status-in_progress,.status-approved,.status-quote{background:rgba(245,158,11,.22);color:#ffd36a}.stock-out{background:rgba(239,68,68,.22);color:#ff9b9b}.public-grid-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.public-table-wrap{overflow:auto;background:#07182a;border:1px solid rgba(86,142,198,.35);border-radius:8px}.public-table-clean{width:100%;border-collapse:collapse}.public-table-clean th,.public-table-clean td{padding:9px 10px;border-bottom:1px solid rgba(86,142,198,.25);vertical-align:middle;white-space:nowrap}.public-table-clean th{background:#071321;color:#eaf2ff;font-weight:900;font-size:12px}.public-table-clean tr:hover td{background:rgba(240,180,41,.055)}.showcase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}.showcase-card{border:1px solid rgba(86,142,198,.35);border-radius:10px;background:linear-gradient(180deg,#0c243a,#081c30);overflow:hidden}.showcase-img{height:132px;background:linear-gradient(135deg,#3a2617,#0b2136);display:flex;align-items:center;justify-content:center;overflow:hidden}.showcase-img img{width:100%;height:100%;object-fit:cover;cursor:pointer}.showcase-info{padding:10px}.showcase-info h3{margin:0 0 6px;font-size:15px}.showcase-info p{margin:3px 0;color:#cbd5e1;font-size:12px}.empty-public{padding:16px;color:#9fb0c4;text-align:center;border:1px dashed rgba(86,142,198,.5);border-radius:8px;background:rgba(8,22,36,.75)}.site-footer{padding:12px 18px;color:#9fb0c4;border-top:2px solid #f0b429;text-align:center}@media(max-width:1200px){.public-shell-clean{grid-template-columns:1fr}.public-sidebar-clean{position:static;height:auto;display:flex;flex-direction:row;flex-wrap:wrap}.public-motto{display:none}.public-kpis-clean{grid-template-columns:repeat(2,minmax(0,1fr))}.public-grid-two{grid-template-columns:1fr}}@media(max-width:700px){.public-topbar-clean{position:static;height:auto;align-items:flex-start;flex-direction:column}.public-kpis-clean{grid-template-columns:1fr}.public-controls-clean input{min-width:100%}.public-logo-clean{height:64px}.public-name-clean{font-size:26px}.product-grid,.showcase-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body class="public-clean">
+<header class="public-topbar-clean">
+  <div class="public-brand-clean">
+    <img class="public-logo-clean" src="CajunVeteran 3D Print Logo.png" alt="CajunVeteran Workshop" />
+    <div><div class="public-name-clean">CajunVeteran Workshop</div><div class="public-sub-clean">Public View</div></div>
+    <div class="public-title-clean"><strong>PUBLIC VIEW</strong><span>Products, completed work, and order progress.</span></div>
+  </div>
+  <div class="public-date"><span class="date-icon">📅</span><span id="publicDateText">--</span></div>
+</header>
+
+<main class="public-shell-clean">
+  <aside class="public-sidebar-clean">
+    <a class="public-nav active" href="dashboard.html"><span>🏠</span>Dashboard</a>
+    <a class="public-nav" href="#prints"><span>📦</span>Available 3D Prints</a>
+    <a class="public-nav" href="#completed"><span>✅</span>Completed Orders</a>
+    <a class="public-nav" href="#woodshowcase"><span>🪵</span>Woodworking Showcase</a>
+    <a class="public-nav" href="reports.html"><span>📊</span>Reports</a>
+    <a class="public-nav" href="admin.html"><span>🔒</span>Admin Login</a>
+    <div class="public-motto"><div>★</div><p><strong>CajunVeteran Workshop</strong><br/>Precision. Quality.<br/>Built for Those Who Serve.</p></div>
+  </aside>
+
+  <section class="public-main-clean">
+    <section class="public-hero">
+      <h1>Public View</h1>
+      <p>View available products, recent completed work, and order progress.</p>
+    </section>
+
+    <section class="public-kpis-clean">
+      <div class="public-kpi-clean"><div class="public-kpi-icon">📦</div><div><b>Available 3D Prints</b><span>Ready to order</span><strong id="pubAvailablePrints">0</strong><em>Visible catalog</em></div></div>
+      <div class="public-kpi-clean"><div class="public-kpi-icon">✅</div><div><b>Completed Orders</b><span>Completed / Delivered</span><strong id="pubCompletedOrders">0</strong><em>Finished work</em></div></div>
+      <div class="public-kpi-clean"><div class="public-kpi-icon">🪵</div><div><b>Woodworking Projects</b><span>Showcased work</span><strong id="pubWoodProjects">0</strong><em>Completed / active</em></div></div>
+      <div class="public-kpi-clean"><div class="public-kpi-icon">🗓️</div><div><b>Recently Added</b><span>Newest products</span><strong id="pubRecentlyAdded">0</strong><em>Catalog updates</em></div></div>
+    </section>
+
+    <section id="prints" class="public-card-clean">
+      <h2>Available 3D Prints <span>Customer-friendly catalog</span></h2>
+      <div class="public-body-clean">
+        <div class="public-controls-clean">
+          <input id="publicProductSearch" placeholder="Search products..." />
+          <div class="public-chip-row" id="publicStockChips">
+            <button type="button" class="public-chip active all" data-stock="all">All</button>
+            <button type="button" class="public-chip" data-stock="in">In Stock</button>
+            <button type="button" class="public-chip" data-stock="low">Low Stock</button>
+            <button type="button" class="public-chip" data-stock="out">Out of Stock</button>
+          </div>
+        </div>
+        <div id="publicProductsGrid" class="product-grid"></div>
+      </div>
+    </section>
+
+    <section class="public-grid-two">
+      <section id="completed" class="public-card-clean">
+        <h2>Completed / Delivered Orders <span id="completedOrderCountText">0 records</span></h2>
+        <div class="public-body-clean">
+          <div class="public-table-wrap"><table class="public-table-clean"><thead><tr><th>Order #</th><th>Status</th><th>Items</th><th>Completed Date</th><th>Paid</th></tr></thead><tbody id="publicCompletedOrdersTable"></tbody></table></div>
+        </div>
+      </section>
+      <section id="woodshowcase" class="public-card-clean">
+        <h2>Woodworking Showcase <span id="woodShowcaseCountText">0 projects</span></h2>
+        <div class="public-body-clean"><div id="woodShowcaseGrid" class="showcase-grid"></div></div>
+      </section>
+    </section>
+  </section>
+</main>
+
+<div id="imgModal" class="hidden" aria-hidden="true" style="position:fixed;inset:0;background:rgba(0,0,0,.72);align-items:center;justify-content:center;z-index:9999;">
+  <figure style="max-width:90vw;max-height:90vh;margin:0;background:#07182a;border:1px solid #3b5f83;border-radius:12px;padding:14px;">
+    <img id="modalImg" alt="preview" style="max-width:100%;max-height:78vh;display:block;border-radius:8px" />
+    <figcaption id="modalCaption" class="muted" style="margin-top:8px;text-align:center"></figcaption>
+  </figure>
+  <button aria-label="Close" onclick="closeImageModal()" style="position:absolute;top:12px;right:12px;padding:8px 10px;border-radius:6px;border:1px solid #28415e;background:#0a1827;color:#e9edf2;cursor:pointer">Close</button>
+</div>
+
+<footer class="site-footer">★ CajunVeteran Workshop — Precision &amp; Craftsmanship. Built for Those Who Serve. ★</footer>
+<script src="script.js?v=public-clean1"></script>
+<script>
+(function(){
+  const PRINT_KEY='inventory_orders_store_v9';
+  const JOB_KEY='cv_woodworking_jobs_v1';
+  const money=n=>'$'+(Number(n||0)||0).toFixed(2);
+  const esc=v=>String(v||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const load=(key,fb)=>{try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fb))}catch{return fb}};
+  const store=()=>typeof loadStore==='function'?loadStore():load(PRINT_KEY,{items:[],orders:[],colors:[]});
+  const jobs=()=>load(JOB_KEY,[]);
+  function statusLabel(v){return {new:'New',in_progress:'In Process',completed:'Completed',ready:'Completed',shipped:'Delivered',quote:'Quote',approved:'Approved',delivered:'Delivered'}[v]||v||''}
+  function fmtDate(s){if(!s)return'';if(/^\d{4}-\d{2}-\d{2}$/.test(s)){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString()}try{return new Date(s).toLocaleDateString()}catch{return s}}
+  function colorForId(s,id){const c=(s.colors||[]).find(x=>x.id===id);return c?.swatch||'#64748b'}
+  function stockClass(q){q=Number(q||0);if(q<=0)return 'stock-out';if(q<=2)return 'stock-low';return 'stock-in'}
+  function stockText(q){q=Number(q||0);if(q<=0)return 'Out of Stock';if(q<=2)return 'Low Stock';return 'In Stock'}
+  function itemMatchesStock(i,f){const q=Number(i.qty||0);if(f==='in')return q>2;if(f==='low')return q>0&&q<=2;if(f==='out')return q<=0;return true}
+  function orderItemsText(s,o){return (Array.isArray(o.lines)?o.lines:[]).map(l=>{const it=(s.items||[]).find(x=>x.sku===l.sku);return `${it?.name||l.sku} × ${l.qty||1}`}).join(', ')}
+  function openImg(src,cap){if(!src)return;const m=document.getElementById('imgModal'),i=document.getElementById('modalImg'),c=document.getElementById('modalCaption');if(!m)return;i.src=src;c.textContent=cap||'';m.classList.remove('hidden');m.style.display='flex';m.setAttribute('aria-hidden','false')}
+  window.closeImageModal=function(){const m=document.getElementById('imgModal');if(!m)return;m.classList.add('hidden');m.style.display='none';m.setAttribute('aria-hidden','true');const i=document.getElementById('modalImg');if(i)i.src=''};
+  function renderProducts(){
+    const s=store();const q=(document.getElementById('publicProductSearch')?.value||'').toLowerCase();const f=document.querySelector('#publicStockChips .active')?.dataset.stock||'all';
+    const el=document.getElementById('publicProductsGrid');if(!el)return;
+    const list=(s.items||[]).filter(i=>i.visible!==false).filter(i=>itemMatchesStock(i,f)).filter(i=>`${i.sku||''} ${i.name||''} ${i.desc||''} ${i.size||''}`.toLowerCase().includes(q));
+    el.innerHTML=list.length?list.map(i=>{const dots=(i.colors||[]).slice(0,6).map(cid=>`<span class="color-dot" style="background:${colorForId(s,cid)}"></span>`).join('');const img=i.image?`<img src="${i.image}" alt="${esc(i.name||'item')}" data-public-img="1" data-caption="${esc(i.name||'item')}">`:'<div class="product-placeholder">📦</div>';return `<article class="product-card"><div class="product-img-frame">${img}</div><div class="product-info"><h3>${esc(i.name||'Item')}</h3><div class="color-dots"><span class="product-meta">Colors:</span>${dots||'<span class="product-meta">N/A</span>'}</div><div class="product-price">${money(i.price)}</div><div class="product-meta">SKU: ${esc(i.sku||'')}</div><span class="stock-badge ${stockClass(i.qty)}">${stockText(i.qty)}</span></div></article>`}).join(''):'<div class="empty-public">No products match this filter.</div>';
+    el.querySelectorAll('[data-public-img]').forEach(img=>img.addEventListener('click',()=>openImg(img.src,img.getAttribute('data-caption'))));
+    document.getElementById('pubAvailablePrints').textContent=String((s.items||[]).filter(i=>i.visible!==false&&Number(i.qty||0)>0).length);
+    document.getElementById('pubRecentlyAdded').textContent=String(Math.min(6,(s.items||[]).filter(i=>i.visible!==false).length));
+  }
+  function renderCompletedOrders(){
+    const s=store();const complete=(s.orders||[]).filter(o=>['completed','ready','shipped'].includes(o.status));
+    const rows=complete.slice().sort((a,b)=>String(b.dueDate||b.orderDate||'').localeCompare(String(a.dueDate||a.orderDate||''))).slice(0,12).map(o=>`<tr><td><strong>${esc(o.orderId)}</strong></td><td><span class="status-badge status-${o.status==='shipped'?'delivered':'completed'}">${statusLabel(o.status)}</span></td><td>${esc(orderItemsText(s,o))}</td><td>${fmtDate(o.dueDate||o.orderDate)}</td><td>${o.paid?'<span class="stock-badge stock-in">Paid</span>':'<span class="stock-badge stock-low">Unpaid</span>'}</td></tr>`);
+    document.getElementById('publicCompletedOrdersTable').innerHTML=rows.length?rows.join(''):'<tr><td colspan="5" class="empty-public">No completed orders found.</td></tr>';
+    document.getElementById('pubCompletedOrders').textContent=String(complete.length);
+    document.getElementById('completedOrderCountText').textContent=`${complete.length} records`;
+  }
+  function renderShowcase(){
+    const list=jobs().filter(j=>['completed','delivered','in_progress','approved'].includes(j.status)).slice().sort((a,b)=>String(b.dueDate||'').localeCompare(String(a.dueDate||''))).slice(0,8);
+    const el=document.getElementById('woodShowcaseGrid');if(!el)return;
+    el.innerHTML=list.length?list.map(j=>{const first=(Array.isArray(j.files)?j.files:[]).find(f=>/\.(png|jpe?g|webp|gif|svg)$/i.test(f.name||f.url||''));const image=first?.url?`<img src="${first.url}" alt="${esc(j.project||'Woodworking project')}" data-public-img="1" data-caption="${esc(j.project||'Woodworking project')}">`:'<div class="product-placeholder">🪵</div>';return `<article class="showcase-card"><div class="showcase-img">${image}</div><div class="showcase-info"><h3>${esc(j.project||'Woodworking Project')}</h3><p><strong>Wood:</strong> ${esc(j.woodType||'')}</p><p><strong>Finish:</strong> ${esc(j.finish||'')}</p><span class="status-badge status-${j.status}">${statusLabel(j.status)}</span></div></article>`}).join(''):'<div class="empty-public">No woodworking projects to show yet.</div>';
+    el.querySelectorAll('[data-public-img]').forEach(img=>img.addEventListener('click',()=>openImg(img.src,img.getAttribute('data-caption'))));
+    document.getElementById('pubWoodProjects').textContent=String(list.length);
+    document.getElementById('woodShowcaseCountText').textContent=`${list.length} projects`;
+  }
+  function renderAll(){renderProducts();renderCompletedOrders();renderShowcase();document.getElementById('publicDateText').textContent=new Date().toLocaleString([], {dateStyle:'medium', timeStyle:'short'});}
+  document.addEventListener('DOMContentLoaded',()=>{
+    document.getElementById('publicProductSearch')?.addEventListener('input',renderProducts);
+    document.querySelectorAll('#publicStockChips [data-stock]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('#publicStockChips [data-stock]').forEach(b=>b.classList.remove('active','all'));btn.classList.add('active');if(btn.dataset.stock==='all')btn.classList.add('all');renderProducts();}));
+    document.querySelectorAll('.public-sidebar-clean a[href^="#"]').forEach(a=>a.addEventListener('click',()=>document.querySelectorAll('.public-sidebar-clean .public-nav').forEach(n=>n.classList.remove('active'))||a.classList.add('active')));
+    setTimeout(renderAll,250);
+  });
+  setTimeout(renderAll,550);
+})();
+</script>
+</body>
+</html>

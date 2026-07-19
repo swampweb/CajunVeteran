@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CajunVeteran Workshop Management — Woodworking Admin</title>
+  <style>
+    :root{--bg:#06111e;--panel:#0b2136;--panel2:#081a2c;--muted:#9fb0c4;--text:#f4f7fb;--accent:#c98232;--danger:#ef4444;--ok:#10b981;--line:#31587d}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 "Segoe UI",Roboto,Arial,sans-serif}.topbar{height:96px;background:radial-gradient(circle at 50% 0%,rgba(36,24,14,.72),rgba(3,10,17,.96) 55%,#02070d 100%),linear-gradient(90deg,#02070d,#07111c 55%,#02070d);border-bottom:2px solid #b8792f;display:flex;align-items:center;justify-content:space-between;padding:10px 24px;position:sticky;top:0;z-index:10;box-shadow:0 12px 30px rgba(0,0,0,.45)}.brand{display:flex;align-items:center;gap:14px}.logo{height:76px;border-radius:8px}.name{font-size:30px;font-weight:900;color:var(--accent);line-height:.95}.sub{font-size:17px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#f8ead0}.title{border-left:2px solid #ef4444;margin-left:12px;padding-left:18px;display:flex;flex-direction:column}.title strong{font-size:22px;color:var(--accent)}.title span{color:#f5e7bd}.topnav a{color:#e8eef7;text-decoration:none;margin-left:20px}.topnav a.active{color:var(--accent)}.shell{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;padding:18px 14px 20px}.sidebar{position:sticky;top:116px;height:calc(100vh - 135px);background:linear-gradient(180deg,rgba(5,15,28,.98),rgba(4,12,22,.98));border:1px solid rgba(86,142,198,.35);border-radius:10px;padding:14px;display:flex;flex-direction:column}.nav{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;padding:15px;margin-bottom:9px;border-radius:8px;border:1px solid transparent;border-bottom-color:rgba(100,140,180,.2);font-size:17px;font-weight:700}.nav:hover,.nav.active{color:var(--accent);background:rgba(240,180,41,.13);border-color:rgba(240,180,41,.45);border-left:5px solid #ef4444}.motto{margin-top:auto;text-align:center;border-top:1px solid #2a415c;padding-top:18px;line-height:1.35}.motto div,.motto strong{color:var(--accent)}.main{min-width:0}.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}.kpi{height:130px;padding:16px 18px;border-radius:8px;background:linear-gradient(135deg,#0c243a,#081b2e);border:1px solid var(--line);display:flex;gap:14px;align-items:center}.kpi-icon{font-size:38px;width:50px;height:50px;display:flex;align-items:center;justify-content:center;border-radius:14px;background:rgba(240,180,41,.12);border:1px solid rgba(240,180,41,.32)}.kpi b{text-transform:uppercase}.kpi span{display:block;color:var(--muted);font-size:13px}.kpi strong{display:block;font-size:34px;line-height:1;margin:6px 0}.kpi em{font-style:normal;color:var(--accent);font-weight:800;font-size:13px}.grid{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:14px;align-items:start}.card{background:linear-gradient(180deg,rgba(13,31,50,.98),rgba(8,22,36,.98));border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 24px rgba(0,0,0,.22);overflow:hidden}.card h2,.card summary h2{margin:0;color:var(--accent);text-transform:uppercase;letter-spacing:.03em;font-size:19px}.card>h2{padding:13px 16px;border-bottom:1px solid rgba(86,142,198,.35)}.body{padding:14px}.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.controls input,.controls select,.form input,.form select,.form textarea{min-height:38px;padding:9px 10px;border-radius:6px;border:1px solid #3b5f83;background:#10283f;color:var(--text);font-size:14px}.controls input{min-width:260px}.table-wrap{overflow:auto;background:#07182a;border:1px solid rgba(86,142,198,.35);border-radius:8px}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{padding:9px 10px;border-bottom:1px solid rgba(86,142,198,.25);vertical-align:middle;overflow:hidden;text-overflow:ellipsis}th{background:#071321;color:#eaf2ff;font-size:13px;font-weight:900;white-space:nowrap}tr:hover td{background:rgba(240,180,41,.055)}.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12px}.ok{background:rgba(16,185,129,.22);color:#6ee7b7}.warn{background:rgba(245,158,11,.22);color:#ffd36a}.muted-badge{background:rgba(148,163,184,.22);color:#d0d9e6}.danger-badge{background:rgba(239,68,68,.22);color:#ff9b9b}.form{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}.form label{display:flex;flex-direction:column;gap:5px;color:#dce8f6;font-size:13px}.form textarea{grid-column:1/-1;min-height:74px;resize:vertical}.form .full{grid-column:1/-1}.save{grid-column:1/-1;background:linear-gradient(135deg,var(--accent),#e5a91f)!important;color:#071321!important;border:0!important;font-weight:900;cursor:pointer}.btn{border:1px solid #3b5f83;background:#10283f;color:#fff;border-radius:5px;padding:6px 8px;cursor:pointer}.btn.edit{color:#ffd36a;border-color:#f0b429}.btn.del{background:#ef4444;border-color:#b91c1c}.job-title{font-weight:800;color:#fff}.money{text-align:right;white-space:nowrap}.site-footer{padding:12px 18px;color:var(--muted);border-top:2px solid var(--accent);text-align:center;margin-top:14px}@media(max-width:1200px){.grid{grid-template-columns:1fr}.sidebar{position:static;height:auto;display:flex;flex-direction:row;flex-wrap:wrap}.motto{display:none}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.topbar{position:static;height:auto;align-items:flex-start;flex-direction:column}.shell{grid-template-columns:1fr}.kpis{grid-template-columns:1fr}.form{grid-template-columns:1fr}.controls input{min-width:100%}}
+  
+.card summary{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;padding:13px 16px;border-bottom:1px solid rgba(86,142,198,.35)}
+.card summary span{color:var(--muted);font-size:13px}.card summary h2 .badge{margin-left:8px;vertical-align:middle;font-size:12px;text-transform:none;letter-spacing:0}
+details.card:not([open]){min-height:0}details.card:not([open]) summary{border-bottom:0}
+
+.materials-card{grid-column:1/-1;background:#081d31;border:1px solid rgba(86,142,198,.35);border-radius:8px;padding:12px}.materials-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.materials-head strong{display:block;color:var(--accent);text-transform:uppercase;letter-spacing:.03em}.materials-head span{display:block;color:var(--muted);font-size:12px}.materials-list{display:flex;flex-direction:column;gap:8px}.material-row{display:grid;grid-template-columns:minmax(0,1.5fr) 85px 125px 85px 95px 34px;gap:8px;align-items:center}.material-row input{width:100%;min-height:36px;padding:8px 9px;border-radius:6px;border:1px solid #3b5f83;background:#10283f;color:var(--text)}.material-row .remove-material{width:34px;height:34px;border-radius:6px;border:1px solid #b91c1c;background:#ef4444;color:white;cursor:pointer}.materials-total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(86,142,198,.28);margin-top:10px;padding-top:10px}.materials-total span{color:var(--muted);font-weight:700}.materials-total strong{color:var(--accent);font-size:20px}.materials-mini{display:flex;flex-direction:column;gap:2px}.materials-mini span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dimensions-cell{white-space:nowrap}.material-total-cell{text-align:right;font-weight:800;white-space:nowrap}@media(max-width:900px){.material-row{grid-template-columns:1fr}.material-row .remove-material{width:100%}.materials-head{align-items:flex-start;flex-direction:column}}
+.dimension-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.dimension-row label{display:flex;flex-direction:column;gap:5px}@media(max-width:700px){.dimension-row{grid-template-columns:1fr}}
+
+.wood-pricing-card{grid-column:1/-1;background:#081d31;border:1px solid rgba(86,142,198,.35);border-radius:8px;padding:12px}.wood-pricing-card strong{display:block;color:var(--accent);text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px}.wood-pricing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.wood-profit-box{display:flex;flex-direction:column;justify-content:center;border:1px solid rgba(240,180,41,.35);background:rgba(240,180,41,.08);border-radius:6px;padding:8px 10px}.wood-profit-box span{color:var(--muted);font-size:12px}.wood-profit-box b{color:var(--accent);font-size:20px}.sale-cell,.profit-cell{text-align:right;font-weight:800;white-space:nowrap}@media(max-width:700px){.wood-pricing-grid{grid-template-columns:1fr}}
+
+.plans-card{grid-column:1/-1;background:#081d31;border:1px solid rgba(86,142,198,.35);border-radius:8px;padding:12px}.plans-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.plans-head strong{display:block;color:var(--accent);text-transform:uppercase;letter-spacing:.03em}.plans-head span{display:block;color:var(--muted);font-size:12px}.plans-card input[type=file]{width:100%;min-height:38px;padding:8px;border-radius:6px;border:1px solid #3b5f83;background:#10283f;color:var(--text)}.plans-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}.plan-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:rgba(255,255,255,.045);border:1px solid rgba(86,142,198,.25);border-radius:6px;padding:7px 9px}.plan-row a{color:#ffd36a;text-decoration:none;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.plan-row a:hover{text-decoration:underline}.plan-row button{border:1px solid #b91c1c;background:#ef4444;color:#fff;border-radius:5px;cursor:pointer}.plans-mini{display:flex;flex-direction:column;gap:3px}.plans-mini a{color:#ffd36a;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.plans-mini a:hover{text-decoration:underline}.plans-empty{color:var(--muted);font-size:12px}.plans-cell{min-width:120px}
+
+.currency-input{text-align:right;font-weight:800;color:#f8ead0}.currency-input::placeholder{color:#8da0b6}.wood-pricing-card input.currency-input,.material-row input.currency-input{font-variant-numeric:tabular-nums}
+
+/* Fix Woodworking Job paid checkbox alignment */
+.paidRow{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;min-height:38px!important;padding:0!important;color:#dce8f6!important;font-size:13px!important}
+.paidRow .paid-check{width:18px!important;height:18px!important;min-height:18px!important;margin:0!important;padding:0!important;flex:0 0 auto!important;cursor:pointer!important;accent-color:var(--accent)}
+.paidRow span{display:inline-block!important;line-height:18px!important;font-weight:700!important;margin:0!important;white-space:nowrap!important}
+
+/* Woodworking Items table: notes icon and materials list */
+.notes-icon{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;border:1px solid rgba(240,180,41,.45);background:rgba(240,180,41,.12);color:#ffd36a;font-size:15px;cursor:help}
+.notes-icon.empty{opacity:.25;filter:grayscale(1);cursor:default}
+.materials-list-view{display:flex;flex-direction:column;gap:4px;min-width:0}.material-line{display:grid;grid-template-columns:42px minmax(0,1fr) 78px;gap:6px;align-items:center;font-size:12px;line-height:1.25}.material-line .mat-qty{color:#ffd36a;font-weight:800;white-space:nowrap}.material-line .mat-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#f4f7fb}.material-line .mat-cost{color:#cbd7e6;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}.material-more{color:var(--muted);font-size:12px;margin-top:2px}.materials-cell{min-width:210px}
+
+/* Note popup and cleaner materials displayed as list */
+.hidden{display:none!important}.note-modal{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}.note-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72)}.note-modal-dialog{position:relative;z-index:1;width:min(680px,92vw);max-height:80vh;overflow:auto;background:#0b2136;border:1px solid rgba(240,180,41,.6);border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.55);padding:18px 20px}.note-modal-dialog h3{margin:0 0 10px;color:var(--accent);text-transform:uppercase;letter-spacing:.05em}.note-modal-text{white-space:pre-wrap;color:#f4f7fb;line-height:1.55;font-size:16px}.note-modal-close{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:8px;border:1px solid #b91c1c;background:#ef4444;color:#fff;font-size:22px;line-height:1;cursor:pointer}.notes-icon{cursor:pointer}.job-material-list{display:flex;flex-direction:column;gap:3px;min-width:0}.job-material-line{display:flex;align-items:flex-start;gap:6px;line-height:1.25}.job-material-line::before{content:'•';color:#ffd36a;font-weight:900}.job-material-line span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:normal}
+
+/* Purchased/Paid inline controls */
+.job-paid-check,.mat-purchased-check{width:18px!important;height:18px!important;min-height:18px!important;margin:0!important;padding:0!important;accent-color:var(--accent);cursor:pointer}.paid-inline,.mat-purchased-wrap{display:inline-flex;align-items:center;justify-content:center;gap:6px}.material-row{grid-template-columns:minmax(0,1.5fr) 85px 125px 85px 95px 34px!important}.material-purchased-label{display:flex!important;flex-direction:row!important;align-items:center!important;gap:6px!important;justify-content:center!important;color:var(--muted)!important;font-size:12px!important}.material-line{grid-template-columns:34px minmax(0,1fr) 76px 34px!important}.material-line .mat-purchased{display:flex;align-items:center;justify-content:center}.material-line .mat-purchased-check{width:16px!important;height:16px!important;min-height:16px!important}.material-line .mat-name.purchased{text-decoration:line-through;color:#9fb0c4}.material-line .mat-name.open{font-weight:700}.material-more{padding-left:40px}
+
+/* Woodworking Items list readability fix */
+.wood-items-table{table-layout:auto!important;min-width:1450px;width:100%}.wood-items-table th,.wood-items-table td{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;vertical-align:top}.wood-items-table td:nth-child(2){font-weight:800}.wood-items-table td:nth-child(6),.wood-items-table td:nth-child(7),.wood-items-table td:nth-child(8){text-align:right;white-space:nowrap!important}.wood-items-table td:nth-child(9),.wood-items-table td:nth-child(11),.wood-items-table td:nth-child(12){text-align:center;vertical-align:middle}.wood-items-table .materials-cell{min-width:340px!important;width:360px!important}.wood-items-table .materials-list-view{display:flex!important;flex-direction:column!important;gap:6px!important;width:100%!important}.wood-items-table .material-line{display:grid!important;grid-template-columns:40px minmax(190px,1fr) 82px 28px!important;gap:8px!important;align-items:center!important;width:100%!important;padding:2px 0;border-bottom:1px dashed rgba(86,142,198,.18)}.wood-items-table .material-line:last-child{border-bottom:0}.wood-items-table .material-line .mat-qty{color:#ffd36a!important;font-weight:900!important;white-space:nowrap!important;text-align:right}.wood-items-table .material-line .mat-name{display:block!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;word-break:normal!important;color:#f4f7fb!important;line-height:1.25}.wood-items-table .material-line .mat-cost{text-align:right!important;white-space:nowrap!important;color:#cbd7e6!important}.wood-items-table .material-line .mat-purchased{text-align:center!important}.wood-items-table .material-line .mat-name.purchased{text-decoration:line-through;color:#9fb0c4!important}.wood-items-table .material-line .mat-name.open{font-weight:700!important}.wood-items-table .material-more{padding-left:48px!important;color:var(--muted)!important}.table-wrap{overflow-x:auto!important}
+
+/* Job list material purchased checkbox */
+.job-material-check{width:18px!important;height:18px!important;min-height:18px!important;margin:0!important;padding:0!important;accent-color:var(--accent);cursor:pointer}.job-material-check:disabled{opacity:.35;cursor:not-allowed}.job-material-inline{display:inline-flex;align-items:center;justify-content:center;gap:6px}.job-material-inline .tiny{font-size:11px;color:var(--muted)}
+
+/* vNext: material purchased belongs to Jobs only, not Items */
+.job-material-check{width:18px!important;height:18px!important;min-height:18px!important;margin:0!important;padding:0!important;accent-color:var(--accent);cursor:pointer}.job-material-inline{display:inline-flex;align-items:center;justify-content:center;gap:6px}.material-row{grid-template-columns:minmax(0,1fr) 80px 120px 34px!important}.material-line{grid-template-columns:40px minmax(190px,1fr) 82px!important}.material-line .mat-purchased,.material-purchased-label,.mat-purchased-check{display:none!important}.wood-items-table .material-line{grid-template-columns:40px minmax(190px,1fr) 82px!important}
+
+.job-material-inline{display:flex!important;justify-content:center!important;align-items:center!important;width:100%!important}.job-material-check{margin:0 auto!important;display:block!important}
+
+/* Center Paid checkbox */
+.paid-inline{display:flex!important;justify-content:center!important;align-items:center!important;width:100%!important}
+.job-paid-check{margin:0 auto!important;display:block!important}
+
+/* Plaque Details - shows only for NCO/SNCO/CMSGT Plaque Charge jobs */
+.plaque-details{grid-column:1/-1;background:#081d31;border:1px solid rgba(201,130,50,.55);border-radius:8px;padding:12px;display:none}.plaque-details.show{display:block}.plaque-details h3{margin:0 0 8px;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;font-size:15px}.plaque-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.plaque-grid label{display:flex;flex-direction:column;gap:5px;color:#dce8f6;font-size:13px}.plaque-grid input,.plaque-grid select{min-height:38px;padding:9px 10px;border-radius:6px;border:1px solid #3b5f83;background:#10283f;color:var(--text);font-size:14px}@media(max-width:900px){.plaque-grid{grid-template-columns:1fr}}
+
+/* Plaque Details layout fix: Name full row, Rank and Month Promoted next row */
+#plaqueDetails .plaque-grid{grid-template-columns:1fr 1fr!important;align-items:end!important}
+#plaqueDetails .plaque-grid label:first-child{grid-column:1 / -1!important}
+#plaqueDetails .plaque-grid label{min-width:0!important}
+#plaqueDetails .plaque-grid input,#plaqueDetails .plaque-grid select{width:100%!important;min-width:0!important}
+@media(max-width:700px){#plaqueDetails .plaque-grid{grid-template-columns:1fr!important}#plaqueDetails .plaque-grid label:first-child{grid-column:auto!important}}
+
+/* Note details card styling */
+.note-label{font-weight:800;color:#ffd36a;text-transform:uppercase;letter-spacing:.04em}
+.note-sep{border-top:1px solid rgba(255,255,255,.15);margin:8px 0}
+
+/* Clean Up Plans final */
+.cv-clean-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 12px}.cv-clean-stat{background:#081d31;border:1px solid rgba(86,142,198,.35);border-radius:8px;padding:12px}.cv-clean-stat span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase}.cv-clean-stat strong{font-size:24px;color:var(--accent)}.cv-clean-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.cv-clean-table{min-width:850px}.cv-clean-used{color:#6ee7b7;font-weight:900}.cv-clean-unused{color:#ffd36a;font-weight:900}.cv-clean-message{margin-top:10px;color:#ffd36a;font-weight:800}.cv-clean-delete{border:1px solid #b91c1c;background:#ef4444;color:#fff;border-radius:5px;padding:6px 8px;cursor:pointer}.cv-clean-delete:disabled{opacity:.35;cursor:not-allowed}.cv-clean-list{display:flex;flex-direction:column;gap:2px;font-size:12px}.cv-modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}.cv-modal-actions .btn{min-width:130px;font-weight:900}.cv-modal-actions .primary{background:linear-gradient(135deg,var(--accent),#e5a91f);border-color:#e5a91f;color:#071321}.cv-modal-actions .cancel{background:#10283f;border-color:#3b5f83;color:#fff}.cv-modal-file{color:#ffd36a;font-weight:900;word-break:break-word}.cv-modal-warning{border:1px solid rgba(239,68,68,.45);background:rgba(239,68,68,.1);border-radius:8px;padding:10px;margin-top:10px;color:#ffd0d0}.cv-modal-list{margin:10px 0 0;padding-left:18px;color:#f4f7fb}.cv-modal-list li{margin:4px 0}
+
+/* Job Files support */
+.job-files-card{grid-column:1/-1;background:#081d31;border:1px solid rgba(86,142,198,.35);border-radius:8px;padding:12px}.job-files-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.job-files-head strong{display:block;color:var(--accent);text-transform:uppercase;letter-spacing:.03em}.job-files-head span{display:block;color:var(--muted);font-size:12px}.job-files-card input[type=file]{width:100%;min-height:38px;padding:8px;border-radius:6px;border:1px solid #3b5f83;background:#10283f;color:var(--text)}.job-files-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}.job-file-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:rgba(255,255,255,.045);border:1px solid rgba(86,142,198,.25);border-radius:6px;padding:7px 9px}.job-file-row a{color:#ffd36a;text-decoration:none;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.job-file-row a:hover{text-decoration:underline}.job-file-row button{border:1px solid #b91c1c;background:#ef4444;color:#fff;border-radius:5px;cursor:pointer}.job-files-mini{display:flex;flex-direction:column;gap:3px}.job-files-mini a{color:#ffd36a;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.job-files-mini a:hover{text-decoration:underline}.job-files-empty{color:var(--muted);font-size:12px}.job-clean-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 12px}.job-clean-stat{background:#081d31;border:1px solid rgba(86,142,198,.35);border-radius:8px;padding:12px}.job-clean-stat span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase}.job-clean-stat strong{font-size:24px;color:var(--accent)}.job-clean-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.job-clean-table{min-width:850px}.job-clean-used{color:#6ee7b7;font-weight:900}.job-clean-unused{color:#ffd36a;font-weight:900}.job-clean-message{margin-top:10px;color:#ffd36a;font-weight:800}.job-clean-delete{border:1px solid #b91c1c;background:#ef4444;color:#fff;border-radius:5px;padding:6px 8px;cursor:pointer}.job-clean-delete:disabled{opacity:.35;cursor:not-allowed}.job-clean-list{display:flex;flex-direction:column;gap:2px;font-size:12px}
+
+/* Layout update: Jobs full width, Add/Edit Job below Jobs */
+.grid{grid-template-columns:1fr!important;align-items:stretch!important}.grid>#jobs,.grid>#formCard{width:100%!important}.grid>#formCard form{max-width:none!important}.grid>#formCard .form{grid-template-columns:repeat(2,minmax(0,1fr))!important}.grid>#formCard .full,.grid>#formCard textarea,.grid>#formCard .job-use-card,.grid>#formCard .job-files-card,.grid>#formCard .plaque-details{grid-column:1/-1!important}@media(max-width:900px){.grid>#formCard .form{grid-template-columns:1fr!important}}
+
+/* Job list file indicator */
+.job-file-icon{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:28px;height:26px;border-radius:6px;border:1px solid rgba(148,163,184,.35);background:rgba(148,163,184,.08);color:#9fb0c4;font-size:15px;cursor:pointer}.job-file-icon.has-files{border-color:rgba(240,180,41,.55);background:rgba(240,180,41,.14);color:#ffd36a}.job-file-icon.empty{opacity:.38;cursor:default}.job-file-icon span{font-size:11px;font-weight:900;color:#071321;background:#ffd36a;border-radius:999px;min-width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px}.job-files-modal-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}.job-files-modal-list a{display:flex;align-items:center;gap:8px;color:#ffd36a;text-decoration:none;border:1px solid rgba(86,142,198,.28);background:rgba(255,255,255,.045);border-radius:8px;padding:8px 10px}.job-files-modal-list a:hover{text-decoration:underline;border-color:rgba(240,180,41,.45)}
+
+/* Woodworking file image previews */
+.wood-file-preview-card{border:1px solid rgba(86,142,198,.28);background:rgba(255,255,255,.045);border-radius:10px;padding:10px}.wood-file-preview-card a{color:#ffd36a;text-decoration:none;display:flex;align-items:center;gap:8px}.wood-file-preview-card a:hover{text-decoration:underline}.wood-image-preview{max-width:100%;max-height:360px;object-fit:contain;border-radius:10px;border:1px solid #31587d;background:#07182a;margin-top:8px;display:block}.wood-file-preview-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}.wood-file-preview-empty{color:#9fb0c4;font-size:13px}.job-files-modal-list{gap:10px!important}
+
+
+/* =========================================================
+   Woodworking Admin Clean Editing Layout
+   Dashboard is viewing-only; Woodworking is edit/manage work area.
+   ========================================================= */
+.topbar{height:104px!important;background:linear-gradient(90deg,#06111e,#0b2136 55%,#06111e)!important;border-bottom:2px solid var(--accent,#c98232)!important;gap:16px!important}.brand{min-width:0}.logo{height:82px!important;object-fit:contain}.name{font-size:32px!important}.sub{letter-spacing:.12em!important}.title strong{font-size:22px!important}.title span{font-size:14px!important;color:#dce8f6!important}.top-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-left:auto}.wood-close-site{width:42px;height:42px;min-width:42px;border-radius:10px;border:1px solid rgba(239,68,68,.75);background:rgba(239,68,68,.18);color:#fff;font-size:24px;font-weight:900;line-height:1;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(239,68,68,.16);transition:background .12s ease,border-color .12s ease,transform .12s ease}.wood-close-site:hover{background:#ef4444;border-color:#ff7b7b;transform:translateY(-1px)}.shell{grid-template-columns:230px minmax(0,1fr)!important}.sidebar{padding:14px 12px!important}.nav{font-size:16px!important;min-height:48px!important;padding:13px 14px!important;margin-bottom:9px!important;border-bottom-color:rgba(86,142,198,.16)!important}.motto{border:1px solid rgba(201,130,50,.28)!important;border-radius:8px!important;padding:14px 10px!important;background:rgba(201,130,50,.045)!important;font-size:13px!important}.wood-title-card{display:flex;align-items:center;gap:16px;margin-bottom:14px;padding:0 4px}.wood-title-icon{width:58px;height:58px;border-radius:12px;border:1px solid rgba(201,130,50,.65);background:rgba(201,130,50,.12);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:32px}.wood-title-text h1{margin:0;color:var(--accent);font-size:30px;letter-spacing:.01em}.wood-title-text p{margin:3px 0 0;color:#cbd5e1}.kpis{grid-template-columns:repeat(4,minmax(0,1fr))!important;margin-bottom:14px!important}.grid{display:flex!important;flex-direction:column!important;gap:10px!important;align-items:stretch!important}.grid>#jobs,.grid>#formCard{width:100%!important}.card>h2{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important}.wood-section-label{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(201,130,50,.45);background:rgba(201,130,50,.12);color:#ffd36a;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}.wood-status-select-hidden{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}.wood-status-chip-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%}.wood-status-chip{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 12px;border-radius:999px;border:1px solid rgba(86,142,198,.55);background:#10283f;color:#dce8f6;font-weight:900;font-size:12px;cursor:pointer;transition:background .12s ease,border-color .12s ease,color .12s ease,transform .12s ease}.wood-status-chip:hover{border-color:var(--accent);color:#ffd36a;transform:translateY(-1px)}.wood-status-chip.active{border-color:rgba(201,130,50,.8);background:linear-gradient(135deg,rgba(201,130,50,.28),rgba(240,180,41,.14));color:#ffd36a}.wood-status-chip.all-chip.active{background:linear-gradient(135deg,var(--accent),#e5a91f);color:#071321;border-color:#e5a91f}.wood-status-chip .check{font-size:12px}.wood-filter-summary{color:#9fb0c4;font-size:12px;width:100%;margin-top:-4px}.controls{align-items:center!important}.controls input{flex:1 1 300px}.wood-management-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}.wood-files-card .body{display:grid;gap:10px}.wood-file-box{border:1px solid rgba(86,142,198,.28);background:rgba(255,255,255,.035);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:12px}.wood-file-box strong{color:#f4f7fb}.wood-file-box span{display:block;color:#9fb0c4;font-size:12px;margin-top:2px}.wood-file-box a{color:#ffd36a;text-decoration:none;border:1px solid rgba(201,130,50,.55);border-radius:7px;padding:8px 10px;font-weight:900;white-space:nowrap}.wood-close-message-mode .topbar,.wood-close-message-mode .shell,.wood-close-message-mode .site-footer{filter:blur(2px);opacity:.35}.wood-close-message{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99999;max-width:520px;width:calc(100% - 32px);background:#07182a;border:1px solid #3b5f83;border-radius:14px;padding:22px;box-shadow:0 18px 48px rgba(0,0,0,.55);color:#eaf2ff;text-align:center}.wood-close-message h2{margin:0 0 8px;color:var(--accent)}.wood-close-message code{color:var(--accent)}@media(max-width:1250px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}.wood-management-grid{grid-template-columns:1fr}}@media(max-width:900px){.shell{grid-template-columns:1fr!important}.sidebar{position:static!important;height:auto!important;display:flex!important;flex-direction:row!important;flex-wrap:wrap!important}.motto{display:none!important}}@media(max-width:700px){.topbar{height:auto!important;align-items:flex-start!important;flex-direction:column!important}.top-actions{width:100%;justify-content:flex-start;margin-left:0}.kpis{grid-template-columns:1fr!important}.wood-title-card{align-items:flex-start}.wood-status-chip{flex:1 1 auto}}
+
+</style>
+
+
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <img class="logo" src="CajunVeteran Woodworking Logo.png" alt="CajunVeteran Woodworking Admin" onerror="this.style.display='none'" />
+    <div><div class="name">CajunVeteran Workshop</div><div class="sub">Woodworking Admin</div></div>
+    <div class="title"><strong>WOODWORKING ADMIN</strong><span>Manage jobs, items, materials, plans, and job files.</span></div>
+  </div>
+  <div class="top-actions"><button type="button" id="woodCloseSiteBtn" class="wood-close-site" title="Close site and stop local server">✕</button></div>
+</header>
+<main class="shell">
+  <aside class="sidebar">
+    <a class="nav" href="dashboard.html">🏠 Dashboard</a>
+    <a class="nav active" href="#jobs">🪵 Jobs</a>
+    <a class="nav" href="#woodItems">🧰 Woodworking Items</a>
+    <a class="nav" href="#materialInventory">🪚 Materials</a>
+    <a class="nav" href="#jobFilesCleanupPanel">📁 Files</a>
+    <a class="nav" href="reports.html">📊 Reports</a>
+    <a class="nav" href="admin.html#orders">⚙️ Admin</a>
+    <a class="nav" href="tablet.html">📱 Tablet</a>
+    <a class="nav" href="index.html">🌐 Public</a>
+    <div class="motto"><div>★</div><p><strong>CajunVeteran Workshop</strong><br/>Precision &amp; Craftsmanship<br/>Built With Pride</p></div>
+  </aside>
+  <section class="main">
+    <section id="dashboard" class="kpis">
+      <div class="kpi"><div class="kpi-icon">📋</div><div><b>Open Jobs</b><span>Quote + In Process</span><strong id="kpiActive">0</strong><em>Open work</em></div></div>
+      <div class="kpi"><div class="kpi-icon">✓</div><div><b>Completed</b><span>Finished jobs</span><strong id="kpiCompleted">0</strong><em>Ready/Done</em></div></div>
+      <div class="kpi"><div class="kpi-icon">🚚</div><div><b>Delivered</b><span>Closed jobs</span><strong id="kpiDelivered">0</strong><em>Out the door</em></div></div>
+      <div class="kpi"><div class="kpi-icon">⚠️</div><div><b>Material Alerts</b><span>Low or out of stock</span><strong id="kpiMaterialAlerts">0</strong><em>Needs review</em></div></div>
+
+    </section>
+    <section class="grid">
+      <section id="jobs" class="card">
+        <h2>Woodworking Jobs <span class="badge muted-badge" id="jobCount">0</span> <span class="wood-section-label">Jobs</span></h2>
+        <div class="body">
+          <div class="controls">
+            <input id="jobSearch" placeholder="Search jobs, customer, wood type, notes..." />
+            <select id="jobStatusFilter" class="wood-status-select-hidden">
+              <option value="all">All Statuses</option>
+              <option value="quote">Quote</option>
+              <option value="approved">Approved</option>
+              <option value="in_progress">In Process</option>
+              <option value="completed">Completed</option>
+              <option value="delivered">Delivered</option>
+            </select>
+            <div id="woodStatusChips" class="wood-status-chip-row"></div>
+            <div id="woodFilterSummary" class="wood-filter-summary">Showing all job statuses</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:90px">Job #</th><th>Project</th><th style="width:130px">Customer</th><th style="width:110px">Status</th><th style="width:105px">Due</th><th style="width:110px">Material</th><th style="width:90px">Total</th><th style="width:105px">Mat. Bought</th><th style="width:90px">Paid</th><th style="width:70px">Files</th><th style="width:60px">Notes</th><th style="width:90px">Actions</th></tr></thead>
+              <tbody id="jobsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <details id="formCard" class="card">
+        <summary><h2>Add / Edit Job</h2><span>Click edit to expand, save to collapse</span></summary>
+        <form id="woodForm" class="form">
+          <input type="hidden" id="editId" />
+          <input id="jobId" placeholder="Job # (auto)" />
+          <input id="customer" placeholder="Customer" required />
+          <label class="full">Choose from Woodworking Items<select id="jobItemSelect"><option value="">Choose an existing item...</option></select></label>
+          <input id="project" class="full" placeholder="Project / Item Name" required />
+          <label>Status<select id="status"><option value="quote">Quote</option><option value="approved">Approved</option><option value="in_progress">In Process</option><option value="completed">Completed</option><option value="delivered">Delivered</option></select></label>
+          <label>Due Date<input id="dueDate" type="date" /></label>
+          <input id="woodType" placeholder="Wood Type / Material" />
+          <input id="finish" placeholder="Finish / Stain" />
+          <input id="dimensions" class="full" placeholder="Dimensions / Size" />
+
+          <div class="job-use-card">
+            <div class="job-use-head">
+              <div>
+                <strong>Material Used From Inventory</strong>
+                <span>Select material inventory and quantity used for this job. Saving the job subtracts from on-hand inventory.</span>
+              </div>
+              <button type="button" class="btn" id="addJobUseRow">+ Add Material Used</button>
+            </div>
+            <div id="jobUseList" class="job-use-list"></div>
+            <div class="job-use-total"><span>Job Material Cost</span><strong id="jobUseTotal">$0.00</strong></div>
+          </div>
+          <section id="plaqueDetails" class="plaque-details">
+            <h3>Plaque Details</h3>
+            <div class="plaque-grid">
+              <label>Name<input id="plaqueName" placeholder="Name for plaque" /></label>
+              <label>Rank<select id="plaqueRank"><option value="">Select...</option><option value="NCO">NCO</option><option value="SNCO">SNCO</option><option value="CMSGT">CMSGT</option></select></label>
+              <label>Month Promoted<input id="plaqueMonthPromoted" placeholder="Month Promoted" /></label>
+            </div>
+          </section>
+          <label>Total Price<input id="total" type="number" step="0.50" min="0" placeholder="0.00" /></label>
+          <label class="paidRow"><input id="paid" type="checkbox" class="paid-check" /><span>Paid</span></label>
+          
+          <div class="job-files-card full">
+            <div class="job-files-head">
+              <div>
+                <strong>Job Files</strong>
+                <span>Upload PDFs, drawings, quotes, measurements, or customer info files. Files are saved in the JobFiles folder.</span>
+              </div>
+            </div>
+            <input id="jobInfoFiles" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.csv,.zip,image/*" />
+            <div id="jobFilesList" class="job-files-list"><span class="job-files-empty">No job files uploaded yet.</span></div>
+          </div>
+          <textarea id="notes" placeholder="Notes, hardware, cuts, customer requests..."></textarea>
+          <button class="save" type="submit">Save Woodworking Job</button>
+          <button class="btn full" type="button" id="clearForm">Clear Form</button>
+        </form>
+      </details>
+    </section>
+
+
+    <details id="materialInventory" class="card" style="margin-top:14px" open>
+      <summary><h2>Material Inventory <span class="badge muted-badge" id="materialInventoryCount">0</span></h2><span>Auto-filled from Items</span></summary>
+      <div class="body">
+        <p class="plans-empty" style="margin:0 0 10px">
+          Material Inventory is created from the <strong>Materials Needed</strong> rows in Woodworking Items. Enter material once on the item, then adjust <strong>On Hand</strong> here if you cut more pieces.
+        </p>
+        <div class="table-wrap">
+          <table class="material-inv-table">
+            <thead><tr><th>Material</th><th style="width:115px">Purchase Cost</th><th style="width:80px">Yield</th><th style="width:90px">On Hand</th><th style="width:110px">Cost Each</th><th>Notes</th><th style="width:70px">Low?</th></tr></thead>
+            <tbody id="materialInventoryTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details id="itemFormCard" class="card" style="margin-top:14px">
+      <summary><h2>Add / Edit Woodworking Item</h2><span>Click to expand</span></summary>
+      <form id="woodItemForm" class="form">
+        <input type="hidden" id="editItemId" />
+        <input id="woodItemId" placeholder="Item # (auto)" />
+        <input id="woodItemName" placeholder="Item Name" required />
+        <div class="dimension-row full">
+        <label>Length (in)<input id="woodLength" type="number" min="0" step="0.01" placeholder="Length" /></label>
+        <label>Width (in)<input id="woodWidth" type="number" min="0" step="0.01" placeholder="Width" /></label>
+        <label>Height (in)<input id="woodHeight" type="number" min="0" step="0.01" placeholder="Height" /></label>
+        </div>
+        <label>Qty<input id="woodQty" type="number" min="0" value="1" /></label>
+        <label>Status<select id="woodItemStatus"><option value="available">Available</option><option value="low">Low</option><option value="out">Out</option></select></label>
+
+        <div class="materials-card full">
+          <div class="materials-head">
+            <div>
+              <strong>Materials Needed</strong>
+              <span>List each board, sheet, hardware, or supply used for this item.</span>
+            </div>
+            <button type="button" class="btn" id="addMaterialRow">+ Add Material</button>
+          </div>
+          <div id="materialsList" class="materials-list"></div>
+          <div class="materials-total">
+            <span>Material Cost Total</span>
+            <strong id="materialCostTotal">$0.00</strong>
+          </div>
+        </div>
+
+        <div class="wood-pricing-card full">
+          <strong>Pricing</strong>
+          <div class="wood-pricing-grid">
+            <label>Sale Cost
+              <input id="woodSaleCost" class="currency-input" type="text" inputmode="decimal" placeholder="$0.00" />
+            </label>
+            <div class="wood-profit-box">
+              <span>Material Cost</span>
+              <b id="woodMaterialCostView">$0.00</b>
+            </div>
+            <div class="wood-profit-box">
+              <span>Profit</span>
+              <b id="woodProfitView">$0.00</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="plans-card full">
+          <div class="plans-head">
+            <div>
+              <strong>Plans / Files</strong>
+              <span>Upload PDF, Word documents, or images. Files are saved in the Plans folder.</span>
+            </div>
+          </div>
+          <input id="woodPlanFiles" type="file" multiple accept=".pdf,.doc,.docx,image/*" />
+          <div id="woodPlansList" class="plans-list"><span class="plans-empty">No plans uploaded yet.</span></div>
+        </div>
+
+        <textarea id="woodItemNotes" placeholder="Notes, grain, finish, hardware, defects..."></textarea>
+        <button class="save" type="submit">Save Woodworking Item</button>
+        <button class="btn full" type="button" id="clearItemForm">Clear Item Form</button>
+      </form>
+    </details>
+    <details id="woodItems" class="card" style="margin-top:14px">
+      <summary><h2>Woodworking Items <span class="badge muted-badge" id="woodItemCount">0</span></h2><span>Click to expand</span></summary>
+      <div class="body">
+        <div class="controls">
+          <input id="woodItemSearch" placeholder="Search items, materials, size, notes..." />
+          <select id="woodItemStatusFilter">
+            <option value="all">All</option>
+            <option value="available">Available</option>
+            <option value="low">Low</option>
+            <option value="out">Out</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table class="wood-items-table">
+            <thead><tr><th style="width:90px">Item #</th><th style="width:260px">Name</th><th style="width:130px">Dimensions</th><th style="width:360px">Materials</th><th style="width:120px">Material Cost</th><th style="width:110px">Sale Cost</th><th style="width:100px">Profit</th><th style="width:55px">Qty</th><th style="width:110px">Status</th><th style="width:140px">Plans</th><th style="width:60px">Notes</th><th style="width:90px">Actions</th></tr></thead>
+            <tbody id="woodItemsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </details>  </section>
+
+    <details id="cvCleanupPanel" class="card" style="margin-top:14px">
+      <summary><h2>Clean Up Plans</h2><span>Find and remove plan files not linked to an item</span></summary>
+      <div class="body">
+        <p class="plans-empty" style="margin:0 0 10px">Click <strong>Scan Plans Folder</strong> to compare the physical Plans folder against Woodworking Items. Linked files are protected. Unlinked files can be deleted.</p>
+        <div class="cv-clean-summary">
+          <div class="cv-clean-stat"><span>Total Files</span><strong id="cvCleanTotal">0</strong></div>
+          <div class="cv-clean-stat"><span>Used Files</span><strong id="cvCleanUsed">0</strong></div>
+          <div class="cv-clean-stat"><span>Unused Files</span><strong id="cvCleanUnused">0</strong></div>
+        </div>
+        <div class="cv-clean-actions">
+          <button type="button" class="btn" id="cvCleanScanBtn">Scan Plans Folder</button>
+          <button type="button" class="btn del" id="cvCleanDeleteAllBtn" disabled>Delete All Unused</button>
+        </div>
+        <div class="table-wrap">
+          <table class="cv-clean-table">
+            <thead><tr><th style="width:280px">File</th><th style="width:100px">Status</th><th>Used By</th><th style="width:130px">Action</th></tr></thead>
+            <tbody id="cvCleanTable"><tr><td colspan="4" class="plans-empty">Click Scan Plans Folder to check for unused files.</td></tr></tbody>
+          </table>
+        </div>
+        <div id="cvCleanMessage" class="cv-clean-message"></div>
+      </div>
+    </details>
+
+    <details id="jobFilesCleanupPanel" class="card" style="margin-top:14px">
+      <summary><h2>Clean Up Job Files</h2><span>Find and remove job files not linked to a job</span></summary>
+      <div class="body">
+        <p class="plans-empty" style="margin:0 0 10px">Click <strong>Scan JobFiles Folder</strong> to compare physical files in the JobFiles folder against files linked to Woodworking Jobs and 3D Print Orders. Linked files are protected.</p>
+        <div class="job-clean-summary">
+          <div class="job-clean-stat"><span>Total Files</span><strong id="jobCleanTotal">0</strong></div>
+          <div class="job-clean-stat"><span>Used Files</span><strong id="jobCleanUsed">0</strong></div>
+          <div class="job-clean-stat"><span>Unused Files</span><strong id="jobCleanUnused">0</strong></div>
+        </div>
+        <div class="job-clean-actions">
+          <button type="button" class="btn" id="jobCleanScanBtn">Scan JobFiles Folder</button>
+          <button type="button" class="btn del" id="jobCleanDeleteAllBtn" disabled>Delete All Unused</button>
+        </div>
+        <div class="table-wrap">
+          <table class="job-clean-table">
+            <thead><tr><th style="width:280px">File</th><th style="width:100px">Status</th><th>Used By</th><th style="width:130px">Action</th></tr></thead>
+            <tbody id="jobCleanTable"><tr><td colspan="4" class="plans-empty">Click Scan JobFiles Folder to check for unused files.</td></tr></tbody>
+          </table>
+        </div>
+        <div id="jobCleanMessage" class="job-clean-message"></div>
+      </div>
+    </details>
+
+</main>
+
+<div id="noteModal" class="note-modal hidden" aria-hidden="true">
+  <div class="note-modal-backdrop" data-close-note></div>
+  <div class="note-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="noteModalTitle">
+    <button type="button" class="note-modal-close" data-close-note title="Close">×</button>
+    <h3 id="noteModalTitle">Note</h3>
+    <div id="noteModalText" class="note-modal-text"></div>
+  </div>
+</div>
+
+<div id="cvActionModal" class="note-modal hidden" aria-hidden="true">
+  <div class="note-modal-backdrop" data-cv-modal-cancel></div>
+  <div class="note-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="cvActionModalTitle">
+    <button type="button" class="note-modal-close" data-cv-modal-cancel title="Close">×</button>
+    <h3 id="cvActionModalTitle">Confirm</h3>
+    <div id="cvActionModalText" class="note-modal-text"></div>
+    <div id="cvActionModalActions" class="cv-modal-actions"></div>
+  </div>
+</div>
+
+<footer class="site-footer">★ CajunVeteran Workshop • Woodworking Admin • Built With Pride ★</footer>
+<script>
+const KEY='cv_woodworking_jobs_v1';
+function loadJobs(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return []}}
+function saveJobs(jobs){localStorage.setItem(KEY,JSON.stringify(jobs))}
+function nextJobId(){const nums=loadJobs().map(j=>Number(String(j.jobId||'').replace(/\D/g,''))).filter(n=>!isNaN(n));return 'W'+String((nums.length?Math.max(...nums):1000)+1)}
+function statusLabel(s){return {quote:'Quote',approved:'Approved',in_progress:'In Process',completed:'Completed',delivered:'Delivered'}[s]||s}
+function statusClass(s){return s==='delivered'?'muted-badge':s==='completed'?'ok':s==='in_progress'?'warn':'danger-badge'}
+function money(v){const n=Number(v||0);return '$'+n.toFixed(2)}
+function parseCurrency(v){const n=Number(String(v||'').replace(/[^0-9.-]/g,''));return isNaN(n)?0:n}
+function formatCurrency(v){return money(parseCurrency(v))}
+function wireCurrencyInput(el){if(!el)return;el.addEventListener('focus',()=>{const n=parseCurrency(el.value);el.value=n?String(n):'';setTimeout(()=>el.select&&el.select(),0)});el.addEventListener('blur',()=>{el.value=formatCurrency(el.value);updateWoodPricing&&updateWoodPricing()});}
+function materialTextListHtml(text){const parts=String(text||'').split(/,|\n|;/).map(x=>x.trim()).filter(Boolean);if(!parts.length)return '';return `<div class="job-material-list">${parts.map(x=>`<div class="job-material-line"><span title="${escapeAttr(x)}">${x}</span></div>`).join('')}</div>`}
+function openNoteModal(text){const modal=document.getElementById('noteModal');const box=document.getElementById('noteModalText');if(!modal||!box)return;const t=String(text||'');const lines=t.split(/\n+/).filter(Boolean);let html='';for(const line of lines){const idx=line.indexOf(':');if(idx>0){const label=line.substring(0,idx).trim();const value=line.substring(idx+1).trim();html+=`<div><span class="note-label">${label}</span><br>${value}</div><div class="note-sep"></div>`;}else{html+=`<div><span class="note-label">NOTES</span><br>${line}</div>`;}}box.innerHTML=html;modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false')}
+function closeNoteModal(){const modal=document.getElementById('noteModal');if(!modal)return;modal.classList.add('hidden');modal.setAttribute('aria-hidden','true')}
+function getJobLinkedItem(job){if(!job)return null;const items=loadWoodItems();if(job.sourceItemId){const byId=items.find(i=>i.id===job.sourceItemId);if(byId)return byId;}const project=String(job.project||'').trim().toLowerCase();if(project){const byName=items.find(i=>String(i.name||'').trim().toLowerCase()===project);if(byName)return byName;const byItemId=items.find(i=>String(i.itemId||'').trim().toLowerCase()===project);if(byItemId)return byItemId;}return null}
+function jobMaterialPurchasedHtml(job){return `<label class="job-material-inline" title="Material purchased for this job"><input class="job-material-check" type="checkbox" data-toggle-job-material-purchased="${job.id}" ${job.materialPurchased?'checked':''}/></label>`}
+function jobNoteText(job){const parts=[];if(job.plaqueName)parts.push(`Name: ${job.plaqueName}`);if(job.plaqueRank)parts.push(`Rank: ${job.plaqueRank}`);if(job.plaqueMonthPromoted)parts.push(`Month Promoted: ${job.plaqueMonthPromoted}`);if(job.notes)parts.push(job.notes);return parts.join('\n\n')}
+
+function jobFilesIconHtml(job){const files=Array.isArray(job?.files)?job.files:[];const c=files.length;return `<button type="button" class="job-file-icon ${c?'has-files':'empty'}" data-job-files-view="${job.id}" title="${c?c+' file(s) attached':'No files attached'}">📁${c?`<span>${c}</span>`:''}</button>`}
+function jobFileStoredName(file){if(!file)return'';if(file.storedName)return String(file.storedName).split('/').pop();if(file.url){try{return decodeURIComponent(String(file.url).split('?')[0].split('#')[0].split('/').pop()||'')}catch(e){return String(file.url).split('/').pop()||''}}return file.name||''}
+function jobFileDisplayName(file){return (file&&(file.name||jobFileStoredName(file)))||'Job file'}
+function jobFileIcon(name){const ext=String(name||'').split('.').pop().toLowerCase();if(ext==='pdf')return '📄';if(['doc','docx'].includes(ext))return '📝';if(['xls','xlsx','csv'].includes(ext))return '📊';if(['png','jpg','jpeg','webp','gif'].includes(ext))return '🖼️';if(ext==='zip')return '🗜️';return '📎'}
+
+function jobFileIsImage(file){const name=String(jobFileDisplayName(file)||file?.name||file?.url||'').split('?')[0].toLowerCase();const ext=name.split('.').pop();return ['png','jpg','jpeg','webp','gif','svg'].includes(ext)||String(file?.type||'').startsWith('image/')}
+function jobFilePreviewHtml(file){const name=jobFileDisplayName(file);const icon=jobFileIcon(name);if(jobFileIsImage(file)){return `<div class="wood-file-preview-card"><a href="${file.url}" target="_blank">${icon} ${name}</a><img class="wood-image-preview" src="${file.url}" alt="${name}"></div>`}return `<div class="wood-file-preview-card"><a href="${file.url}" target="_blank" download>${icon} ${name}</a></div>`}
+function openJobFilesModal(job){const modal=document.getElementById('cvActionModal');const title=document.getElementById('cvActionModalTitle');const text=document.getElementById('cvActionModalText');const actions=document.getElementById('cvActionModalActions');if(!modal||!title||!text||!actions)return;const files=Array.isArray(job?.files)?job.files:[];title.textContent='Job Files - '+(job?.jobId||job?.project||'Job');if(!files.length){text.innerHTML='<p class="wood-file-preview-empty">No job files attached.</p>';}else{text.innerHTML='<div class="wood-file-preview-list">'+files.map(jobFilePreviewHtml).join('')+'</div>';}actions.innerHTML='<button type="button" class="btn primary" data-job-files-close>OK</button>';modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false')}
+function closeJobFilesModal(){const modal=document.getElementById('cvActionModal');if(modal){modal.classList.add('hidden');modal.setAttribute('aria-hidden','true')}}
+function renderJobs(){const jobs=loadJobs();const q=(document.getElementById('jobSearch').value||'').toLowerCase();const f=document.getElementById('jobStatusFilter').value;const tbody=document.getElementById('jobsTable');tbody.innerHTML='';let list=jobs.filter(j=>f==='all'||j.status===f).filter(j=>`${j.jobId} ${j.customer} ${j.project} ${j.woodType} ${j.finish} ${j.sourceItemId||''} ${j.plaqueName||''} ${j.plaqueRank||''} ${j.plaqueMonthPromoted||''} ${j.notes}`.toLowerCase().includes(q));list.sort((a,b)=>(a.dueDate||'9999').localeCompare(b.dueDate||'9999'));
+list.forEach(j=>{const tr=document.createElement('tr');tr.innerHTML=`<td><strong>${j.jobId||''}</strong></td><td><span class="job-title" title="${j.project||''}">${j.project||''}</span></td><td>${j.customer||''}</td><td><span class="badge ${statusClass(j.status)}">${statusLabel(j.status)}</span></td><td>${j.dueDate||''}</td><td>${materialTextListHtml(materialUsesListHtml(j.materialUses)||j.woodType)}</td><td class="money">${money(j.total)}</td><td>${jobMaterialPurchasedHtml(j)}</td><td><label class="paid-inline" title="Paid"><input class="job-paid-check" type="checkbox" data-toggle-job-paid="${j.id}" ${j.paid?'checked':''}/></label></td><td>${jobFilesIconHtml(j)}</td><td>${notesIconHtml(jobNoteText(j))}</td><td><button class="btn edit" data-edit="${j.id}">✎</button> <button class="btn del" data-del="${j.id}">🗑</button></td>`;tbody.appendChild(tr)});
+document.getElementById('jobCount').textContent=String(list.length);document.getElementById('kpiActive').textContent=jobs.filter(j=>!['completed','delivered'].includes(j.status)).length;document.getElementById('kpiCompleted').textContent=jobs.filter(j=>j.status==='completed').length;document.getElementById('kpiDelivered').textContent=jobs.filter(j=>j.status==='delivered').length}
+function isPlaqueItemName(name){const n=String(name||'').trim().toLowerCase();return n==='nco/snco/cmsgt plaque charge'||n==='nco plaque charge'||n==='snco plaque charge'||n==='cmsgt plaque charge'}
+function updatePlaqueDetailsVisibility(){const selectedId=document.getElementById('jobItemSelect')?.value||'';const item=selectedId?loadWoodItems().find(i=>i.id===selectedId):null;const project=document.getElementById('project')?.value||'';const show=isPlaqueItemName(item?.name)||isPlaqueItemName(project);const section=document.getElementById('plaqueDetails');if(section)section.classList.toggle('show',show);return show}
+function clearPlaqueDetails(){const n=document.getElementById('plaqueName');const r=document.getElementById('plaqueRank');const m=document.getElementById('plaqueMonthPromoted');if(n)n.value='';if(r)r.value='';if(m)m.value=''}
+function clearForm(){document.getElementById('woodForm').reset();document.getElementById('editId').value='';document.getElementById('jobId').value=nextJobId();const jis=document.getElementById('jobItemSelect');if(jis)jis.value='';setJobMaterialUses([]);clearPlaqueDetails();updatePlaqueDetailsVisibility()}
+document.getElementById('woodForm').addEventListener('submit',e=>{e.preventDefault();const jobs=loadJobs();const id=document.getElementById('editId').value||String(Date.now());const oldJob=jobs.find(j=>j.id===id);const materialUses=getJobMaterialUses();const record={id,jobId:document.getElementById('jobId').value.trim()||nextJobId(),customer:document.getElementById('customer').value.trim(),sourceItemId:document.getElementById('jobItemSelect')?.value||'',project:document.getElementById('project').value.trim(),status:document.getElementById('status').value,dueDate:document.getElementById('dueDate').value,woodType:document.getElementById('woodType').value.trim(),finish:document.getElementById('finish').value.trim(),dimensions:document.getElementById('dimensions').value.trim(),materialUses,jobMaterialCost:jobMaterialUseTotal(materialUses),total:Number(document.getElementById('total').value||0),paid:document.getElementById('paid').checked,materialPurchased:(oldJob?.materialPurchased)||false,plaqueName:document.getElementById('plaqueName')?.value.trim()||'',plaqueRank:document.getElementById('plaqueRank')?.value||'',plaqueMonthPromoted:document.getElementById('plaqueMonthPromoted')?.value.trim()||'',notes:document.getElementById('notes').value.trim()};applyMaterialUseDelta(oldJob?.materialUses||[],materialUses);const idx=jobs.findIndex(j=>j.id===id);if(idx>=0)jobs[idx]=record;else jobs.push(record);saveJobs(jobs);clearForm();renderJobs();renderMaterialInventory()});
+document.addEventListener('click',e=>{const edit=e.target.closest('[data-edit]');const del=e.target.closest('[data-del]');if(edit){const j=loadJobs().find(x=>x.id===edit.dataset.edit);if(!j)return;document.getElementById('editId').value=j.id;document.getElementById('jobId').value=j.jobId||'';document.getElementById('customer').value=j.customer||'';const linkedItem=getJobLinkedItem(j);populateJobItemSelect(j.sourceItemId||(linkedItem?linkedItem.id:''));document.getElementById('project').value=j.project||'';document.getElementById('status').value=j.status||'quote';document.getElementById('dueDate').value=j.dueDate||'';document.getElementById('woodType').value=j.woodType||'';document.getElementById('finish').value=j.finish||'';document.getElementById('dimensions').value=j.dimensions||'';document.getElementById('total').value=j.total||'';document.getElementById('paid').checked=!!j.paid;document.getElementById('notes').value=j.notes||'';document.getElementById('plaqueName').value=j.plaqueName||'';document.getElementById('plaqueRank').value=j.plaqueRank||'';document.getElementById('plaqueMonthPromoted').value=j.plaqueMonthPromoted||'';setJobMaterialUses(j.materialUses||[]);updatePlaqueDetailsVisibility();document.getElementById('formCard').open=true;document.getElementById('formCard').open=true;document.getElementById('formCard').scrollIntoView({behavior:'smooth',block:'start'})}if(del&&confirm('Delete this woodworking job?')){const jobs=loadJobs();const old=jobs.find(j=>j.id===del.dataset.del);if(old)applyMaterialUseDelta(old.materialUses||[],[]);saveJobs(jobs.filter(j=>j.id!==del.dataset.del));renderJobs();renderMaterialInventory()}});
+document.getElementById('jobSearch').addEventListener('input',renderJobs);document.getElementById('jobStatusFilter').addEventListener('change',renderJobs);document.getElementById('clearForm').addEventListener('click',clearForm);document.getElementById('addJobUseRow')?.addEventListener('click',()=>addJobUseRow());document.getElementById('materialInventoryForm')?.addEventListener('submit',e=>{e.preventDefault();const list=loadMaterialInventory();const id=document.getElementById('editMaterialInvId').value||String(Date.now());const rec={id,name:document.getElementById('materialInvName').value.trim(),purchaseCost:parseCurrency(document.getElementById('materialInvPurchaseCost').value),yieldQty:Number(document.getElementById('materialInvYield').value||1)||1,onHand:Number(document.getElementById('materialInvOnHand').value||0)||0,notes:document.getElementById('materialInvNotes').value.trim()};const idx=list.findIndex(m=>m.id===id);if(idx>=0)list[idx]=rec;else list.push(rec);saveMaterialInventory(list);clearMaterialInvForm();renderMaterialInventory()});document.getElementById('clearMaterialInvForm')?.addEventListener('click',clearMaterialInvForm);['materialInvPurchaseCost','materialInvYield'].forEach(id=>document.getElementById(id)?.addEventListener('input',updateMaterialInvCostEach));wireCurrencyInput(document.getElementById('materialInvPurchaseCost'));document.addEventListener('click',e=>{const em=e.target.closest('[data-edit-mat-inv]');if(em){const m=loadMaterialInventory().find(x=>x.id===em.dataset.editMatInv);if(!m)return;document.getElementById('editMaterialInvId').value=m.id;document.getElementById('materialInvName').value=m.name||'';document.getElementById('materialInvPurchaseCost').value=formatCurrency(m.purchaseCost||0);document.getElementById('materialInvYield').value=m.yieldQty||m.yield||1;document.getElementById('materialInvOnHand').value=m.onHand||0;document.getElementById('materialInvNotes').value=m.notes||'';updateMaterialInvCostEach();document.getElementById('materialInventory').open=true;document.getElementById('materialInventory').scrollIntoView({behavior:'smooth',block:'start'});}const dm=e.target.closest('[data-del-mat-inv]');if(dm&&confirm('Delete this material inventory item?')){saveMaterialInventory(loadMaterialInventory().filter(m=>m.id!==dm.dataset.delMatInv));renderMaterialInventory();}});clearForm();renderMaterialInventory();renderJobs();
+
+
+const MAT_INV_KEY='cv_woodworking_material_inventory_v1';
+function loadMaterialInventory(){try{return JSON.parse(localStorage.getItem(MAT_INV_KEY)||'[]')}catch{return []}}
+function saveMaterialInventory(list){localStorage.setItem(MAT_INV_KEY,JSON.stringify(list))}
+function materialInvCostEach(m){const cost=Number(m.purchaseCost||0)||0;const yieldQty=Number(m.yieldQty||m.yield||1)||1;return yieldQty>0?cost/yieldQty:0}
+function itemMatCostEach(m){const pc=Number(m.purchaseCost||0)||0;const y=Number(m.yieldQty||m.yield||0)||0;if(pc>0&&y>0)return pc/y;return Number(m.cost||0)||0}
+function normalizeMatName(n){return String(n||'').trim().toLowerCase()}
+function updateMaterialInvCostEach(){const cost=parseCurrency(document.getElementById('materialInvPurchaseCost')?.value);const y=Number(document.getElementById('materialInvYield')?.value||0)||0;const el=document.getElementById('materialInvCostEach');if(el)el.textContent=money(y>0?cost/y:0)}
+function clearMaterialInvForm(){const f=document.getElementById('materialInventoryForm');if(f)f.reset();const id=document.getElementById('editMaterialInvId');if(id)id.value='';updateMaterialInvCostEach()}
+function renderMaterialInventory(){const list=loadMaterialInventory();const tbody=document.getElementById('materialInventoryTable');if(!tbody)return;tbody.innerHTML='';list.forEach(m=>{const low=(Number(m.onHand||0)<=0);const tr=document.createElement('tr');tr.innerHTML=`<td><strong>${m.name||''}</strong></td><td>${money(m.purchaseCost||0)}</td><td>${m.yieldQty||m.yield||0}</td><td>${m.onHand||0}</td><td>${money(materialInvCostEach(m))}</td><td>${m.notes||''}</td><td>${low?'<span class="badge danger-badge">Out</span>':'<span class="badge ok">OK</span>'}</td><td><button class="btn edit" data-edit-mat-inv="${m.id}">✎</button> <button class="btn del" data-del-mat-inv="${m.id}">🗑</button></td>`;tbody.appendChild(tr)});const c=document.getElementById('materialInventoryCount');if(c)c.textContent=String(list.length);refreshJobUseSelects()}
+function refreshJobUseSelects(){document.querySelectorAll('.job-use-select').forEach(sel=>{const cur=sel.value;sel.innerHTML='<option value="">Select inventory material...</option>';loadMaterialInventory().forEach(m=>{const opt=document.createElement('option');opt.value=m.id;opt.textContent=`${m.name} (${m.onHand||0} on hand @ ${money(materialInvCostEach(m))})`;sel.appendChild(opt)});if(cur)sel.value=cur;});updateJobUseTotal()}
+function addJobUseRow(use={}){const list=document.getElementById('jobUseList');if(!list)return;const row=document.createElement('div');row.className='job-use-row';row.innerHTML=`<select class="job-use-select"></select><input class="job-use-qty" type="number" min="0" step="1" placeholder="Qty Used" value="${use.qty||1}"/><div class="job-use-cost">$0.00</div><button type="button" class="remove-job-use" title="Remove">×</button>`;list.appendChild(row);refreshJobUseSelects();if(use.materialId)row.querySelector('.job-use-select').value=use.materialId;row.querySelector('.job-use-select').addEventListener('change',updateJobUseTotal);row.querySelector('.job-use-qty').addEventListener('input',updateJobUseTotal);row.querySelector('.remove-job-use').addEventListener('click',()=>{row.remove();updateJobUseTotal()});updateJobUseTotal()}
+function getJobMaterialUses(){return Array.from(document.querySelectorAll('#jobUseList .job-use-row')).map(row=>({materialId:row.querySelector('.job-use-select')?.value||'',qty:Number(row.querySelector('.job-use-qty')?.value||0)||0})).filter(u=>u.materialId&&u.qty>0)}
+function setJobMaterialUses(uses=[]){const list=document.getElementById('jobUseList');if(!list)return;list.innerHTML='';if(Array.isArray(uses)&&uses.length)uses.forEach(addJobUseRow);else addJobUseRow();updateJobUseTotal()}
+function jobMaterialUseTotal(uses){const inv=loadMaterialInventory();return (Array.isArray(uses)?uses:[]).reduce((sum,u)=>{const m=inv.find(x=>x.id===u.materialId);return sum+(Number(u.qty||0)*materialInvCostEach(m||{}));},0)}
+function updateJobUseTotal(){const inv=loadMaterialInventory();document.querySelectorAll('#jobUseList .job-use-row').forEach(row=>{const m=inv.find(x=>x.id===row.querySelector('.job-use-select')?.value);const qty=Number(row.querySelector('.job-use-qty')?.value||0)||0;const cost=qty*materialInvCostEach(m||{});const c=row.querySelector('.job-use-cost');if(c)c.textContent=money(cost)});const total=document.getElementById('jobUseTotal');if(total)total.textContent=money(jobMaterialUseTotal(getJobMaterialUses()))}
+function applyMaterialUseDelta(oldUses=[],newUses=[]){const inv=loadMaterialInventory();const delta={};(Array.isArray(oldUses)?oldUses:[]).forEach(u=>{delta[u.materialId]=(delta[u.materialId]||0)+Number(u.qty||0)});(Array.isArray(newUses)?newUses:[]).forEach(u=>{delta[u.materialId]=(delta[u.materialId]||0)-Number(u.qty||0)});Object.entries(delta).forEach(([id,d])=>{const m=inv.find(x=>x.id===id);if(m)m.onHand=Math.max(0,(Number(m.onHand||0)||0)+d)});saveMaterialInventory(inv);renderMaterialInventory()}
+function upsertInventoryFromItemMaterials(materials){const inv=loadMaterialInventory();cleanMaterials(materials).forEach(m=>{if(!m.name)return;let rec=inv.find(x=>normalizeMatName(x.name)===normalizeMatName(m.name));if(!rec){rec={id:String(Date.now())+Math.random().toString(16).slice(2),name:m.name,purchaseCost:Number(m.purchaseCost||m.cost||0)||0,yieldQty:Number(m.yieldQty||m.yield||1)||1,onHand:Number(m.onHand||0)||0,notes:'Auto-created from Woodworking Item'};inv.push(rec);}else{rec.name=m.name;rec.purchaseCost=Number(m.purchaseCost||m.cost||rec.purchaseCost||0)||0;rec.yieldQty=Number(m.yieldQty||m.yield||rec.yieldQty||1)||1;if(m.onHand!==''&&m.onHand!==undefined&&m.onHand!==null)rec.onHand=Number(m.onHand||0)||0;}});saveMaterialInventory(inv);renderMaterialInventory()}
+function findInventoryByMaterialName(name){return loadMaterialInventory().find(x=>normalizeMatName(x.name)===normalizeMatName(name))}
+function setJobMaterialUsesFromItem(item){const uses=cleanMaterials(item.materials).map(m=>{const inv=findInventoryByMaterialName(m.name);return inv?{materialId:inv.id,qty:Number(m.qty||1)||1}:null}).filter(Boolean);setJobMaterialUses(uses)}
+function materialUsesListHtml(uses){const inv=loadMaterialInventory();const list=(Array.isArray(uses)?uses:[]).map(u=>{const m=inv.find(x=>x.id===u.materialId);return m?`${u.qty}× ${m.name}`:''}).filter(Boolean);return list.length?list.join('; '):''}
+
+const ITEM_KEY='cv_woodworking_items_v1';
+function loadWoodItems(){try{return JSON.parse(localStorage.getItem(ITEM_KEY)||'[]')}catch{return []}}
+function saveWoodItems(items){localStorage.setItem(ITEM_KEY,JSON.stringify(items))}
+function nextWoodItemId(){const nums=loadWoodItems().map(i=>Number(String(i.itemId||'').replace(/\D/g,''))).filter(n=>!isNaN(n));return 'WI'+String((nums.length?Math.max(...nums):1000)+1)}
+function itemStatusLabel(s){return {available:'Available',low:'Low',out:'Out'}[s]||s}
+function itemStatusClass(s){return s==='available'?'ok':s==='low'?'warn':'danger-badge'}
+function cleanMaterials(materials){return (Array.isArray(materials)?materials:[]).map(m=>({name:String(m.name||'').trim(),qty:Number(m.qty||1)||1,cost:Number(m.cost||0)||0,purchaseCost:Number(m.purchaseCost||m.cost||0)||0,yieldQty:Number(m.yieldQty||m.yield||1)||1,onHand:(m.onHand===''||m.onHand===undefined||m.onHand===null)?'':Number(m.onHand||0)})).filter(m=>m.name||m.cost>0||m.purchaseCost>0)}
+function materialTotal(materials){return cleanMaterials(materials).reduce((sum,m)=>sum+(Number(m.qty||1)*itemMatCostEach(m)),0)}
+function dimensionsText(i){const vals=[i.length,i.width,i.height].filter(v=>v!==''&&v!==undefined&&v!==null&&Number(v)!==0);return vals.length?vals.join(' x '):''}
+function itemMaterialsSummary(item){const mats=cleanMaterials(item.materials);return mats.length?mats.map(m=>`${m.qty||1}× ${m.name}`).join(', '):''}
+function populateJobItemSelect(selected=''){const sel=document.getElementById('jobItemSelect');if(!sel)return;const items=loadWoodItems();const current=selected||sel.value;sel.innerHTML='<option value="">Choose an existing item...</option>';items.forEach(i=>{const opt=document.createElement('option');opt.value=i.id;opt.textContent=`${i.itemId||''} - ${i.name||'Unnamed Item'}`;sel.appendChild(opt)});if(current)sel.value=current}
+function applyItemToJob(itemId){if(!itemId)return;const item=loadWoodItems().find(i=>i.id===itemId);if(!item)return;document.getElementById('project').value=item.name||'';document.getElementById('woodType').value=itemMaterialsSummary(item);document.getElementById('dimensions').value=dimensionsText(item);document.getElementById('total').value=item.saleCost?Number(item.saleCost):'';const notes=document.getElementById('notes');if(notes&&!notes.value.trim()&&item.notes)notes.value=item.notes;setJobMaterialUsesFromItem(item);updatePlaqueDetailsVisibility()}
+function addMaterialRow(material={}){const list=document.getElementById('materialsList');const row=document.createElement('div');row.className='material-row';row.innerHTML=`<input class="material-name" placeholder="Material, ex: Poplar Plaque Blank" value="${String(material.name||'').replace(/"/g,'&quot;')}"/><input class="material-qty" type="number" step="1" min="1" placeholder="Qty Used" value="${material.qty||1}"/><input class="material-purchase-cost currency-input" type="text" inputmode="decimal" placeholder="Purchase Cost" value="${(material.purchaseCost||material.cost)?formatCurrency(material.purchaseCost||material.cost):''}"/><input class="material-yield" type="number" step="1" min="1" placeholder="Yield" value="${material.yieldQty||material.yield||1}"/><input class="material-onhand" type="number" step="1" min="0" placeholder="On Hand" value="${material.onHand===''||material.onHand===undefined?'':material.onHand}"/><button type="button" class="remove-material" title="Remove material">×</button>`;list.appendChild(row);['material-purchase-cost','material-qty','material-yield','material-name','material-onhand'].forEach(cls=>row.querySelector('.'+cls)?.addEventListener('input',updateMaterialTotal));wireCurrencyInput(row.querySelector('.material-purchase-cost'));row.querySelector('.remove-material').addEventListener('click',()=>{row.remove();if(!list.children.length)addMaterialRow();updateMaterialTotal()});updateMaterialTotal()}
+function getMaterialRows(){return Array.from(document.querySelectorAll('#materialsList .material-row')).map(row=>({name:row.querySelector('.material-name')?.value.trim()||'',qty:Number(row.querySelector('.material-qty')?.value||1)||1,purchaseCost:parseCurrency(row.querySelector('.material-purchase-cost')?.value),yieldQty:Number(row.querySelector('.material-yield')?.value||1)||1,onHand:row.querySelector('.material-onhand')?.value===''?'':Number(row.querySelector('.material-onhand')?.value||0)})).filter(m=>m.name||m.purchaseCost>0)}
+function setMaterialRows(materials){const list=document.getElementById('materialsList');list.innerHTML='';const rows=cleanMaterials(materials);if(rows.length)rows.forEach(addMaterialRow);else addMaterialRow();updateMaterialTotal()}
+function updateMaterialTotal(){const total=materialTotal(getMaterialRows());const totalEl=document.getElementById('materialCostTotal');if(totalEl)totalEl.textContent=money(total);updateWoodPricing()}
+function updateWoodPricing(){const mat=materialTotal(getMaterialRows());const sale=parseCurrency(document.getElementById('woodSaleCost')?.value);const matEl=document.getElementById('woodMaterialCostView');const profEl=document.getElementById('woodProfitView');if(matEl)matEl.textContent=money(mat);if(profEl)profEl.textContent=money(sale-mat)}
+function planIcon(name){const ext=String(name||'').split('.').pop().toLowerCase();if(ext==='pdf')return '📄';if(['doc','docx'].includes(ext))return '📝';if(['png','jpg','jpeg','webp','gif'].includes(ext))return '🖼️';return '📎'}
+window.__woodCurrentPlans=[];
+function renderPlanEditorList(plans){window.__woodCurrentPlans=Array.isArray(plans)?plans.slice():[];const list=document.getElementById('woodPlansList');if(!list)return;list.innerHTML='';if(!window.__woodCurrentPlans.length){list.innerHTML='<span class="plans-empty">No plans uploaded yet.</span>';return;}window.__woodCurrentPlans.forEach((plan,idx)=>{const row=document.createElement('div');row.className='plan-row';row.innerHTML=`<a href="${plan.url}" target="_blank" download>${planIcon(plan.name)} ${plan.name}</a><button type="button" data-remove-plan="${idx}">Remove</button>`;list.appendChild(row)});}
+function plansTableHtml(plans){plans=Array.isArray(plans)?plans:[];if(!plans.length)return '<span class="plans-empty">None</span>';return `<div class="plans-mini">${plans.map(p=>`<a href="${p.url}" target="_blank" download title="${String(p.name||'').replace(/"/g,'&quot;')}">${planIcon(p.name)} ${p.name}</a>`).join('')}</div>`;}
+async function uploadSelectedPlans(itemId){const input=document.getElementById('woodPlanFiles');if(!input||!input.files||!input.files.length)return [];const fd=new FormData();Array.from(input.files).forEach(file=>fd.append('plans',file));fd.append('itemId',itemId||'wooditem');const res=await fetch('/api/upload-plan',{method:'POST',body:fd});if(!res.ok){let msg='Plan upload failed. Make sure server.js has the upload route and the server is running.';try{const j=await res.json();if(j&&j.error)msg=j.error}catch{}throw new Error(msg)}const data=await res.json();return Array.isArray(data.files)?data.files:[];}
+function escapeAttr(v){return String(v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function notesIconHtml(notes){const txt=String(notes||'').trim();return txt?`<button type="button" class="notes-icon" data-note="${escapeAttr(txt)}" title="Click to view note">📝</button>`:`<span class="notes-icon empty" title="No notes">📝</span>`}
+function materialsListHtml(materials,itemId){const mats=cleanMaterials(materials);if(!mats.length)return '<span class="plans-empty">No materials</span>';const rows=mats.slice(0,6).map((m,idx)=>`<div class="material-line"><span class="mat-qty">${m.qty||1}×</span><span class="mat-name open" title="${escapeAttr(m.name)}">${m.name}</span><span class="mat-cost">${money((Number(m.qty||1)||1)*itemMatCostEach(m))}</span></div>`).join('');const more=mats.length>6?`<div class="material-more">+${mats.length-6} more</div>`:'';return `<div class="materials-list-view">${rows}${more}</div>`}
+function renderWoodItems(){const items=loadWoodItems();const q=(document.getElementById('woodItemSearch')?.value||'').toLowerCase();const f=document.getElementById('woodItemStatusFilter')?.value||'all';const tbody=document.getElementById('woodItemsTable');if(!tbody)return;tbody.innerHTML='';let list=items.filter(i=>f==='all'||i.status===f).filter(i=>{const matText=cleanMaterials(i.materials).map(m=>m.name).join(' ');const planText=(Array.isArray(i.plans)?i.plans:[]).map(p=>p.name).join(' ');return `${i.itemId} ${i.name} ${dimensionsText(i)} ${matText} ${planText} ${i.notes}`.toLowerCase().includes(q)});list.forEach(i=>{const mats=cleanMaterials(i.materials);const matPreview=mats.slice(0,2).map(m=>`${m.qty||1}× ${m.name}`).join('<br>');const matLabel=mats.length?`${mats.length} Materials${matPreview?'<br><small>'+matPreview+'</small>':''}`:'No materials';const tr=document.createElement('tr');tr.innerHTML=`<td><strong>${i.itemId||''}</strong></td><td><span class="job-title" title="${i.name||''}">${i.name||''}</span></td><td class="dimensions-cell">${dimensionsText(i)}</td><td class="materials-cell">${materialsListHtml(i.materials,i.id)}</td><td class="material-total-cell">${money(materialTotal(i.materials))}</td><td class="sale-cell">${money(i.saleCost||0)}</td><td class="profit-cell">${money((Number(i.saleCost||0)||0)-materialTotal(i.materials))}</td><td>${i.qty||0}</td><td><span class="badge ${itemStatusClass(i.status)}">${itemStatusLabel(i.status)}</span></td><td class="plans-cell">${plansTableHtml(i.plans)}</td><td>${notesIconHtml(i.notes)}</td><td><button class="btn edit" data-edit-item="${i.id}">✎</button> <button class="btn del" data-del-item="${i.id}">🗑</button></td>`;tbody.appendChild(tr)});document.getElementById('woodItemCount').textContent=String(list.length)}
+function clearItemForm(){document.getElementById('woodItemForm').reset();document.getElementById('editItemId').value='';document.getElementById('woodItemId').value=nextWoodItemId();document.getElementById('woodQty').value=1;setMaterialRows([]);renderPlanEditorList([]);const pf=document.getElementById('woodPlanFiles');if(pf)pf.value='';const sc=document.getElementById('woodSaleCost');if(sc)sc.value='';updateWoodPricing()}
+document.getElementById('woodItemForm').addEventListener('submit',async e=>{e.preventDefault();const items=loadWoodItems();const id=document.getElementById('editItemId').value||String(Date.now());const itemId=document.getElementById('woodItemId').value.trim()||nextWoodItemId();let uploaded=[];try{uploaded=await uploadSelectedPlans(itemId)}catch(err){alert(err.message);return;}const record={id,itemId,name:document.getElementById('woodItemName').value.trim(),length:document.getElementById('woodLength').value?Number(document.getElementById('woodLength').value):'',width:document.getElementById('woodWidth').value?Number(document.getElementById('woodWidth').value):'',height:document.getElementById('woodHeight').value?Number(document.getElementById('woodHeight').value):'',saleCost:parseCurrency(document.getElementById('woodSaleCost')?.value),qty:Number(document.getElementById('woodQty').value||0),materials:getMaterialRows(),plans:[...window.__woodCurrentPlans,...uploaded],status:document.getElementById('woodItemStatus').value,notes:document.getElementById('woodItemNotes').value.trim()};const idx=items.findIndex(i=>i.id===id);if(idx>=0)items[idx]=record;else items.push(record);saveWoodItems(items);upsertInventoryFromItemMaterials(record.materials,record.qty);clearItemForm();renderWoodItems();populateJobItemSelect()});
+document.addEventListener('click',e=>{const remPlan=e.target.closest('[data-remove-plan]');if(remPlan){window.__woodCurrentPlans.splice(Number(remPlan.dataset.removePlan),1);renderPlanEditorList(window.__woodCurrentPlans);return;}const edit=e.target.closest('[data-edit-item]');const del=e.target.closest('[data-del-item]');if(edit){const i=loadWoodItems().find(x=>x.id===edit.dataset.editItem);if(!i)return;document.getElementById('editItemId').value=i.id;document.getElementById('woodItemId').value=i.itemId||'';document.getElementById('woodItemName').value=i.name||'';document.getElementById('woodLength').value=i.length||'';document.getElementById('woodWidth').value=i.width||'';document.getElementById('woodHeight').value=i.height||'';document.getElementById('woodQty').value=i.qty||0;document.getElementById('woodSaleCost').value=i.saleCost?formatCurrency(i.saleCost):'';document.getElementById('woodItemStatus').value=i.status||'available';document.getElementById('woodItemNotes').value=i.notes||'';let mats=cleanMaterials(i.materials);if(!mats.length&&(i.material||i.cost))mats=[{name:i.material||'',qty:1,cost:Number(i.cost||0)||0,purchased:false}];setMaterialRows(mats);updateWoodPricing();renderPlanEditorList(i.plans||[]);document.getElementById('itemFormCard').open=true;document.getElementById('itemFormCard').scrollIntoView({behavior:'smooth',block:'start'})}if(del&&confirm('Delete this woodworking item?')){saveWoodItems(loadWoodItems().filter(i=>i.id!==del.dataset.delItem));renderWoodItems();populateJobItemSelect()}});
+document.getElementById('woodItemSearch').addEventListener('input',renderWoodItems);document.getElementById('woodItemStatusFilter').addEventListener('change',renderWoodItems);document.getElementById('clearItemForm').addEventListener('click',clearItemForm);document.getElementById('addMaterialRow').addEventListener('click',()=>addMaterialRow());document.getElementById('woodSaleCost')?.addEventListener('input',updateWoodPricing);wireCurrencyInput(document.getElementById('woodSaleCost'));document.getElementById('jobItemSelect')?.addEventListener('change',e=>applyItemToJob(e.target.value));document.getElementById('project')?.addEventListener('input',updatePlaqueDetailsVisibility);clearItemForm();renderWoodItems();populateJobItemSelect();
+
+document.addEventListener('click',e=>{const n=e.target.closest('[data-note]');if(n){openNoteModal(n.getAttribute('data-note')||'');return;}if(e.target.closest('[data-close-note]')){closeNoteModal();return;}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNoteModal();});
+
+document.addEventListener('change',e=>{const paid=e.target.closest('[data-toggle-job-paid]');if(paid){const jobs=loadJobs();const j=jobs.find(x=>x.id===paid.dataset.toggleJobPaid);if(j){j.paid=!!paid.checked;saveJobs(jobs);renderJobs()}return;}const jobMat=e.target.closest('[data-toggle-job-material-purchased]');if(jobMat){const jobs=loadJobs();const job=jobs.find(x=>x.id===jobMat.dataset.toggleJobMaterialPurchased);if(job){job.materialPurchased=!!jobMat.checked;saveJobs(jobs);renderJobs()}return;}});
+
+
+
+/* ===== safer material inventory override: inventory comes from Items ===== */
+(function(){
+  window.inferYieldFromName=function(name){const mm=String(name||'').match(/\((\d+)\s*(?:plaques?|pcs?|pieces?)\)/i);return mm?Number(mm[1]):0};
+  window.getMatYield=function(m){const inferred=inferYieldFromName(m&&m.name);const y=Number((m&& (m.yieldQty||m.yield))||0)||0;return inferred>1?inferred:(y||1)};
+  window.materialInvCostEach=function(m){const cost=Number((m&&(m.purchaseCost||m.cost))||0)||0;const y=getMatYield(m||{});return y>0?cost/y:0};
+  window.itemMatCostEach=function(m){const cost=Number((m&&(m.purchaseCost||m.cost))||0)||0;const y=getMatYield(m||{});return y>0?cost/y:cost};
+  window.normalizeMatName=function(n){return String(n||'').trim().toLowerCase()};
+  window.cleanMaterials=function(materials){return (Array.isArray(materials)?materials:[]).map(m=>({name:String(m.name||'').trim(),qty:Number(m.qty||1)||1,cost:Number(m.cost||m.purchaseCost||0)||0,purchaseCost:Number(m.purchaseCost||m.cost||0)||0,yieldQty:getMatYield(m),onHand:(m.onHand===''||m.onHand===undefined||m.onHand===null)?'':Number(m.onHand||0)})).filter(m=>m.name||m.purchaseCost>0||m.cost>0)};
+  window.materialTotal=function(materials){return cleanMaterials(materials).reduce((sum,m)=>sum+(Number(m.qty||1)*itemMatCostEach(m)),0)};
+  window.renderMaterialInventory=function(){const list=loadMaterialInventory();const tbody=document.getElementById('materialInventoryTable');if(!tbody)return;tbody.innerHTML='';list.forEach(m=>{const y=getMatYield(m);const low=(Number(m.onHand||0)<=0);const tr=document.createElement('tr');tr.innerHTML=`<td><strong>${m.name||''}</strong></td><td>${money(m.purchaseCost||m.cost||0)}</td><td>${y}</td><td><input class="inv-onhand-input" type="number" min="0" step="1" data-inv-onhand="${m.id}" value="${m.onHand||0}" /></td><td>${money(materialInvCostEach(m))}</td><td>${m.notes||''}</td><td>${low?'<span class="badge danger-badge">Out</span>':'<span class="badge ok">OK</span>'}</td>`;tbody.appendChild(tr)});const c=document.getElementById('materialInventoryCount');if(c)c.textContent=String(list.length);refreshJobUseSelects&&refreshJobUseSelects()};
+  window.addMaterialRow=function(material={}){const list=document.getElementById('materialsList');const row=document.createElement('div');row.className='material-row';row.innerHTML=`<input class="material-name" placeholder="Material, ex: 1x8x6 (7 plaques) Poplar Common" value="${String(material.name||'').replace(/"/g,'&quot;')}"/><input class="material-qty" type="number" step="1" min="1" placeholder="Qty Used" value="${material.qty||1}"/><input class="material-purchase-cost currency-input" type="text" inputmode="decimal" placeholder="Purchase Cost" value="${(material.purchaseCost||material.cost)?formatCurrency(material.purchaseCost||material.cost):''}"/><input class="material-yield" type="number" step="1" min="1" placeholder="Yield" value="${material.yieldQty||material.yield||inferYieldFromName(material.name)||1}"/><input class="material-onhand" type="number" step="1" min="0" placeholder="On Hand" value="${material.onHand===''||material.onHand===undefined?'':material.onHand}"/><button type="button" class="remove-material" title="Remove material">×</button>`;list.appendChild(row);['material-purchase-cost','material-qty','material-yield','material-name','material-onhand'].forEach(cls=>row.querySelector('.'+cls)?.addEventListener('input',updateMaterialTotal));wireCurrencyInput(row.querySelector('.material-purchase-cost'));row.querySelector('.remove-material').addEventListener('click',()=>{row.remove();if(!list.children.length)addMaterialRow();updateMaterialTotal()});updateMaterialTotal()};
+  window.getMaterialRows=function(){return Array.from(document.querySelectorAll('#materialsList .material-row')).map(row=>({name:row.querySelector('.material-name')?.value.trim()||'',qty:Number(row.querySelector('.material-qty')?.value||1)||1,purchaseCost:parseCurrency(row.querySelector('.material-purchase-cost')?.value),yieldQty:Number(row.querySelector('.material-yield')?.value||inferYieldFromName(row.querySelector('.material-name')?.value)||1)||1,onHand:row.querySelector('.material-onhand')?.value===''?'':Number(row.querySelector('.material-onhand')?.value||0)})).filter(m=>m.name||m.purchaseCost>0)};
+  window.upsertInventoryFromItemMaterials=function(materials,itemQty){const inv=loadMaterialInventory();cleanMaterials(materials).forEach(m=>{if(!m.name)return;let rec=inv.find(x=>normalizeMatName(x.name)===normalizeMatName(m.name));const y=getMatYield(m);if(!rec){rec={id:String(Date.now())+Math.random().toString(16).slice(2),name:m.name,purchaseCost:Number(m.purchaseCost||m.cost||0)||0,yieldQty:y,onHand:(m.onHand!==''&&m.onHand!==undefined&&m.onHand!==null)?Number(m.onHand||0):(Number(itemQty||0)||y),notes:'Auto-created from Woodworking Item'};inv.push(rec)}else{rec.name=m.name;rec.purchaseCost=Number(m.purchaseCost||m.cost||rec.purchaseCost||0)||0;rec.yieldQty=y;if(m.onHand!==''&&m.onHand!==undefined&&m.onHand!==null)rec.onHand=Number(m.onHand||0)||0}});saveMaterialInventory(inv);renderMaterialInventory()};
+  window.findInventoryByMaterialName=function(name){return loadMaterialInventory().find(x=>normalizeMatName(x.name)===normalizeMatName(name))};
+  window.setJobMaterialUsesFromItem=function(item){upsertInventoryFromItemMaterials(item.materials,item.qty);const uses=cleanMaterials(item.materials).map(m=>{const inv=findInventoryByMaterialName(m.name);return inv?{materialId:inv.id,qty:Number(m.qty||1)||1}:null}).filter(Boolean);setJobMaterialUses(uses)};
+  window.addJobUseRow=function(use={}){const list=document.getElementById('jobUseList');if(!list)return;const row=document.createElement('div');row.className='job-use-row';row.innerHTML=`<select class="job-use-select"></select><div class="job-use-second"><input class="job-use-qty" type="number" min="0" step="1" placeholder="Qty Used" value="${use.qty||1}"/><div class="job-use-cost">$0.00</div><button type="button" class="remove-job-use" title="Remove">×</button></div>`;list.appendChild(row);refreshJobUseSelects();if(use.materialId)row.querySelector('.job-use-select').value=use.materialId;row.querySelector('.job-use-select').addEventListener('change',updateJobUseTotal);row.querySelector('.job-use-qty').addEventListener('input',updateJobUseTotal);row.querySelector('.remove-job-use').addEventListener('click',()=>{row.remove();updateJobUseTotal()});updateJobUseTotal()};
+  document.addEventListener('change',function(e){const oh=e.target.closest('[data-inv-onhand]');if(!oh)return;const inv=loadMaterialInventory();const m=inv.find(x=>x.id===oh.dataset.invOnhand);if(m){m.onHand=Number(oh.value||0)||0;saveMaterialInventory(inv);renderMaterialInventory();}});
+  // Refresh current tables with corrected cost/yield math.
+  try{renderMaterialInventory();renderWoodItems();refreshJobUseSelects();updateJobUseTotal();}catch(e){console.warn('material override refresh skipped',e)}
+})();
+
+</script>
+
+
+
+
+<script id="cvCleanupFinalScript">
+(function(){
+  if(window.__cvCleanupFinalLoaded) return;
+  window.__cvCleanupFinalLoaded = true;
+  function esc(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+  function getItems(){try{return JSON.parse(localStorage.getItem('cv_woodworking_items_v1')||'[]')}catch(e){return[]}}
+  function saveItems(items){localStorage.setItem('cv_woodworking_items_v1',JSON.stringify(items))}
+  function planStoredName(plan){if(!plan)return'';if(plan.storedName)return String(plan.storedName).split('/').pop();if(plan.url){try{return decodeURIComponent(String(plan.url).split('?')[0].split('#')[0].split('/').pop()||'')}catch(e){return String(plan.url).split('/').pop()||''}}if(plan.name)return String(plan.name).split('/').pop();return''}
+  function planLabel(plan){return (plan&&(plan.name||planStoredName(plan)))||'Plan file'}
+  async function post(url,payload){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload||{})});let j={};try{j=await r.json()}catch(e){}if(!r.ok||j.ok===false)throw new Error(j.error||('Request failed: '+r.status));return j}
+  function modal(title,html,buttons){return new Promise(resolve=>{const m=document.getElementById('cvActionModal'),t=document.getElementById('cvActionModalTitle'),b=document.getElementById('cvActionModalText'),a=document.getElementById('cvActionModalActions');if(!m||!t||!b||!a){resolve(null);return}t.textContent=title||'Confirm';b.innerHTML=html||'';a.innerHTML='';let done=false;function close(v){if(done)return;done=true;m.classList.add('hidden');m.setAttribute('aria-hidden','true');document.removeEventListener('keydown',key,true);resolve(v)}function key(e){if(e.key==='Escape')close(null)}(buttons||[]).forEach(x=>{const btn=document.createElement('button');btn.type='button';btn.className='btn '+(x.className||'');btn.textContent=x.label;btn.onclick=()=>close(x.value);a.appendChild(btn)});m.querySelectorAll('[data-cv-modal-cancel]').forEach(x=>x.onclick=()=>close(null));document.addEventListener('keydown',key,true);m.classList.remove('hidden');m.setAttribute('aria-hidden','false')})}
+  async function showMessage(title,html){return modal(title,html,[{label:'OK',value:'ok',className:'primary'}])}
+  function setMsg(txt){const el=document.getElementById('cvCleanMessage');if(el)el.textContent=txt||''}
+  function render(data){const rows=(data&&data.rows)||[];document.getElementById('cvCleanTotal').textContent=String(data.total||rows.length||0);document.getElementById('cvCleanUsed').textContent=String(data.usedCount||0);document.getElementById('cvCleanUnused').textContent=String(data.unusedCount||0);const delAll=document.getElementById('cvCleanDeleteAllBtn');if(delAll)delAll.disabled=!(data.unusedCount>0);const tb=document.getElementById('cvCleanTable');tb.innerHTML='';if(!rows.length){tb.innerHTML='<tr><td colspan="4" class="plans-empty">No files were found in the Plans folder.</td></tr>';return}rows.forEach(row=>{const used=(row.usedBy||[]).map(x=>'<div>• '+esc((x.itemId?x.itemId+' - ':'')+(x.name||'Unnamed Item'))+'</div>').join('')||'<span class="plans-empty">Not linked to an item</span>';const tr=document.createElement('tr');tr.innerHTML='<td><a href="'+row.url+'" target="_blank" download>'+esc(row.name)+'</a><br><small class="plans-empty">'+esc(row.storedName)+'</small></td><td><span class="'+(row.status==='used'?'cv-clean-used':'cv-clean-unused')+'">'+(row.status==='used'?'Used':'Unused')+'</span></td><td><div class="cv-clean-list">'+used+'</div></td><td><button type="button" class="cv-clean-delete" data-cv-delete-file="'+esc(row.storedName)+'" '+(row.status==='used'?'disabled title="Used by an item"':'')+'>Delete</button></td>';tb.appendChild(tr)});window.__cvCleanRows=rows;}
+  async function scan(){const panel=document.getElementById('cvCleanupPanel');if(panel)panel.open=true;setMsg('Scanning Plans folder...');try{const data=await post('/api/plans/scan',{items:getItems()});render(data);setMsg('Scan complete.');}catch(e){setMsg('Scan failed: '+e.message);await showMessage('Scan Failed','<div class="cv-modal-warning">'+esc(e.message)+'</div><p>Make sure the updated server.js is copied over and the local site was restarted.</p>')}}
+  async function deleteFile(name){const choice=await modal('Delete Unused Plan File','<p>Delete this unused file from the Plans folder?</p><p class="cv-modal-file">'+esc(name)+'</p><div class="cv-modal-warning">This permanently removes the physical file.</div>',[{label:'Delete File',value:'delete',className:'del'},{label:'Cancel',value:null,className:'cancel'}]);if(choice!=='delete')return;try{await post('/api/plans/delete-file',{storedName:name,items:getItems()});await scan();}catch(e){await showMessage('Could Not Delete File','<div class="cv-modal-warning">'+esc(e.message)+'</div>')}}
+  async function deleteAll(){const rows=(window.__cvCleanRows||[]).filter(r=>r.status==='unused');if(!rows.length){await showMessage('No Unused Files','<p>Click Scan Plans Folder first, or no unused files were found.</p>');return}const list='<ul class="cv-modal-list">'+rows.slice(0,12).map(r=>'<li>'+esc(r.name||r.storedName)+'</li>').join('')+(rows.length>12?'<li>...and '+(rows.length-12)+' more</li>':'')+'</ul>';const choice=await modal('Delete All Unused Files','<p>Delete all unused plan files?</p><p><strong>Files to delete: '+rows.length+'</strong></p>'+list+'<div class="cv-modal-warning">Used files are protected and will be skipped.</div>',[{label:'Delete All Unused',value:'delete',className:'del'},{label:'Cancel',value:null,className:'cancel'}]);if(choice!=='delete')return;for(const r of rows){try{await post('/api/plans/delete-file',{storedName:r.storedName,items:getItems()});}catch(e){console.warn('Delete failed',r.storedName,e)}}await scan();}
+  async function removePlan(btn){const idx=Number(btn.dataset.removePlan);const plan=window.__woodCurrentPlans&&window.__woodCurrentPlans[idx];if(!plan)return;const choice=await modal('Remove Plan','<p>What would you like to do with this attached plan?</p><p class="cv-modal-file">'+esc(planLabel(plan))+'</p>',[{label:'Remove From Item Only',value:'remove',className:'primary'},{label:'Remove + Delete File',value:'delete',className:'del'},{label:'Cancel',value:null,className:'cancel'}]);if(!choice)return;if(choice==='delete'){try{await post('/api/plans/delete-file',{plan:plan,items:getItems(),ignoreItemId:document.getElementById('editItemId')?.value||''});}catch(e){await showMessage('File Not Deleted','<div class="cv-modal-warning">'+esc(e.message)+'</div><p>The plan will still be removed from the item.</p>')}}window.__woodCurrentPlans.splice(idx,1);if(typeof renderPlanEditorList==='function')renderPlanEditorList(window.__woodCurrentPlans);}
+  async function deleteItem(btn){const items=getItems();const item=items.find(i=>String(i.id)===String(btn.dataset.delItem));if(!item)return;const plans=Array.isArray(item.plans)?item.plans:[];const list=plans.length?'<ul class="cv-modal-list">'+plans.map(p=>'<li>'+esc(planLabel(p))+'</li>').join('')+'</ul>':'<p class="plans-empty">No attached plan files.</p>';const choice=await modal('Delete Woodworking Item','<p>Delete this woodworking item?</p><p class="cv-modal-file">'+esc(item.name||item.itemId||'Unnamed Item')+'</p>'+list,[{label:'Delete Item Only',value:'item',className:'primary'},{label:'Delete Item + Files',value:'files',className:'del'},{label:'Cancel',value:null,className:'cancel'}]);if(!choice)return;if(choice==='files'&&plans.length){try{await post('/api/plans/delete-attached',{itemId:item.id,ignoreItemId:item.id,plans:plans,items:items});}catch(e){await showMessage('Some Files Were Not Deleted','<div class="cv-modal-warning">'+esc(e.message)+'</div>')}}saveItems(items.filter(i=>String(i.id)!==String(item.id)));if(typeof renderWoodItems==='function')renderWoodItems();if(typeof populateJobItemSelect==='function')populateJobItemSelect();}
+  document.addEventListener('click',function(e){const t=e.target;if(t.closest('#cvCleanScanBtn')){e.preventDefault();e.stopImmediatePropagation();scan();return}if(t.closest('#cvCleanDeleteAllBtn')){e.preventDefault();e.stopImmediatePropagation();deleteAll();return}const one=t.closest('[data-cv-delete-file]');if(one){e.preventDefault();e.stopImmediatePropagation();deleteFile(one.getAttribute('data-cv-delete-file'));return}const rem=t.closest('[data-remove-plan]');if(rem){e.preventDefault();e.stopImmediatePropagation();removePlan(rem);return}const del=t.closest('[data-del-item]');if(del){e.preventDefault();e.stopImmediatePropagation();deleteItem(del);return}},true);
+  window.cvScanPlansFolder=scan;
+  window.cvDeleteAllUnusedPlanFiles=deleteAll;
+})();
+</script>
+
+<script id="jobFilesSupportScript">
+(function(){
+  if(window.__cvJobFilesSupportLoaded) return;
+  window.__cvJobFilesSupportLoaded = true;
+  window.__woodCurrentJobFiles = window.__woodCurrentJobFiles || [];
+  function esc(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+  function storedName(file){if(!file)return'';if(file.storedName)return String(file.storedName).split('/').pop();if(file.url){try{return decodeURIComponent(String(file.url).split('?')[0].split('#')[0].split('/').pop()||'')}catch(e){return String(file.url).split('/').pop()||''}}if(file.name)return String(file.name).split('/').pop();return''}
+  function fileLabel(file){return (file&&(file.name||storedName(file)))||'Job file'}
+  function fileIcon(name){const ext=String(name||'').split('.').pop().toLowerCase();if(ext==='pdf')return '📄';if(['doc','docx'].includes(ext))return '📝';if(['xls','xlsx','csv'].includes(ext))return '📊';if(['png','jpg','jpeg','webp','gif'].includes(ext))return '🖼️';if(ext==='zip')return '🗜️';return '📎'}
+  async function post(url,payload){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload||{})});let j={};try{j=await r.json()}catch(e){}if(!r.ok||j.ok===false)throw new Error(j.error||('Request failed: '+r.status));return j}
+  async function uploadJobFiles(jobId){const input=document.getElementById('jobInfoFiles');if(!input||!input.files||!input.files.length)return[];const fd=new FormData();Array.from(input.files).forEach(file=>fd.append('files',file));fd.append('jobId',jobId||'job');const res=await fetch('/api/upload-job-file',{method:'POST',body:fd});let data={};try{data=await res.json()}catch(e){}if(!res.ok||data.ok===false)throw new Error(data.error||'Job file upload failed. Make sure the updated server.js is copied over and restarted.');return Array.isArray(data.files)?data.files:[]}
+  function modal(title,html,buttons){return new Promise(resolve=>{const m=document.getElementById('cvActionModal'),t=document.getElementById('cvActionModalTitle'),b=document.getElementById('cvActionModalText'),a=document.getElementById('cvActionModalActions');if(!m||!t||!b||!a){resolve(null);return}t.textContent=title||'Confirm';b.innerHTML=html||'';a.innerHTML='';let done=false;function close(v){if(done)return;done=true;m.classList.add('hidden');m.setAttribute('aria-hidden','true');document.removeEventListener('keydown',key,true);resolve(v)}function key(e){if(e.key==='Escape')close(null)}(buttons||[]).forEach(x=>{const btn=document.createElement('button');btn.type='button';btn.className='btn '+(x.className||'');btn.textContent=x.label;btn.onclick=()=>close(x.value);a.appendChild(btn)});m.querySelectorAll('[data-cv-modal-cancel]').forEach(x=>x.onclick=()=>close(null));document.addEventListener('keydown',key,true);m.classList.remove('hidden');m.setAttribute('aria-hidden','false')})}
+  async function msg(title,html){return modal(title,html,[{label:'OK',value:'ok',className:'primary'}])}
+  window.renderJobFileEditorList=function(files){window.__woodCurrentJobFiles=Array.isArray(files)?files.slice():[];const list=document.getElementById('jobFilesList');if(!list)return;list.innerHTML='';if(!window.__woodCurrentJobFiles.length){list.innerHTML='<span class="job-files-empty">No job files uploaded yet.</span>';return;}window.__woodCurrentJobFiles.forEach((file,idx)=>{const row=document.createElement('div');row.className='job-file-row';row.innerHTML=`<a href="${file.url}" target="_blank" ${jobFileIsImage(file)?"":"download"}>${fileIcon(file.name)} ${esc(fileLabel(file))}</a><button type="button" data-remove-job-file="${idx}">Remove</button>`;list.appendChild(row)});}
+  function jobFilesTableHtml(files){files=Array.isArray(files)?files:[];if(!files.length)return'';return `<div class="job-files-mini">${files.map(f=>`<a href="${f.url}" target="_blank" download title="${esc(fileLabel(f))}">${fileIcon(f.name)} ${esc(fileLabel(f))}</a>`).join('')}</div>`}
+  const oldJobNoteText = window.jobNoteText;
+  if(typeof oldJobNoteText === 'function'){
+    window.jobNoteText=function(job){let txt=oldJobNoteText(job);if(job&&Array.isArray(job.files)&&job.files.length){txt+=(txt?'\n\n':'')+'Job Files: '+job.files.map(fileLabel).join(', ')}return txt;}
+  }
+  // Intercept Add/Edit Job save so files are included.
+  const form=document.getElementById('woodForm');
+  if(form){form.addEventListener('submit',async function(e){
+    e.preventDefault();e.stopImmediatePropagation();
+    const jobs=loadJobs();
+    const id=document.getElementById('editId').value||String(Date.now());
+    const oldJob=jobs.find(j=>j.id===id);
+    let uploaded=[];
+    try{uploaded=await uploadJobFiles(document.getElementById('jobId').value.trim()||id)}catch(err){await msg('Upload Failed','<div class="cv-modal-warning">'+esc(err.message)+'</div>');return;}
+    const materialUses=getJobMaterialUses();
+    const record={
+      id,
+      jobId:document.getElementById('jobId').value.trim()||nextJobId(),
+      customer:document.getElementById('customer').value.trim(),
+      sourceItemId:document.getElementById('jobItemSelect')?.value||'',
+      project:document.getElementById('project').value.trim(),
+      status:document.getElementById('status').value,
+      dueDate:document.getElementById('dueDate').value,
+      woodType:document.getElementById('woodType').value.trim(),
+      finish:document.getElementById('finish').value.trim(),
+      dimensions:document.getElementById('dimensions').value.trim(),
+      materialUses,
+      jobMaterialCost:jobMaterialUseTotal(materialUses),
+      total:Number(document.getElementById('total').value||0),
+      paid:document.getElementById('paid').checked,
+      materialPurchased:(oldJob?.materialPurchased)||false,
+      plaqueName:document.getElementById('plaqueName')?.value.trim()||'',
+      plaqueRank:document.getElementById('plaqueRank')?.value||'',
+      plaqueMonthPromoted:document.getElementById('plaqueMonthPromoted')?.value.trim()||'',
+      notes:document.getElementById('notes').value.trim(),
+      files:[...window.__woodCurrentJobFiles,...uploaded]
+    };
+    applyMaterialUseDelta(oldJob?.materialUses||[],materialUses);
+    const idx=jobs.findIndex(j=>j.id===id);if(idx>=0)jobs[idx]=record;else jobs.push(record);
+    saveJobs(jobs);clearForm();renderJobFileEditorList([]);const jf=document.getElementById('jobInfoFiles');if(jf)jf.value='';renderJobs();renderMaterialInventory();var fc=document.getElementById('formCard');if(fc&&fc.tagName&&fc.tagName.toLowerCase()==='details')fc.open=false;document.getElementById('jobs')?.scrollIntoView({behavior:'smooth',block:'start'});
+  },true)}
+  // After the existing Edit handler populates fields, populate job files.
+  document.addEventListener('click',function(e){const edit=e.target.closest('[data-edit]');if(edit){setTimeout(()=>{const j=loadJobs().find(x=>x.id===edit.dataset.edit);renderJobFileEditorList(j?.files||[])},0)}},false);
+  document.addEventListener('click',async function(e){
+    const rem=e.target.closest('[data-remove-job-file]');
+    if(rem){e.preventDefault();e.stopImmediatePropagation();const idx=Number(rem.dataset.removeJobFile);const file=window.__woodCurrentJobFiles[idx];if(!file)return;const choice=await modal('Remove Job File','<p>What would you like to do with this job file?</p><p class="cv-modal-file">'+esc(fileLabel(file))+'</p>',[{label:'Remove From Job Only',value:'remove',className:'primary'},{label:'Remove + Delete File',value:'delete',className:'del'},{label:'Cancel',value:null,className:'cancel'}]);if(!choice)return;if(choice==='delete'){try{await post('/api/job-files/delete-file',{file, jobs:loadJobs(), ignoreJobId:document.getElementById('editId')?.value||''});}catch(err){await msg('File Not Deleted','<div class="cv-modal-warning">'+esc(err.message)+'</div><p>The file link will still be removed from this job.</p>')}}window.__woodCurrentJobFiles.splice(idx,1);renderJobFileEditorList(window.__woodCurrentJobFiles);return;}
+  },true);
+  // Intercept Job delete so attached job files can also be removed.
+  document.addEventListener('click',async function(e){const del=e.target.closest('[data-del]');if(!del)return;e.preventDefault();e.stopImmediatePropagation();const jobs=loadJobs();const job=jobs.find(j=>j.id===del.dataset.del);if(!job)return;const files=Array.isArray(job.files)?job.files:[];const list=files.length?'<ul class="cv-modal-list">'+files.map(f=>'<li>'+esc(fileLabel(f))+'</li>').join('')+'</ul>':'<p class="plans-empty">No attached job files.</p>';const choice=await modal('Delete Woodworking Job','<p>Delete this woodworking job?</p><p class="cv-modal-file">'+esc(job.jobId||job.project||'Job')+'</p>'+list,[{label:'Delete Job Only',value:'job',className:'primary'},{label:'Delete Job + Files',value:'files',className:'del'},{label:'Cancel',value:null,className:'cancel'}]);if(!choice)return;if(choice==='files'&&files.length){try{await post('/api/job-files/delete-attached',{jobId:job.id, ignoreJobId:job.id, files, jobs});}catch(err){await msg('Some Files Were Not Deleted','<div class="cv-modal-warning">'+esc(err.message)+'</div>')}}applyMaterialUseDelta(job.materialUses||[],[]);saveJobs(jobs.filter(j=>j.id!==job.id));renderJobs();renderMaterialInventory();},true);
+  // Cleanup JobFiles folder.
+  function setJobMsg(t){const el=document.getElementById('jobCleanMessage');if(el)el.textContent=t||''}
+  function renderJobScan(data){const rows=(data&&data.rows)||[];document.getElementById('jobCleanTotal').textContent=String(data.total||rows.length||0);document.getElementById('jobCleanUsed').textContent=String(data.usedCount||0);document.getElementById('jobCleanUnused').textContent=String(data.unusedCount||0);const delAll=document.getElementById('jobCleanDeleteAllBtn');if(delAll)delAll.disabled=!(data.unusedCount>0);const tb=document.getElementById('jobCleanTable');tb.innerHTML='';if(!rows.length){tb.innerHTML='<tr><td colspan="4" class="plans-empty">No files were found in the JobFiles folder.</td></tr>';return;}rows.forEach(row=>{const used=(row.usedBy||[]).map(x=>'<div>• '+esc((x.jobId?x.jobId+' - ':'')+(x.title||x.customer||'Job'))+'</div>').join('')||'<span class="plans-empty">Not linked to a job</span>';const tr=document.createElement('tr');tr.innerHTML='<td><a href="'+row.url+'" target="_blank" download>'+esc(row.name)+'</a><br><small class="plans-empty">'+esc(row.storedName)+'</small></td><td><span class="'+(row.status==='used'?'job-clean-used':'job-clean-unused')+'">'+(row.status==='used'?'Used':'Unused')+'</span></td><td><div class="job-clean-list">'+used+'</div></td><td><button type="button" class="job-clean-delete" data-job-clean-delete="'+esc(row.storedName)+'" '+(row.status==='used'?'disabled title="Used by a job"':'')+'>Delete</button></td>';tb.appendChild(tr)});window.__jobCleanRows=rows;}
+  async function scanJobs(){const panel=document.getElementById('jobFilesCleanupPanel');if(panel)panel.open=true;setJobMsg('Scanning JobFiles folder...');try{const data=await post('/api/job-files/scan',{jobs:loadJobs()});renderJobScan(data);setJobMsg('Scan complete.');}catch(err){setJobMsg('Scan failed: '+err.message);await msg('Scan Failed','<div class="cv-modal-warning">'+esc(err.message)+'</div><p>Make sure the updated server.js is copied over and restarted.</p>')}}
+  async function deleteJobFile(stored){const choice=await modal('Delete Unused Job File','<p>Delete this unused job file?</p><p class="cv-modal-file">'+esc(stored)+'</p><div class="cv-modal-warning">This permanently removes the physical file.</div>',[{label:'Delete File',value:'delete',className:'del'},{label:'Cancel',value:null,className:'cancel'}]);if(choice!=='delete')return;try{await post('/api/job-files/delete-file',{storedName:stored,jobs:loadJobs()});await scanJobs();}catch(err){await msg('Could Not Delete File','<div class="cv-modal-warning">'+esc(err.message)+'</div>')}}
+  async function deleteAllUnusedJobFiles(){const rows=(window.__jobCleanRows||[]).filter(r=>r.status==='unused');if(!rows.length){await msg('No Unused Files','<p>Click Scan JobFiles Folder first, or no unused files were found.</p>');return;}const choice=await modal('Delete All Unused Job Files','<p>Delete all unused job files?</p><p><strong>Files to delete: '+rows.length+'</strong></p><div class="cv-modal-warning">Used files are protected and will be skipped.</div>',[{label:'Delete All Unused',value:'delete',className:'del'},{label:'Cancel',value:null,className:'cancel'}]);if(choice!=='delete')return;for(const row of rows){try{await post('/api/job-files/delete-file',{storedName:row.storedName,jobs:loadJobs()});}catch(err){console.warn('Delete failed',row.storedName,err)}}await scanJobs();}
+  document.addEventListener('click',function(e){if(e.target.closest('#jobCleanScanBtn')){e.preventDefault();e.stopImmediatePropagation();scanJobs();return;}if(e.target.closest('#jobCleanDeleteAllBtn')){e.preventDefault();e.stopImmediatePropagation();deleteAllUnusedJobFiles();return;}const one=e.target.closest('[data-job-clean-delete]');if(one){e.preventDefault();e.stopImmediatePropagation();deleteJobFile(one.getAttribute('data-job-clean-delete'));return;}},true);
+  // Clear form should also clear job files.
+  const clearBtn=document.getElementById('clearForm');if(clearBtn){clearBtn.addEventListener('click',()=>setTimeout(()=>{renderJobFileEditorList([]);const input=document.getElementById('jobInfoFiles');if(input)input.value='';},0),false)}
+  renderJobFileEditorList([]);
+})();
+</script>
+
+
+<script id="woodJobLayoutBehavior">
+(function(){if(window.__woodJobLayoutBehaviorLoaded)return;window.__woodJobLayoutBehaviorLoaded=true;function collapse(){var fc=document.getElementById('formCard');if(fc&&fc.tagName&&fc.tagName.toLowerCase()==='details')fc.open=false;document.getElementById('jobs')?.scrollIntoView({behavior:'smooth',block:'start'});}document.addEventListener('submit',function(e){if(e.target&&e.target.id==='woodForm')setTimeout(collapse,200);},false);document.addEventListener('click',function(e){var edit=e.target.closest&&e.target.closest('[data-edit]');if(edit){var fc=document.getElementById('formCard');if(fc&&fc.tagName&&fc.tagName.toLowerCase()==='details')fc.open=true;}},true);})();
+</script>
+
+<script id="jobFileIndicatorScript">
+(function(){if(window.__jobFileIndicatorLoaded)return;window.__jobFileIndicatorLoaded=true;document.addEventListener('click',function(e){const btn=e.target.closest('[data-job-files-view]');if(btn){e.preventDefault();e.stopImmediatePropagation();const job=loadJobs().find(j=>j.id===btn.dataset.jobFilesView);openJobFilesModal(job);return;}if(e.target.closest('[data-job-files-close]')){e.preventDefault();closeJobFilesModal();return;}},true);})();
+</script>
+
+<script id="woodworkingModalCloseFix">
+(function(){
+  if(window.__woodworkingModalCloseFixLoaded) return;
+  window.__woodworkingModalCloseFixLoaded = true;
+  function closeCvActionModal(){
+    var modal=document.getElementById('cvActionModal');
+    if(!modal) return;
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden','true');
+  }
+  document.addEventListener('click',function(e){
+    if(e.target.closest('[data-cv-modal-cancel]')){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      closeCvActionModal();
+      return;
+    }
+    if(e.target.closest('[data-job-files-close]')){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      closeCvActionModal();
+      return;
+    }
+  },true);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape') closeCvActionModal();
+  },true);
+})();
+</script>
+
+<script id="woodCleanEditingBehavior">
+(function(){
+  if(window.__woodCleanEditingBehaviorLoaded) return;
+  window.__woodCleanEditingBehaviorLoaded = true;
+  async function tryShutdownServer(){
+    const urls=['/api/shutdown','/shutdown'];
+    for(const url of urls){try{await fetch(url,{method:'POST',keepalive:true,cache:'no-store'});return true;}catch(e){}}
+    return false;
+  }
+  async function closeWoodSite(){
+    const ok=confirm('Close the Woodworking tab and stop the local site server if shutdown is enabled?');
+    if(!ok) return;
+    tryShutdownServer();
+    setTimeout(function(){
+      try{window.open('','_self');}catch(e){}
+      try{window.close();}catch(e){}
+      setTimeout(function(){
+        if(!window.closed){
+          document.body.classList.add('wood-close-message-mode');
+          const msg=document.createElement('div');
+          msg.className='wood-close-message';
+          msg.innerHTML='<h2>Site close requested</h2><p>If this tab did not close automatically, close this browser tab manually.</p><p>If the command window is still open, the local server needs a shutdown route in <code>server.js</code>.</p>';
+          document.body.appendChild(msg);
+        }
+      },400);
+    },350);
+  }
+  function setupStatusChips(){
+    const sel=document.getElementById('jobStatusFilter');
+    const chips=document.getElementById('woodStatusChips');
+    const summary=document.getElementById('woodFilterSummary');
+    if(!sel||!chips||chips.dataset.ready==='true') return;
+    chips.dataset.ready='true';
+    const opts=[['all','All'],['quote','Quote'],['approved','Approved'],['in_progress','In Process'],['completed','Completed'],['delivered','Delivered']];
+    function render(){
+      chips.innerHTML=opts.map(([v,l])=>{
+        const active=sel.value===v;
+        return '<button type="button" class="wood-status-chip '+(v==='all'?'all-chip ':'')+(active?'active':'')+'" data-wood-status="'+v+'">'+(active?'<span class="check">✓</span>':'')+'<span>'+l+'</span></button>';
+      }).join('');
+      if(summary) summary.textContent=sel.value==='all'?'Showing all job statuses':'Showing: '+(opts.find(o=>o[0]===sel.value)?.[1]||sel.value);
+    }
+    chips.addEventListener('click',function(e){
+      const btn=e.target.closest('[data-wood-status]'); if(!btn) return;
+      sel.value=btn.getAttribute('data-wood-status');
+      render();
+      sel.dispatchEvent(new Event('change',{bubbles:true}));
+    });
+    sel.addEventListener('change',render);
+    render();
+  }
+  function updateMaterialAlertKpi(){
+    try{
+      const list=typeof loadMaterialInventory==='function'?loadMaterialInventory():[];
+      const low=(Array.isArray(list)?list:[]).filter(m=>Number(m.onHand||0)<=0).length;
+      const el=document.getElementById('kpiMaterialAlerts');
+      if(el) el.textContent=String(low);
+    }catch(e){}
+  }
+  document.addEventListener('click',function(e){
+    const btn=e.target.closest('#woodCloseSiteBtn');
+    if(btn){e.preventDefault();closeWoodSite();}
+  });
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){setupStatusChips();updateMaterialAlertKpi();},80);});
+  const oldRenderMaterial=window.renderMaterialInventory;
+  if(typeof oldRenderMaterial==='function' && !oldRenderMaterial.__woodCleanWrapped){
+    window.renderMaterialInventory=function(){const r=oldRenderMaterial.apply(this,arguments);setTimeout(updateMaterialAlertKpi,0);return r;};
+    window.renderMaterialInventory.__woodCleanWrapped=true;
+  }
+  setTimeout(function(){setupStatusChips();updateMaterialAlertKpi();},250);
+})();
+</script>
+
+</body>
+</html>
