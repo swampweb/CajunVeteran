@@ -154,9 +154,19 @@ if ('caches' in window) {
 
 // Wait for Supabase data, then render mobile page
 if (window.__mobileDataReady) {
-    window.__mobileDataReady.finally(() => {
+    window.__mobileDataReady.then(() => {
+
+        console.log(
+            'Orders loaded:',
+            JSON.parse(localStorage.getItem('inventory_orders_store_v9')).orders.length
+        );
+
         render();
-        setTimeout(render, 1000);
+
+        setTimeout(render, 500);
+        setTimeout(render, 1500);
+        setTimeout(render, 3000);
+
     });
 } else {
     render();
