@@ -1,4 +1,7 @@
 {
+  "version": 2,
+  "exportedAt": "2026-07-19T01:59:50.867Z",
+  "source": "http://localhost:3000/data-export.html",
   "items": [
     {
       "sku": "1000001",
@@ -2597,6 +2600,131 @@
       "type": "PLA",
       "color": "Gray",
       "label": "Sunlu PLA — Gray"
+    }
+  ],
+  "woodworkingJobs": [
+    {
+      "id": "1784160957480",
+      "jobId": "W1001",
+      "customer": "Scott Griffin",
+      "sourceItemId": "1784159592334",
+      "project": "US Wooden American Flag (Large)",
+      "status": "in_progress",
+      "dueDate": "2026-07-27",
+      "woodType": "1× 1x12x8 Pine, 1× 12\"x12\" Basswood Cheet 1/8\"",
+      "finish": "Stain",
+      "dimensions": "37 x 19.5 x 0.75",
+      "materialUses": [],
+      "jobMaterialCost": 0,
+      "total": 80,
+      "paid": false,
+      "materialPurchased": true,
+      "plaqueName": "",
+      "plaqueRank": "",
+      "plaqueMonthPromoted": "",
+      "notes": "Will have USAF logo in the middle of the stars. Need a plaque with Darla's information. Join 1998-2026",
+      "files": [
+        {
+          "name": "Darla_Griffin_Retirement_Plaque.png",
+          "storedName": "1784401529441_5c2696_Darla_Griffin_Retirement_Plaque.png",
+          "url": "/JobFiles/1784401529441_5c2696_Darla_Griffin_Retirement_Plaque.png",
+          "size": 882230,
+          "type": ".png"
+        }
+      ]
+    },
+    {
+      "id": "1784293630140",
+      "jobId": "W1002",
+      "customer": "Darren Hymel",
+      "sourceItemId": "1784290714336",
+      "project": "NCO/SNCO/CMSGT Plaque Charge",
+      "status": "in_progress",
+      "dueDate": "2026-07-31",
+      "woodType": "1× 1x8x6 (7 plaques) Poplar Common",
+      "finish": "",
+      "dimensions": "10 x 6.5 x 0.75",
+      "materialUses": [
+        {
+          "materialId": "17842952531418052a44fee397",
+          "qty": 1
+        }
+      ],
+      "jobMaterialCost": 8,
+      "total": 20,
+      "paid": true,
+      "materialPurchased": true,
+      "plaqueName": "Ludmila Johnson",
+      "plaqueRank": "NCO",
+      "plaqueMonthPromoted": "August 2026",
+      "notes": "Bring to UTA"
+    }
+  ],
+  "woodworkingItems": [
+    {
+      "id": "1784159592334",
+      "itemId": "WI1001",
+      "name": "US Wooden American Flag (Large)",
+      "length": 37,
+      "width": 19.5,
+      "height": 0.75,
+      "saleCost": 80,
+      "qty": 1,
+      "materials": [
+        {
+          "name": "1x12x8 Pine",
+          "qty": 1,
+          "cost": 27
+        },
+        {
+          "name": "12\"x12\" Basswood Cheet 1/8\"",
+          "qty": 1,
+          "cost": 1.5
+        }
+      ],
+      "plans": [
+        {
+          "name": "US_Flag_8'_x_12_Pine_Large.pdf",
+          "storedName": "1784160240200_afb210_US_Flag_8'_x_12_Pine_Large.pdf",
+          "url": "/Plans/1784160240200_afb210_US_Flag_8'_x_12_Pine_Large.pdf",
+          "size": 181717,
+          "type": ".pdf"
+        }
+      ],
+      "status": "available",
+      "notes": ""
+    },
+    {
+      "id": "1784290714336",
+      "itemId": "WI1002",
+      "name": "NCO/SNCO/CMSGT Plaque Charge",
+      "length": 10,
+      "width": 6.5,
+      "height": 0.75,
+      "saleCost": 20,
+      "qty": 7,
+      "materials": [
+        {
+          "name": "1x8x6 (7 plaques) Poplar Common",
+          "qty": 1,
+          "purchaseCost": 56,
+          "yieldQty": 7,
+          "onHand": 4
+        }
+      ],
+      "plans": [],
+      "status": "available",
+      "notes": ""
+    }
+  ],
+  "woodworkingMaterialInventory": [
+    {
+      "id": "17842952531418052a44fee397",
+      "name": "1x8x6 (7 plaques) Poplar Common",
+      "purchaseCost": 56,
+      "yieldQty": 7,
+      "onHand": 4,
+      "notes": "Auto-created from Woodworking Item"
     }
   ]
 }
