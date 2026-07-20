@@ -17,7 +17,7 @@
       .job-use-head span{display:block!important;color:#b0bfd2!important;font-size:12px!important;margin-top:2px!important;max-width:680px!important;}
       #addJobUseRow{border-radius:9px!important;border:1px solid rgba(240,180,41,.55)!important;background:rgba(240,180,41,.12)!important;color:#ffd36a!important;font-weight:900!important;min-height:38px!important;padding:8px 12px!important;white-space:nowrap!important;}
       #addJobUseRow:hover{background:rgba(240,180,41,.20)!important;}
-      .cv-material-header,.job-use-list .job-use-row,.job-use-list>div.cv-material-row{display:grid!important;grid-template-columns:minmax(270px,1fr) 88px 110px 42px!important;gap:8px!important;align-items:center!important;width:100%!important;}
+      .cv-material-header,.job-use-list .job-use-row,.job-use-list>div.cv-material-row{display:grid!important;grid-template-columns:1fr 70px 90px 36px!important;gap:8px!important;align-items:center!important;width:100%!important;}
       .cv-material-header{color:#9fb0c4!important;font-size:11px!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.05em!important;border-bottom:1px solid rgba(86,142,198,.28)!important;padding:0 2px 7px!important;margin-bottom:7px!important;}
       .job-use-list{display:flex!important;flex-direction:column!important;gap:8px!important;}
       .job-use-list .job-use-row,.job-use-list>div.cv-material-row{background:rgba(255,255,255,.035)!important;border:1px solid rgba(86,142,198,.28)!important;border-radius:10px!important;padding:8px!important;}
