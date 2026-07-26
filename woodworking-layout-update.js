@@ -1,16 +1,27 @@
-/* CajunVeteran Woodworking Layout Update v1
-   Use after existing woodworking scripts:
-   <script src="woodworking-layout-update.js?v=wood-layout1"></script>
+/* CajunVeteran Woodworking Layout Update v2
+   Drop-in replacement for woodworking-layout-update.js.
+   No woodworking.html change needed if it already has:
+   <script src="woodworking-layout-update.js"></script>
+
+   Includes:
+   - Layout/navigation cleanup
+   - Public View nav link
+   - No #jobs / #orders anchor jumps
+   - Approved status color
+   - Woodworking save fix for status changes not sticking
 */
 (function(){
-  if (window.__cvWoodLayoutUpdateLoaded) return;
-  window.__cvWoodLayoutUpdateLoaded = true;
+  if (window.__cvWoodLayoutUpdateLoadedV2) return;
+  window.__cvWoodLayoutUpdateLoadedV2 = true;
 
   function addStyle(){
-    if(document.getElementById('cvWoodLayoutStyle')) return;
-    const style=document.createElement('style');
-    style.id='cvWoodLayoutStyle';
-    style.textContent=`
+    let style = document.getElementById('cvWoodLayoutStyle');
+    if(!style){
+      style = document.createElement('style');
+      style.id = 'cvWoodLayoutStyle';
+      document.head.appendChild(style);
+    }
+    style.textContent = `
       body{background:radial-gradient(circle at 25% 0%,rgba(47,128,237,.10),transparent 28%),radial-gradient(circle at 80% 20%,rgba(201,130,50,.12),transparent 32%),#06111e!important;}
       .topbar{min-height:104px!important;height:auto!important;background:linear-gradient(90deg,#06111e,#0b2136 55%,#06111e)!important;border-bottom:2px solid #f0b429!important;box-shadow:0 10px 28px rgba(0,0,0,.35)!important;}
       .name{color:#f0b429!important}.sub{color:#f8ead0!important}.title strong{color:#f0b429!important}.title span{color:#dce8f6!important}
@@ -31,30 +42,31 @@
       @media(max-width:1200px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
       @media(max-width:760px){.cv-app-nav a{flex:1 1 auto}.kpis{grid-template-columns:1fr!important}.topbar{align-items:flex-start!important;flex-direction:column!important}.logo{height:64px!important}.name{font-size:26px!important}}
     `;
-    document.head.appendChild(style);
   }
 
   function ensureNav(){
-    if(document.querySelector('.cv-app-nav')) return;
+    const old = document.querySelector('.cv-app-nav');
+    if(old) old.remove();
     const nav=document.createElement('nav');
     nav.className='cv-app-nav';
     nav.innerHTML=`
       <a href="dashboard.html">Dashboard</a>
-      <a href="admin.html#orders">3D Printing</a>
-      <a class="active" href="woodworking.html#jobs">Woodworking</a>
+      <a href="admin.html">3D Printing</a>
+      <a class="active" href="woodworking.html">Woodworking</a>
       <a href="reports.html">Reports</a>
       <a href="mobile.html">Mobile</a>
+      <a href="index.html">Public View</a>
     `;
     const header=document.querySelector('.topbar');
     if(header) header.insertAdjacentElement('afterend',nav);
   }
 
   function cleanLabels(){
-    document.title='CajunVeteran Workshop Management — Woodworking';
+    document.title='CajunVeteran Workshop Management - Woodworking';
     const sub=document.querySelector('.sub'); if(sub) sub.textContent='Woodworking';
     const strong=document.querySelector('.title strong'); if(strong) strong.textContent='WOODWORKING';
     const span=document.querySelector('.title span'); if(span) span.textContent='Custom projects, job details, materials, files, and plaque work.';
-    document.querySelectorAll('a.nav[href="admin.html#orders"]').forEach(a=>a.innerHTML='🖨️ 3D Printing');
+    document.querySelectorAll('a.nav[href="admin.html#orders"],a.nav[href="admin.html"]').forEach(a=>a.innerHTML='🖨️ 3D Printing');
     const footer=document.querySelector('.site-footer'); if(footer) footer.textContent='★ CajunVeteran Workshop • Woodworking • Built With Pride ★';
   }
 
@@ -65,11 +77,127 @@
   }
 
   function patchRenderJobs(){
-    if(typeof window.renderJobs==='function' && !window.renderJobs.__cvWoodLayoutWrapped){
+    if(typeof window.renderJobs==='function' && !window.renderJobs.__cvWoodLayoutWrappedV2){
       const old=window.renderJobs;
       window.renderJobs=function(){const r=old.apply(this,arguments);setTimeout(recolorApprovedRows,0);return r;};
-      window.renderJobs.__cvWoodLayoutWrapped=true;
+      window.renderJobs.__cvWoodLayoutWrappedV2=true;
     }
+  }
+
+  // ---------- SAVE FIX ----------
+  function byId(id){ return document.getElementById(id); }
+  function val(id){ return (byId(id)?.value || '').trim(); }
+  function checked(id){ return !!byId(id)?.checked; }
+  function num(v){ return Number(v || 0) || 0; }
+
+  function safeLoadJobs(){
+    if (typeof window.loadJobs === 'function') return window.loadJobs();
+    try { return JSON.parse(localStorage.getItem('cv_woodworking_jobs_v1') || '[]'); } catch { return []; }
+  }
+  function safeSaveJobs(jobs){
+    if (typeof window.saveJobs === 'function') return window.saveJobs(jobs);
+    localStorage.setItem('cv_woodworking_jobs_v1', JSON.stringify(jobs || []));
+  }
+  function safeNextJobId(){
+    if (typeof window.nextJobId === 'function') return window.nextJobId();
+    const nums = safeLoadJobs().map(j => Number(String(j.jobId || '').replace(/\D/g,''))).filter(n => !isNaN(n));
+    return 'W' + String((nums.length ? Math.max(...nums) : 1000) + 1);
+  }
+  function safeMaterialUses(){ return typeof window.getJobMaterialUses === 'function' ? window.getJobMaterialUses() : []; }
+  function safeMaterialTotal(uses){ return typeof window.jobMaterialUseTotal === 'function' ? window.jobMaterialUseTotal(uses || []) : 0; }
+  function safePlaques(){
+    if (typeof window.getPlaques === 'function') return window.getPlaques();
+    const name = val('plaqueName'), rank = val('plaqueRank'), monthPromoted = val('plaqueMonthPromoted');
+    return (name || rank || monthPromoted) ? [{ name, rank, monthPromoted }] : [];
+  }
+  function safeTotal(){ return typeof window.getCalculatedJobTotal === 'function' ? window.getCalculatedJobTotal() : num(byId('total')?.value); }
+  function safeApplyMaterialDelta(oldUses,newUses){ if(typeof window.applyMaterialUseDelta==='function') window.applyMaterialUseDelta(oldUses||[],newUses||[]); }
+
+  async function uploadNewJobFiles(jobId){
+    const input = byId('jobInfoFiles');
+    if (!input || !input.files || !input.files.length) return [];
+    const fd = new FormData();
+    Array.from(input.files).forEach(file => fd.append('files', file));
+    fd.append('jobId', jobId || 'job');
+    const res = await fetch('/api/upload-job-file', { method:'POST', body:fd });
+    let data = {};
+    try { data = await res.json(); } catch {}
+    if (!res.ok || data.ok === false) throw new Error(data.error || 'Job file upload failed. Job was not saved.');
+    return Array.isArray(data.files) ? data.files : [];
+  }
+  function currentJobFiles(oldJob){
+    if (Array.isArray(window.__woodCurrentJobFiles)) return window.__woodCurrentJobFiles.slice();
+    if (oldJob && Array.isArray(oldJob.files)) return oldJob.files.slice();
+    return [];
+  }
+  function buildRecord(id, oldJob, uploadedFiles){
+    const materialUses = safeMaterialUses();
+    const plaques = safePlaques();
+    const firstPlaque = plaques[0] || {};
+    return {
+      id,
+      jobId: val('jobId') || safeNextJobId(),
+      customer: val('customer'),
+      sourceItemId: byId('jobItemSelect')?.value || '',
+      project: val('project'),
+      status: byId('status')?.value || oldJob?.status || 'quote',
+      dueDate: byId('dueDate')?.value || '',
+      woodType: val('woodType'),
+      finish: val('finish'),
+      dimensions: val('dimensions'),
+      materialUses,
+      jobMaterialCost: safeMaterialTotal(materialUses),
+      plaques,
+      total: safeTotal(),
+      paid: checked('paid'),
+      materialPurchased: !!oldJob?.materialPurchased,
+      plaqueName: firstPlaque.name || val('plaqueName'),
+      plaqueRank: firstPlaque.rank || val('plaqueRank'),
+      plaqueMonthPromoted: firstPlaque.monthPromoted || val('plaqueMonthPromoted'),
+      notes: val('notes'),
+      files: [ ...currentJobFiles(oldJob), ...(uploadedFiles || []) ]
+    };
+  }
+  function refreshAfterSave(){
+    try { if (typeof window.clearForm === 'function') window.clearForm(); } catch(e) { console.warn(e); }
+    try { if (typeof window.renderJobFileEditorList === 'function') window.renderJobFileEditorList([]); } catch(e) { console.warn(e); }
+    try { const jf = byId('jobInfoFiles'); if (jf) jf.value = ''; } catch {}
+    try { if (typeof window.renderJobs === 'function') window.renderJobs(); } catch(e) { console.warn(e); }
+    try { if (typeof window.renderMaterialInventory === 'function') window.renderMaterialInventory(); } catch(e) { console.warn(e); }
+    try { const formCard = byId('formCard'); if (formCard?.tagName?.toLowerCase()==='details') formCard.open = false; } catch {}
+    try { byId('jobs')?.scrollIntoView({ behavior:'smooth', block:'start' }); } catch {}
+  }
+  async function fixedSave(e){
+    const form = e.target && e.target.closest ? e.target.closest('#woodForm') : null;
+    if (!form) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    const jobs = safeLoadJobs();
+    const editId = val('editId');
+    const id = editId || String(Date.now());
+    const oldJob = jobs.find(j => String(j.id) === String(id));
+    let uploadedFiles = [];
+    try { uploadedFiles = await uploadNewJobFiles(val('jobId') || oldJob?.jobId || id); }
+    catch (err) { alert(err.message || 'Job file upload failed.'); return; }
+    const record = buildRecord(id, oldJob, uploadedFiles);
+    safeApplyMaterialDelta(oldJob?.materialUses || [], record.materialUses || []);
+    const idx = jobs.findIndex(j => String(j.id) === String(id));
+    if (idx >= 0) jobs[idx] = record; else jobs.push(record);
+    safeSaveJobs(jobs);
+    refreshAfterSave();
+
+    try {
+      if (window.CajunVeteranSupabase && typeof window.CajunVeteranSupabase.saveNow === 'function') {
+        window.CajunVeteranSupabase.saveNow().catch(err => console.warn('Supabase save after woodworking layout fix failed', err));
+      }
+    } catch(err) { console.warn(err); }
+  }
+  function installSaveFix(){
+    if(window.__cvWoodLayoutSaveFixInstalled) return;
+    window.__cvWoodLayoutSaveFixInstalled = true;
+    document.addEventListener('submit', fixedSave, true);
   }
 
   function init(){
@@ -78,6 +206,7 @@
     cleanLabels();
     patchRenderJobs();
     recolorApprovedRows();
+    installSaveFix();
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
   setTimeout(init,250);
