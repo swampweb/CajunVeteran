@@ -1,4 +1,4 @@
-console.log('orders.js v4.1.22 website week collapse inline fix loaded');
+console.log('orders.js v4.1.23 stable collapse fix loaded');
 
 // Self-contained Supabase settings for Orders page.
 // This bypasses any cached common.js header issue.
@@ -50,13 +50,12 @@ function toggleWeekGroup(button, event){
 
   group.classList.toggle('collapsed', willCollapse);
 
-  // Force the website Orders page to hide/show using inline style.
-  // This avoids older spacing CSS overriding the collapse rule.
   if(body){
-    body.style.display = willCollapse ? 'none' : 'flex';
+    body.hidden = willCollapse;
+    body.style.setProperty('display', willCollapse ? 'none' : 'flex', 'important');
     if(!willCollapse){
-      body.style.flexDirection = 'column';
-      body.style.gap = '14px';
+      body.style.setProperty('flex-direction', 'column', 'important');
+      body.style.setProperty('gap', '14px', 'important');
     }
   }
 
@@ -304,10 +303,25 @@ async function deleteLinkedTransaction(transactionId){
   await rest(`/transactions?id=eq.${encodeURIComponent(transactionId)}`, {method:'DELETE'});
 }
 
-function toggleOrderCard(cardId, event){
-  if(event && event.target && event.target.closest('button,select,input,textarea,a')) return;
+function toggleOrderCard(cardId, event, source='card'){
+  if(event) event.stopPropagation();
+
+  if(source === 'card' && event && event.target && event.target.closest('button,select,input,textarea,a')) return;
+
   const card = document.querySelector(`[data-id="${cardId}"]`);
-  if(card) card.classList.toggle('expanded');
+  if(!card) return;
+
+  const willExpand = !card.classList.contains('expanded');
+  card.classList.toggle('expanded', willExpand);
+
+  const details = card.querySelector('.order-card-expanded');
+  if(details){
+    details.hidden = !willExpand;
+    details.style.setProperty('display', willExpand ? 'block' : 'none', 'important');
+  }
+
+  const btn = card.querySelector('.card-expand-btn');
+  if(btn) btn.textContent = willExpand ? 'Collapse Card' : 'Expand Card';
 }
 window.toggleOrderCard = toggleOrderCard;
 
@@ -333,7 +347,7 @@ function orderCard(order){
     <div class="board-meta clean-meta">
       <div><b>Source:</b> ${escapeO(order.media_source || '-')}</div>
     </div>
-    <div class="order-card-expanded">
+    <div class="order-card-expanded" hidden style="display:none!important">
       <div class="payment-status-row">${paymentButton}</div>
       ${order.details ? `<p class="order-details-text">${escapeO(order.details).slice(0,180)}</p>` : ''}
       <div class="board-actions clean-actions compact-actions">
@@ -342,7 +356,7 @@ function orderCard(order){
         <button type="button" class="danger delete-btn small-action-btn" onclick="deleteOrder(${order.id})">Delete</button>
       </div>
     </div>
-    <button type="button" class="card-expand-btn" onclick="toggleOrderCard(${order.id}, event)">Expand / Collapse</button>
+    <button type="button" class="card-expand-btn" onclick="toggleOrderCard(${order.id}, event, 'button')">Expand Card</button>
   </article>`;
 }
 
