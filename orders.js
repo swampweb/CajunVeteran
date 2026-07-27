@@ -1,4 +1,4 @@
-console.log('orders.js v4.1.25 direct week collapse fix loaded');
+console.log('orders.js v4.1.26 week rerender collapse fix loaded');
 
 // Self-contained Supabase settings for Orders page.
 // This bypasses any cached common.js header issue.
@@ -87,18 +87,50 @@ function collapseAllOrderCards(){
 window.expandAllOrderCards = expandAllOrderCards;
 window.collapseAllOrderCards = collapseAllOrderCards;
 
+
+function toggleWeekGroupKey(encodedKey, event){
+  if(event){
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const key = decodeURIComponent(encodedKey);
+  if(collapsedWeekGroups.has(key)) collapsedWeekGroups.delete(key);
+  else collapsedWeekGroups.add(key);
+
+  renderBoard();
+  return false;
+}
+window.toggleWeekGroupKey = toggleWeekGroupKey;
+
 function renderWeekGroups(list){
   if(!list.length) return '<p class="empty-column">Drop orders here.</p>';
+
   const toolbar = '<div class="board-collapse-toolbar"><button type="button" onclick="expandAllOrderCards()">Expand Cards</button><button type="button" onclick="collapseAllOrderCards()">Collapse Cards</button></div>';
   const groups = new Map();
+
   list.forEach(order => {
     const key = weekGroupKey(order);
     if(!groups.has(key)) groups.set(key, []);
     groups.get(key).push(order);
   });
+
   return toolbar + [...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([key,items]) => {
     const label = key.split('|')[1];
-    return `<div class="week-group"><div class="week-group-title"><span>${label}</span><button type="button" class="week-toggle-btn" data-week-toggle="1" aria-expanded="true" onclick="return toggleWeekGroup(this,event)"><span class="week-toggle-text">Collapse</span> <b>${items.length}</b></button></div><div class="week-group-body">${items.map(orderCard).join('')}</div></div>`;
+    const collapsed = collapsedWeekGroups.has(key);
+    const encodedKey = encodeURIComponent(key);
+    const buttonText = collapsed ? 'Expand' : 'Collapse';
+    const bodyHtml = collapsed ? '' : `<div class="week-group-body">${items.map(orderCard).join('')}</div>`;
+
+    return `<div class="week-group ${collapsed ? 'collapsed' : ''}" data-week-key="${encodedKey}">
+      <div class="week-group-title">
+        <span>${label}</span>
+        <button type="button" class="week-toggle-btn" aria-expanded="${collapsed ? 'false' : 'true'}" onclick="return toggleWeekGroupKey('${encodedKey}', event)">
+          <span class="week-toggle-text">${buttonText}</span> <b>${items.length}</b>
+        </button>
+      </div>
+      ${bodyHtml}
+    </div>`;
   }).join('');
 }
 
@@ -106,6 +138,7 @@ function renderWeekGroups(list){
 let currentPhotoData = '';
 let allOrders = [];
 let customerNames = [];
+const collapsedWeekGroups = new Set();
 const BOARD_STATUSES = ['New Orders','In Progress','Ready','Picked Up','Posted to Finance'];
 
 function h(extra={}){
@@ -379,17 +412,7 @@ function orderCard(order){
 
 
 
-function bindWeekCollapseDirect(){
-  if(window.__ordersWeekCollapseDirectBound) return;
-  window.__ordersWeekCollapseDirectBound = true;
-  document.addEventListener('click', event => {
-    const button = event.target.closest('.week-toggle-btn');
-    if(!button) return;
-    event.preventDefault();
-    event.stopPropagation();
-    toggleWeekGroup(button, event);
-  }, true);
-}
+function bindWeekCollapseDirect(){ /* week buttons are handled by toggleWeekGroupKey and board re-render */ }
 
 function bindCollapseDelegates(){
   if(window.__ordersCollapseDelegatesBound) return;
