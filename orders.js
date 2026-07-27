@@ -1,4 +1,4 @@
-console.log('orders.js v4.1.27 website week collapse fixed loaded');
+console.log('orders.js v4.1.28 native week details collapse loaded');
 
 // Self-contained Supabase settings for Orders page.
 // This bypasses any cached common.js header issue.
@@ -117,23 +117,21 @@ function renderWeekGroups(list){
 
   return toolbar + [...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([key,items]) => {
     const label = key.split('|')[1];
-    const collapsed = collapsedWeekGroups.has(key);
     const encodedKey = encodeURIComponent(key);
-    const buttonText = collapsed ? 'Expand' : 'Collapse';
-    const bodyHtml = collapsed ? '' : `<div class="week-group-body">${items.map(orderCard).join('')}</div>`;
 
-    return `<div class="week-group ${collapsed ? 'collapsed' : ''}" data-week-key="${encodedKey}">
-      <div class="week-group-title">
-        <span>${label}</span>
-        <button type="button" class="week-toggle-btn" aria-expanded="${collapsed ? 'false' : 'true'}" onclick="return toggleWeekGroupKey('${encodedKey}', event)">
-          <span class="week-toggle-text">${buttonText}</span> <b>${items.length}</b>
-        </button>
-      </div>
-      ${bodyHtml}
-    </div>`;
+    return `<details class="week-group native-week-group" data-week-key="${encodedKey}" open>
+      <summary class="week-group-title native-week-summary">
+        <span class="week-label">${label}</span>
+        <span class="week-toggle-btn native-week-toggle" aria-hidden="true">
+          <span class="week-toggle-text when-open">Collapse</span>
+          <span class="week-toggle-text when-closed">Expand</span>
+          <b>${items.length}</b>
+        </span>
+      </summary>
+      <div class="week-group-body">${items.map(orderCard).join('')}</div>
+    </details>`;
   }).join('');
 }
-
 
 let currentPhotoData = '';
 let allOrders = [];
@@ -418,9 +416,7 @@ function bindCollapseDelegates(){
   if(window.__ordersCollapseDelegatesBound) return;
   window.__ordersCollapseDelegatesBound = true;
 
-  // Only handle individual card expand/collapse here.
-  // Week collapse is handled by toggleWeekGroupKey(), which re-renders the board.
-  // Do NOT intercept .week-toggle-btn here or week collapse will only change the label.
+  // Native <details>/<summary> handles week collapse. This listener only handles card details.
   document.addEventListener('click', event => {
     const cardButton = event.target.closest('.card-expand-btn');
     if(cardButton){
