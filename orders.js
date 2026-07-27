@@ -1,4 +1,4 @@
-console.log('orders.js v4.1.24 delegated collapse fix loaded');
+console.log('orders.js v4.1.25 direct week collapse fix loaded');
 
 // Self-contained Supabase settings for Orders page.
 // This bypasses any cached common.js header issue.
@@ -41,26 +41,40 @@ function weekGroupKey(order){
 }
 function setWeekGroupCollapsed(group, collapsed){
   if(!group) return;
-  const body = group.querySelector('.week-group-body');
+
   const button = group.querySelector('.week-toggle-btn');
   const label = group.querySelector('.week-toggle-text');
+  const body = group.querySelector('.week-group-body');
 
   group.classList.toggle('collapsed', collapsed);
-  if(body){
-    body.hidden = collapsed;
-    body.style.cssText = collapsed
-      ? 'display:none!important;'
-      : 'display:flex!important;flex-direction:column!important;gap:14px!important;';
+
+  // Hide/show every order card in this week directly, not only the wrapper.
+  // This fixes the Website Orders page when older CSS keeps the wrapper visible.
+  group.querySelectorAll('.week-group-body, .week-group-body .board-card').forEach(el => {
+    el.hidden = collapsed;
+    el.style.setProperty('display', collapsed ? 'none' : '', 'important');
+  });
+
+  if(body && !collapsed){
+    body.hidden = false;
+    body.style.setProperty('display', 'flex', 'important');
+    body.style.setProperty('flex-direction', 'column', 'important');
+    body.style.setProperty('gap', '14px', 'important');
   }
+
   if(label) label.textContent = collapsed ? 'Expand' : 'Collapse';
   if(button) button.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
 }
 
 function toggleWeekGroup(button, event){
-  if(event) event.stopPropagation();
+  if(event){
+    event.preventDefault();
+    event.stopPropagation();
+  }
   const group = button.closest('.week-group');
-  if(!group) return;
+  if(!group) return false;
   setWeekGroupCollapsed(group, !group.classList.contains('collapsed'));
+  return false;
 }
 window.toggleWeekGroup = toggleWeekGroup;
 
@@ -84,7 +98,7 @@ function renderWeekGroups(list){
   });
   return toolbar + [...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([key,items]) => {
     const label = key.split('|')[1];
-    return `<div class="week-group"><div class="week-group-title"><span>${label}</span><button type="button" class="week-toggle-btn" data-week-toggle="1" aria-expanded="true" onclick="toggleWeekGroup(this,event)"><span class="week-toggle-text">Collapse</span> <b>${items.length}</b></button></div><div class="week-group-body">${items.map(orderCard).join('')}</div></div>`;
+    return `<div class="week-group"><div class="week-group-title"><span>${label}</span><button type="button" class="week-toggle-btn" data-week-toggle="1" aria-expanded="true" onclick="return toggleWeekGroup(this,event)"><span class="week-toggle-text">Collapse</span> <b>${items.length}</b></button></div><div class="week-group-body">${items.map(orderCard).join('')}</div></div>`;
   }).join('');
 }
 
@@ -364,6 +378,19 @@ function orderCard(order){
 }
 
 
+
+function bindWeekCollapseDirect(){
+  if(window.__ordersWeekCollapseDirectBound) return;
+  window.__ordersWeekCollapseDirectBound = true;
+  document.addEventListener('click', event => {
+    const button = event.target.closest('.week-toggle-btn');
+    if(!button) return;
+    event.preventDefault();
+    event.stopPropagation();
+    toggleWeekGroup(button, event);
+  }, true);
+}
+
 function bindCollapseDelegates(){
   if(window.__ordersCollapseDelegatesBound) return;
   window.__ordersCollapseDelegatesBound = true;
@@ -419,6 +446,7 @@ async function renderBoard(){
     });
     const cancelled = allOrders.filter(o=>o.status==='Cancelled');
     if($o('cancelledOrders')) $o('cancelledOrders').innerHTML = renderWeekGroups(cancelled).replace('Drop orders here.','No cancelled orders.');
+    bindWeekCollapseDirect();
     bindCollapseDelegates();
     bindDragDrop();
   }catch(err){
