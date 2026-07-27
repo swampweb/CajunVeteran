@@ -1,4 +1,4 @@
-console.log('orders.js v4.1.23 stable collapse fix loaded');
+console.log('orders.js v4.1.24 delegated collapse fix loaded');
 
 // Self-contained Supabase settings for Orders page.
 // This bypasses any cached common.js header issue.
@@ -39,28 +39,28 @@ function weekGroupKey(order){
   saturday.setDate(sunday.getDate() + 6);
   return `${isoFromDate(sunday)}|${formatOrderDate(isoFromDate(sunday))} - ${formatOrderDate(isoFromDate(saturday))}`;
 }
+function setWeekGroupCollapsed(group, collapsed){
+  if(!group) return;
+  const body = group.querySelector('.week-group-body');
+  const button = group.querySelector('.week-toggle-btn');
+  const label = group.querySelector('.week-toggle-text');
+
+  group.classList.toggle('collapsed', collapsed);
+  if(body){
+    body.hidden = collapsed;
+    body.style.cssText = collapsed
+      ? 'display:none!important;'
+      : 'display:flex!important;flex-direction:column!important;gap:14px!important;';
+  }
+  if(label) label.textContent = collapsed ? 'Expand' : 'Collapse';
+  if(button) button.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+}
+
 function toggleWeekGroup(button, event){
   if(event) event.stopPropagation();
-
   const group = button.closest('.week-group');
   if(!group) return;
-
-  const body = group.querySelector('.week-group-body');
-  const willCollapse = !group.classList.contains('collapsed');
-
-  group.classList.toggle('collapsed', willCollapse);
-
-  if(body){
-    body.hidden = willCollapse;
-    body.style.setProperty('display', willCollapse ? 'none' : 'flex', 'important');
-    if(!willCollapse){
-      body.style.setProperty('flex-direction', 'column', 'important');
-      body.style.setProperty('gap', '14px', 'important');
-    }
-  }
-
-  const label = button.querySelector('.week-toggle-text');
-  if(label) label.textContent = willCollapse ? 'Expand' : 'Collapse';
+  setWeekGroupCollapsed(group, !group.classList.contains('collapsed'));
 }
 window.toggleWeekGroup = toggleWeekGroup;
 
@@ -84,7 +84,7 @@ function renderWeekGroups(list){
   });
   return toolbar + [...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([key,items]) => {
     const label = key.split('|')[1];
-    return `<div class="week-group"><div class="week-group-title"><span>${label}</span><button type="button" class="week-toggle-btn" onclick="toggleWeekGroup(this,event)"><span class="week-toggle-text">Collapse</span> <b>${items.length}</b></button></div><div class="week-group-body">${items.map(orderCard).join('')}</div></div>`;
+    return `<div class="week-group"><div class="week-group-title"><span>${label}</span><button type="button" class="week-toggle-btn" data-week-toggle="1" aria-expanded="true" onclick="toggleWeekGroup(this,event)"><span class="week-toggle-text">Collapse</span> <b>${items.length}</b></button></div><div class="week-group-body">${items.map(orderCard).join('')}</div></div>`;
   }).join('');
 }
 
@@ -303,25 +303,28 @@ async function deleteLinkedTransaction(transactionId){
   await rest(`/transactions?id=eq.${encodeURIComponent(transactionId)}`, {method:'DELETE'});
 }
 
+function setOrderCardExpanded(card, expanded){
+  if(!card) return;
+  const details = card.querySelector('.order-card-expanded');
+  const btn = card.querySelector('.card-expand-btn');
+
+  card.classList.toggle('expanded', expanded);
+  if(details){
+    details.hidden = !expanded;
+    details.style.cssText = expanded ? 'display:block!important;' : 'display:none!important;';
+  }
+  if(btn){
+    btn.textContent = expanded ? 'Collapse Card' : 'Expand Card';
+    btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  }
+}
+
 function toggleOrderCard(cardId, event, source='card'){
   if(event) event.stopPropagation();
-
   if(source === 'card' && event && event.target && event.target.closest('button,select,input,textarea,a')) return;
-
   const card = document.querySelector(`[data-id="${cardId}"]`);
   if(!card) return;
-
-  const willExpand = !card.classList.contains('expanded');
-  card.classList.toggle('expanded', willExpand);
-
-  const details = card.querySelector('.order-card-expanded');
-  if(details){
-    details.hidden = !willExpand;
-    details.style.setProperty('display', willExpand ? 'block' : 'none', 'important');
-  }
-
-  const btn = card.querySelector('.card-expand-btn');
-  if(btn) btn.textContent = willExpand ? 'Collapse Card' : 'Expand Card';
+  setOrderCardExpanded(card, !card.classList.contains('expanded'));
 }
 window.toggleOrderCard = toggleOrderCard;
 
@@ -356,8 +359,34 @@ function orderCard(order){
         <button type="button" class="danger delete-btn small-action-btn" onclick="deleteOrder(${order.id})">Delete</button>
       </div>
     </div>
-    <button type="button" class="card-expand-btn" onclick="toggleOrderCard(${order.id}, event, 'button')">Expand Card</button>
+    <button type="button" class="card-expand-btn" data-card-toggle="1" aria-expanded="false" onclick="toggleOrderCard(${order.id}, event, 'button')">Expand Card</button>
   </article>`;
+}
+
+
+function bindCollapseDelegates(){
+  if(window.__ordersCollapseDelegatesBound) return;
+  window.__ordersCollapseDelegatesBound = true;
+
+  document.addEventListener('click', event => {
+    const weekButton = event.target.closest('.week-toggle-btn');
+    if(weekButton){
+      event.preventDefault();
+      event.stopPropagation();
+      const group = weekButton.closest('.week-group');
+      setWeekGroupCollapsed(group, !group.classList.contains('collapsed'));
+      return;
+    }
+
+    const cardButton = event.target.closest('.card-expand-btn');
+    if(cardButton){
+      event.preventDefault();
+      event.stopPropagation();
+      const card = cardButton.closest('.board-card');
+      setOrderCardExpanded(card, !card.classList.contains('expanded'));
+      return;
+    }
+  }, true);
 }
 
 function bindDragDrop(){
@@ -390,6 +419,7 @@ async function renderBoard(){
     });
     const cancelled = allOrders.filter(o=>o.status==='Cancelled');
     if($o('cancelledOrders')) $o('cancelledOrders').innerHTML = renderWeekGroups(cancelled).replace('Drop orders here.','No cancelled orders.');
+    bindCollapseDelegates();
     bindDragDrop();
   }catch(err){
     setStatus('Board load failed: ' + escapeO(err.message || err), true);
