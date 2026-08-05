@@ -9,6 +9,13 @@ const $ = id => document.getElementById(id);
 const money = value => '$' + Number(value || 0).toFixed(2);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const PRICING_STORE = 'cv_print_item_pricing_v1';
+const PRICING_DEFAULTS_STORE = 'cv_print_pricing_defaults_v1';
+
+function pricingDefaults() {
+  const fallback = { filamentRate: 0.02, machineRate: 0.75, markupPercent: 100, roundTo: 0.50 };
+  try { return { ...fallback, ...JSON.parse(localStorage.getItem(PRICING_DEFAULTS_STORE) || '{}') }; }
+  catch { return fallback; }
+}
 
 function firstValue(item, keys, fallback = '') {
   for (const key of keys) {
@@ -48,10 +55,10 @@ function itemPricingData(item) {
   return {
     components: parseJson(item.price_components, store[sku]?.components || []),
     linked: parseJson(item.linked_items, store[sku]?.linked || []),
-    rate: Number(item.filament_rate || store[sku]?.rate || 0.02),
-    machine: Number(item.machine_rate || store[sku]?.machine || 0.75),
-    markup: Number(item.markup_percent || store[sku]?.markup || 100),
-    round: Number(item.round_to || store[sku]?.round || 0.50),
+    rate: Number(item.filament_rate || store[sku]?.rate || pricingDefaults().filamentRate),
+    machine: Number(item.machine_rate || store[sku]?.machine || pricingDefaults().machineRate),
+    markup: Number(item.markup_percent || store[sku]?.markup || pricingDefaults().markupPercent),
+    round: Number(item.round_to || store[sku]?.round || pricingDefaults().roundTo),
     suggested: Number(item.suggested_price || store[sku]?.suggested || 0)
   };
 }
@@ -61,10 +68,11 @@ function roundTo(value, step) {
   return step > 0 ? Math.ceil(Number(value || 0) / step) * step : Number(value || 0);
 }
 function calcPricing(components = componentRows) {
-  const filamentRate = Number($('filament_rate')?.value || 0.02);
-  const machineRate = Number($('machine_rate')?.value || 0.75);
-  const markup = Number($('markup_percent')?.value || 100);
-  const round = Number($('round_to')?.value || 0.50);
+  const defaults = pricingDefaults();
+  const filamentRate = Number($('filament_rate')?.value || defaults.filamentRate);
+  const machineRate = Number($('machine_rate')?.value || defaults.machineRate);
+  const markup = Number($('markup_percent')?.value || defaults.markupPercent);
+  const round = Number($('round_to')?.value || defaults.roundTo);
   const grams = components.reduce((sum, row) => sum + Number(row.grams || 0), 0);
   const minutes = components.reduce((sum, row) => sum + minutesFrom(row.hours, row.minutes), 0);
   const filamentCost = grams * filamentRate;
@@ -182,10 +190,11 @@ function clearForm() {
   componentRows = [];
   linkedRows = [];
   $('printItemForm').reset();
-  $('filament_rate').value = '0.02';
-  $('machine_rate').value = '0.75';
-  $('markup_percent').value = '100';
-  $('round_to').value = '0.50';
+  const defaults = pricingDefaults();
+  $('filament_rate').value = defaults.filamentRate;
+  $('machine_rate').value = defaults.machineRate;
+  $('markup_percent').value = defaults.markupPercent;
+  $('round_to').value = defaults.roundTo;
   $('printItemForm').classList.remove('show');
   $('deletePrintItem').classList.add('hidden');
   setPrintPreview('');

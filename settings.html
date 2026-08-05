@@ -1,10 +1,66 @@
-﻿<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Settings</title><link rel="stylesheet" href="css/styles.css">  <link rel="stylesheet" href="css/v7-update08.css">
-  <link rel="stylesheet" href="css/v7-update10.css">
-  <link rel="stylesheet" href="css/woodworking-items-stock.css">
-</head><body><main class="v7-main"><div class="v7-container"><header class="v7-header"><div><h1>Settings</h1><p>Manage V7 application pick lists and preferences</p></div></header><section class="v7-card" id="sizes"><div class="v7-card-head"><h2>3D Item Sizes</h2></div><div class="v7-card-body"><p class="muted-note">These values appear in the Size pick list on 3D Print Items.</p><div class="settings-add-row"><input id="newSize" maxlength="15" placeholder="Add size"><button class="btn primary" id="addSize">Add</button></div><p class="size-sort-note">Drag the handle to set the exact order used in the 3D Print Items Size dropdown.</p><div id="sizeList" class="settings-chip-list"></div></div></section></div></main><footer class="v7-footer">â˜… CajunVeteran Workshop Management â€¢ Built By A Veteran â˜…</footer><script src="js/navigation.js"></script><script src="js/settings.js"></script>  <script src="js/v7-update10.js"></script>
-  <script src="js/settings-wood-stock.js"></script>
-</body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="images/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>CajunVeteran Settings</title>
+</head>
+<body class="settings-page">
+  <main class="v7-main">
+    <div class="v7-container">
+      <header class="v7-header settings-header">
+        <div>
+          <h1>Settings</h1>
+          <p>Manage default values used across CajunVeteran Workshop</p>
+        </div>
+      </header>
 
+      <section class="v7-card settings-card">
+        <div class="v7-card-head">
+          <h2 class="v7-panel-title">3D Print Pricing Defaults</h2>
+        </div>
+        <div class="v7-card-body">
+          <p class="settings-help">
+            These values are used as the default suggested pricing settings when adding a new 3D print item.
+            Existing items can still have their own values if changed inside the item edit screen.
+          </p>
 
+          <form id="pricingDefaultsForm" class="settings-form">
+            <label>Filament Cost Per Gram
+              <input id="defaultFilamentRate" type="number" step="0.001" min="0" value="0.02">
+              <small>Example: $20/kg = $0.02/g</small>
+            </label>
+            <label>Machine Cost Per Hour
+              <input id="defaultMachineRate" type="number" step="0.01" min="0" value="0.75">
+              <small>Suggested starting point based on your $15 koozie pricing.</small>
+            </label>
+            <label>Markup Percent
+              <input id="defaultMarkupPercent" type="number" step="1" min="0" value="100">
+              <small>100% doubles the calculated base cost.</small>
+            </label>
+            <label>Round Suggested Price To
+              <input id="defaultRoundTo" type="number" step="0.25" min="0" value="0.50">
+              <small>Example: round up to nearest $0.50.</small>
+            </label>
 
+            <div class="settings-preview full">
+              <h3>Preview</h3>
+              <div id="pricingPreview"></div>
+            </div>
 
+            <div class="actions full">
+              <button class="btn clear" id="resetPricingDefaults" type="button">Reset Defaults</button>
+              <button class="btn primary" type="submit">Save Settings</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="v7-footer">CajunVeteran Workshop Management - Built By A Veteran</footer>
+  <script src="js/navigation.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>
