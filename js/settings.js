@@ -49,12 +49,12 @@ function renderPreview() {
 }
 function renderSizes() {
   const sizes = loadSizes();
-  $('sizeList').innerHTML = sizes.map((size, index) => `<span class="settings-size-pill"><span class="settings-size-name">${size}</span><button class="settings-size-remove" type="button" aria-label="Remove ${size}" data-remove-size="${index}">×</button></span>`).join('') || '<div class="pi-empty-soft">No sizes saved.</div>';
+  $('sizeList').innerHTML = sizes.map((size, index) => `<span class="settings-pill"><span class="settings-pill-name">${size}</span><button class="settings-pill-remove" type="button" aria-label="Remove ${size}" data-remove-size="${index}">×</button></span>`).join('') || '<div class="pi-empty-soft">No sizes saved.</div>';
 }
 function renderFilamentTypes() {
   if (!$('filamentTypeList')) return;
   const types = loadFilamentTypes();
-  $('filamentTypeList').innerHTML = types.map((type, index) => `<span class="settings-size-pill filament-type-pill"><span class="settings-size-name">${type}</span><button class="settings-size-remove" type="button" aria-label="Remove ${type}" data-remove-filament-type="${index}">×</button></span>`).join('') || '<div class="pi-empty-soft">No filament types saved.</div>';
+  $('filamentTypeList').innerHTML = types.map((type, index) => `<span class="settings-size-pill filament-type-pill"><span class="settings-pill-name">${type}</span><button class="settings-pill-remove" type="button" aria-label="Remove ${type}" data-remove-filament-type="${index}">×</button></span>`).join('') || '<div class="pi-empty-soft">No filament types saved.</div>';
 }
 function populateStockSettings() { $('woodLowStockThreshold').value = localStorage.getItem(WOOD_LOW_STOCK_STORE) || 5; }
 
