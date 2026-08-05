@@ -1,3 +1,4 @@
+// CV COLORS PALETTE PERSIST FIX v1
 // CV COLORS PALETTE COLOR UPDATE v1
 // CV COLORS TYPE SAVE FALLBACK FIX v1
 initNavigation('colors.html');
@@ -18,9 +19,30 @@ function readJson(key, fallback) { try { return JSON.parse(localStorage.getItem(
 function writeJson(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
 function store() { return readJson(FILAMENT_STORE, {}); }
 function saveLocal(id, data) { const all = store(); all[String(id)] = { ...(all[String(id)] || {}), ...data }; writeJson(FILAMENT_STORE, all); }
+function saveLocalMany(keys, data) {
+  const all = store();
+  keys.filter(Boolean).forEach(key => {
+    const k = String(key);
+    all[k] = { ...(all[k] || {}), ...data };
+  });
+  writeJson(FILAMENT_STORE, all);
+}
 function rowKey(row) { return String(row.id ?? row.color_id ?? `${row.brand || ''}|${row.color || row.name || row.label || ''}|${row.type || ''}`); }
+function colorCompositeKey(brand, color, type) { return `${brand || ''}|${color || ''}|${type || ''}`; }
+function stableColorKey(row) { return String(row.id ?? row.color_id ?? colorCompositeKey(row.brand, row.color || row.name || row.label, row.type)); }
 function first(row, keys, fallback = '') { for (const key of keys) if (row && row[key] !== undefined && row[key] !== null && String(row[key]).trim() !== '') return row[key]; return fallback; }
-function localFor(row) { return store()[rowKey(row)] || {}; }
+function localFor(row) {
+  const all = store();
+  const keys = [
+    stableColorKey(row),
+    rowKey(row),
+    colorCompositeKey(row.brand, row.color || row.name || row.label, row.type),
+    colorCompositeKey(row.brand, row.color || row.name || row.label, ''),
+    String(row.color || row.name || row.label || '')
+  ];
+  for (const key of keys) if (all[key]) return all[key];
+  return {};
+}
 function colorName(row) { return first(row, ['color','name','label','color_name'], 'Unnamed Color'); }
 function brandName(row) { return first(row, ['brand','manufacturer'], 'No Brand'); }
 function statusOf(row) { const local = localFor(row); const raw = String(local.status || row.status || row.active_status || (row.active === false ? 'inactive' : 'active')).toLowerCase(); return raw === 'inactive' || raw === 'false' ? 'inactive' : 'active'; }
@@ -237,8 +259,13 @@ async function saveColor() {
     updated_at: new Date().toISOString()
   };
   if (!row.color) { toast('Color name is required.', 'err'); return; }
-  const key = editingColor ? rowKey(editingColor) : `${row.brand}|${row.color}|${row.type}`;
-  saveLocal(key, row);
+  const oldKey = editingColor ? rowKey(editingColor) : null;
+  const oldStableKey = editingColor ? stableColorKey(editingColor) : null;
+  const oldBrandColorKey = editingColor ? colorCompositeKey(editingColor.brand, colorName(editingColor), '') : null;
+  const newKey = colorCompositeKey(row.brand, row.color, row.type);
+  const newBrandColorKey = colorCompositeKey(row.brand, row.color, '');
+  const colorOnlyKey = row.color;
+  saveLocalMany([oldKey, oldStableKey, oldBrandColorKey, newKey, newBrandColorKey, colorOnlyKey], row);
   try {
     if (editingColor) {
       const result = await patchColor(editingColor, row);
@@ -256,6 +283,10 @@ async function saveColor() {
   } catch(error) {
     console.warn('Saved locally only:', error);
     toast('Could not save to Supabase. Changes saved locally only. Run the color SQL.', 'err');
+  }
+  if (editingColor) {
+    const idx = colorRows.findIndex(c => rowKey(c) === oldKey || stableColorKey(c) === oldStableKey);
+    if (idx >= 0) colorRows[idx] = { ...colorRows[idx], ...row };
   }
   clearForm();
   await load();
