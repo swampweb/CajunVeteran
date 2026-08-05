@@ -7,6 +7,8 @@ alter table public.cv_colors
   add column if not exists estimated_grams numeric default 1000,
   add column if not exists spools numeric default 1,
   add column if not exists low_grams numeric default 200,
+  add column if not exists palette_color text,
+  add column if not exists hex_color text,
   add column if not exists notes text,
   add column if not exists updated_at timestamptz default now();
 

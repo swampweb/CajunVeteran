@@ -1,3 +1,4 @@
+// CV COLORS PALETTE COLOR UPDATE v1
 // CV COLORS TYPE SAVE FALLBACK FIX v1
 initNavigation('colors.html');
 
@@ -41,9 +42,10 @@ function spoolCount(row) { return statusOf(row) === 'inactive' ? 0 : spoolArray(
 function estGrams(row) { return statusOf(row) === 'inactive' ? 0 : spoolArray(row).reduce((sum, value) => sum + Number(value || 0), 0); }
 function lowAt(row) { const local = localFor(row); return Number(local.low_grams ?? row.low_grams ?? row.low_at_grams ?? LOW_DEFAULT); }
 function colorHex(row) {
-  const raw = `${colorName(row)} ${row.hex || row.swatch || ''}`.toLowerCase();
-  if (String(row.hex || '').startsWith('#')) return row.hex;
-  if (String(row.swatch || '').startsWith('#')) return row.swatch;
+  const local = localFor(row);
+  const direct = local.palette_color || local.hex_color || row.palette_color || row.hex_color || row.hex || row.swatch;
+  if (String(direct || '').startsWith('#')) return direct;
+  const raw = `${colorName(row)} ${direct || ''}`.toLowerCase();
   const map = {black:'#111',white:'#eee',red:'#b71c1c',orange:'#f47b20',yellow:'#f3c316',green:'#159947',blue:'#1464d2',purple:'#6936c9',pink:'#e15aa2',gray:'#888',grey:'#888',brown:'#8b5a2b',gold:'#caa45f',silver:'#c0c0c0',teal:'#17a2a6'};
   const key = Object.keys(map).find(name => raw.includes(name));
   return map[key] || '#d8d8d8';
@@ -153,6 +155,8 @@ function clearForm() {
   editingColor = null;
   $('colorForm').reset();
   $('status').value = 'active';
+  $('palette_color').value = '#8b5cf6';
+  $('hex_color').value = '#8b5cf6';
   populateTypeDropdown('PLA');
   $('low_grams').value = LOW_DEFAULT;
   $('spools').value = 1;
@@ -166,6 +170,8 @@ function openEditor(row) {
   editingColor = row;
   $('brand').value = brandName(row) === 'No Brand' ? '' : brandName(row);
   $('color').value = colorName(row);
+  $('palette_color').value = colorHex(row);
+  $('hex_color').value = colorHex(row);
   populateTypeDropdown(row.type || 'PLA');
   $('status').value = statusOf(row);
   $('low_grams').value = lowAt(row);
@@ -190,10 +196,14 @@ async function patchColor(row, payload) {
   const basicPayload = {
     brand: payload.brand,
     color: payload.color,
-    type: payload.type
+    type: payload.type,
+    palette_color: payload.palette_color,
+    hex_color: payload.hex_color
   };
   const simplePayload = {
-    type: payload.type
+    type: payload.type,
+    palette_color: payload.palette_color,
+    hex_color: payload.hex_color
   };
 
   const attempts = [payload, basicPayload, simplePayload];
@@ -274,6 +284,8 @@ function wire() {
     button.onclick = () => { filterMode = button.dataset.filter; document.querySelectorAll('[data-filter]').forEach(b => b.classList.toggle('active', b === button)); render(); };
   });
   $('colorSearch').oninput = render;
+  $('palette_color').oninput = () => { $('hex_color').value = $('palette_color').value; };
+  $('hex_color').oninput = () => { if (/^#[0-9a-fA-F]{6}$/.test($('hex_color').value)) $('palette_color').value = $('hex_color').value; };
   $('newColorBtn').onclick = () => { clearForm(); expandForm(); };
   $('clearColor').onclick = clearForm;
   $('status').onchange = syncInactive;
