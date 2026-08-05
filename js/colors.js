@@ -1,3 +1,4 @@
+// CV COLORS TYPE AND NOTES SAVE FIX v1
 // CV COLORS NOTES SAVE FIX v1
 // CV COLORS HEX SAVE FIX v2
 // CV COLORS PALETTE PERSIST FIX v1
@@ -228,26 +229,21 @@ async function patchColor(row, payload) {
 
   const chosenHex = cleanHex(payload.hex_color) || cleanHex(payload.palette_color) || cleanHex(payload.swatch);
 
-  // Try the exact columns that exist in your cv_colors table first.
-  // This prevents new grams/spool fields from blocking the hex save.
-  const colorOnlyPayload = {
+  // Save only columns that actually exist in your current cv_colors table.
+  // Current confirmed columns include: id, created_at, brand, type, color, label, active, swatch, record, hex_color, palette_color, notes.
+  const confirmedColorPayload = {
+    brand: payload.brand,
+    color: payload.color,
+    type: payload.type,
+    label: payload.label,
+    active: payload.status === 'inactive' ? false : true,
     swatch: chosenHex,
     hex_color: chosenHex,
     palette_color: chosenHex,
     notes: payload.notes || ''
   };
-  const typeAndColorPayload = {
-    brand: payload.brand,
-    color: payload.color,
-    type: payload.type,
-    label: payload.label,
-    swatch: chosenHex,
-    hex_color: chosenHex,
-    palette_color: chosenHex,
-    notes: payload.notes || '',
-    notes: payload.notes || '',
-    active: payload.status === 'inactive' ? false : true
-  };
+
+  const notesOnlyPayload = { notes: payload.notes || '' };
   const typeOnlyPayload = {
     brand: payload.brand,
     color: payload.color,
@@ -255,15 +251,21 @@ async function patchColor(row, payload) {
     label: payload.label,
     active: payload.status === 'inactive' ? false : true
   };
+  const colorOnlyPayload = {
+    swatch: chosenHex,
+    hex_color: chosenHex,
+    palette_color: chosenHex
+  };
 
-  const notesOnlyPayload = { notes: payload.notes || '' };
-  const attempts = [colorOnlyPayload, typeAndColorPayload, payload, notesOnlyPayload, typeOnlyPayload];
+  // Try full confirmed fields first so Type and Notes save together.
+  // Use smaller fallbacks only if a column is missing.
+  const attempts = [confirmedColorPayload, payload, typeOnlyPayload, notesOnlyPayload, colorOnlyPayload];
   let last;
   for (const filter of filters) {
     for (const attempt of attempts) {
       try {
         await CVDB.patch('cv_colors', filter, attempt);
-        return { ok:true, partial: attempt !== payload, savedHex: chosenHex };
+        return { ok:true, partial: attempt !== payload && attempt !== confirmedColorPayload, savedHex: chosenHex };
       } catch(e) {
         last = e;
       }
@@ -306,15 +308,15 @@ async function saveColor() {
   try {
     if (editingColor) {
       const result = await patchColor(editingColor, row);
-      if (result.partial) toast('Color details saved. Grams/spools saved locally until SQL is run.');
-      else toast('Color saved');
+      if (result.partial) toast('Color details saved.');
+      else toast('Color details saved.');
     } else {
       try {
         await CVDB.insert('cv_colors', row);
-        toast('Color saved');
+        toast('Color details saved.');
       } catch(insertError) {
         await CVDB.insert('cv_colors', { brand: row.brand, color: row.color, type: row.type, label: row.label, swatch: row.swatch, hex_color: row.hex_color, palette_color: row.palette_color, notes: row.notes || '', active: row.active });
-        toast('Color created. Grams/spools saved locally until SQL is run.');
+        toast('Color created.');
       }
     }
   } catch(error) {
