@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="images/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>Material Inventory</title>
+</head>
+<body>
+  <main class="v7-main">
+    <div class="v7-container">
+      <header class="v7-header inv-header">
+        <div>
+          <h1>Material Inventory</h1>
+          <p>Manage on-hand stock, yield, supplier, cost, and reorder levels</p>
+        </div>
+        <div class="v7-header-actions">
+          <button class="btn" id="refreshMaterials" type="button">Refresh</button>
+          <button class="btn primary" id="newMaterialBtn" type="button">New Material</button>
+        </div>
+      </header>
+
+      <section class="v7-card">
+        <div class="v7-card-head">
+          <h2 class="v7-panel-title" id="inventoryTitle">Material Inventory</h2>
+          <div class="inv-head-tabs">
+            <button class="small-btn inv-tab active" type="button" data-filter="all">All Materials</button>
+            <button class="small-btn inv-tab" type="button" data-filter="low">Low Stock</button>
+          </div>
+        </div>
+        <div class="v7-card-body">
+          <div class="inv-toolbar">
+            <input id="materialSearch" type="search" placeholder="Search material, supplier, size, or notes">
+            <select id="materialFilter">
+              <option value="all">All Materials</option>
+              <option value="low">Low Stock</option>
+              <option value="out">Out of Stock</option>
+            </select>
+          </div>
+
+          <div class="inv-stats">
+            <span>Total <b id="matTotal">0</b></span>
+            <span>Low Stock <b id="matLow">0</b></span>
+            <span>Out <b id="matOut">0</b></span>
+            <span>Inventory Value <b id="matValue">$0.00</b></span>
+          </div>
+
+          <form id="materialForm" class="form-panel inv-form">
+            <label>Material Name<input id="material" required placeholder="Example: Walnut board, PLA, Poplar blank"></label>
+            <label>Supplier<input id="supplier" placeholder="Optional"></label>
+            <label>Quantity On Hand<input id="qty" type="number" step="0.01" min="0" value="0"></label>
+            <label>Low Stock At<input id="low_level" type="number" step="0.01" min="0" value="0"></label>
+            <label>Yield Qty<input id="yield_qty" type="number" step="0.01" min="0" value="0"></label>
+            <label>Cost<input id="cost" type="number" step="0.01" min="0" value="0"></label>
+            <label class="full">Notes<textarea id="notes" placeholder="Optional notes, dimensions, use case, etc."></textarea></label>
+            <div class="actions full">
+              <button class="btn clear" id="clearMaterial" type="button">Clear</button>
+              <button class="btn primary" type="submit">Save Material</button>
+              <button class="btn danger hidden" id="deleteMaterial" type="button">Delete</button>
+            </div>
+          </form>
+
+          <div id="materialCards" class="inv-grid"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="v7-footer">CajunVeteran Workshop Management - Built By A Veteran</footer>
+  <script src="js/database.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/inventory.js"></script>
+</body>
+</html>

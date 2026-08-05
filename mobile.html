@@ -1,110 +1,145 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>CajunVeteran Workshop</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <meta name="theme-color" content="#c98232" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Workshop" />
-  <style>
-    :root{--bg:#06111e;--panel:#0b2136;--panel2:#081a2c;--muted:#9fb0c4;--text:#f4f7fb;--accent:#c98232;--danger:#ef4444;--ok:#10b981;--line:#31587d;--blue:#2f80ed;--gold:#f0b429}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{min-height:100%;margin:0;background:linear-gradient(180deg,#06111e,#02070d);color:var(--text);font:16px/1.35 "Segoe UI",Roboto,Arial,sans-serif}body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}.app{max-width:620px;margin:0 auto;min-height:100vh}.top{position:sticky;top:0;z-index:10;padding:calc(14px + env(safe-area-inset-top)) 14px 12px;background:rgba(3,10,17,.96);border-bottom:2px solid rgba(201,130,50,.72);backdrop-filter:blur(12px)}.brand{display:flex;align-items:center;gap:12px}.brand img{width:54px;height:54px;border-radius:13px;box-shadow:0 8px 22px rgba(0,0,0,.35)}.brand h1{margin:0;color:var(--accent);font-size:22px;text-transform:uppercase;line-height:1}.brand p{margin:3px 0 0;color:#f8ead0;font-size:12px;letter-spacing:.12em;font-weight:900}.search{margin-top:12px;width:100%;min-height:48px;border-radius:12px;padding:0 14px;border:1px solid #3b5f83;background:#07182a;color:#fff;font-size:17px}.status-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:12px 14px}.tab{border:1px solid rgba(86,142,198,.45);border-radius:14px;background:#10283f;color:#fff;padding:12px 8px;text-align:center;font-weight:900}.tab.active{background:linear-gradient(135deg,var(--accent),#e5a91f);border-color:#e5a91f;color:#071321}.tab span{display:block;font-size:25px;line-height:1}.tab small{display:block;margin-top:3px;color:inherit;opacity:.82;text-transform:uppercase;font-size:11px}.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 14px 12px}.quick .pill{background:#081d31;border:1px solid rgba(86,142,198,.35);border-radius:12px;padding:10px}.pill b{display:block;color:#ffd36a}.pill span{display:block;color:var(--muted);font-size:12px}.cards{display:grid;gap:10px;padding:0 14px 16px}.job{background:linear-gradient(180deg,rgba(13,31,50,.99),rgba(8,22,36,.99));border:1px solid var(--line);border-radius:16px;padding:13px;box-shadow:0 10px 24px rgba(0,0,0,.22)}.job-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.type{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:900;text-transform:uppercase;background:rgba(201,130,50,.14);border:1px solid rgba(201,130,50,.38);color:#ffd36a}.type.print{color:#7ec7ff;background:rgba(47,128,237,.14);border-color:rgba(47,128,237,.4)}.id{font-size:22px;font-weight:900;margin:6px 0 3px}.title{font-weight:800;color:#f4f7fb;margin-bottom:8px}.meta{color:#dce8f6;display:grid;gap:4px;font-size:14px}.meta b{color:#6bbcff}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.btn{min-height:44px;border:1px solid #3b5f83;background:#10283f;color:#fff;border-radius:10px;font-weight:900}.btn.gold{background:linear-gradient(135deg,var(--accent),#e5a91f);border-color:#e5a91f;color:#071321}.select-row{display:grid;grid-template-columns:1fr 116px;gap:8px;margin-top:10px}.status-select{min-height:44px;border:1px solid #3b5f83;background:#07182a;color:#fff;border-radius:10px;padding:0 10px;font-weight:800}.paid{display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(86,142,198,.35);background:#07182a;border-radius:10px;padding:0 10px;font-weight:900}.paid input{width:22px;height:22px}.empty{padding:26px;margin:0 14px;border:1px dashed rgba(86,142,198,.5);border-radius:16px;text-align:center;color:var(--muted);background:rgba(8,22,36,.75)}.bottom{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(3,10,17,.96);border-top:1px solid rgba(86,142,198,.4);display:grid;grid-template-columns:repeat(4,1fr);padding:8px 10px calc(8px + env(safe-area-inset-bottom));max-width:620px;margin:0 auto}.bottom button{border:0;background:transparent;color:#e8eef7;text-decoration:none;font-weight:800;display:grid;place-items:center;gap:3px;font-size:12px}.bottom i{font-style:normal;font-size:23px}.bottom .active{color:var(--accent)}.modal{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:18px}.hidden{display:none!important}.backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72)}.box{position:relative;z-index:1;width:min(560px,94vw);max-height:84vh;overflow:auto;background:#0b2136;border:1px solid rgba(240,180,41,.6);border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.55);padding:18px}.box h3{margin:0 42px 10px 0;color:var(--accent);text-transform:uppercase}.close{position:absolute;right:10px;top:10px;width:38px;height:38px;border-radius:9px;border:1px solid #b91c1c;background:#ef4444;color:#fff;font-size:24px}.note-viewer{max-height:42vh;overflow:auto;border:1px solid rgba(86,142,198,.38);background:#07182a;border-radius:12px;padding:12px}.note-card{border:1px solid rgba(240,180,41,.36);background:rgba(240,180,41,.055);border-radius:10px;margin:0 0 10px;overflow:hidden}.note-card-head{padding:8px 10px;background:rgba(201,130,50,.18);color:#ffd36a;font-weight:900;letter-spacing:.04em;text-transform:uppercase;font-size:13px;border-bottom:1px solid rgba(240,180,41,.26)}.note-card-body{padding:10px}.note-name{font-size:16px;font-weight:900;color:#fff;margin-bottom:4px}.note-meta{font-size:14px;color:#dce8f6}.note-meta b{color:#ffd36a}.note-section{border:1px solid rgba(86,142,198,.28);background:rgba(255,255,255,.035);border-radius:10px;margin:10px 0 0;padding:10px}.note-section-title{color:#ffd36a;font-weight:900;text-transform:uppercase;letter-spacing:.05em;font-size:13px;margin-bottom:6px}.note-notes{width:100%;min-height:110px;border:1px solid #3b5f83;background:#07182a;color:#fff;border-radius:12px;padding:12px;font-size:16px;margin-top:10px}.file-card{border:1px solid rgba(86,142,198,.28);background:rgba(255,255,255,.045);border-radius:10px;padding:10px;margin-bottom:10px}.file-card a{color:#ffd36a;text-decoration:none}.file-card img{max-width:100%;border-radius:10px;border:1px solid #31587d;background:#07182a;margin-top:8px}.footer-note{padding:4px 14px 18px;color:var(--muted);font-size:12px;text-align:center}@media(min-width:720px){.app{margin-top:12px;border:1px solid rgba(86,142,198,.35);border-radius:18px;overflow:hidden}.top{border-radius:18px 18px 0 0}}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <link rel="icon" href="images/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/mobile.css">
+  <title>CajunVeteran Mobile Jobs</title>
 </head>
 <body>
-<div class="app">
-  <header class="top">
-    <div class="brand"><img src="apple-touch-icon.png" alt="CajunVeteran Workshop"><div><h1>CajunVeteran</h1><p>Workshop Job Board</p></div></div>
-    <input id="search" class="search" placeholder="Search jobs, orders, customers..." />
-  </header>
-  <nav class="status-tabs">
-    <button class="tab active" data-tab="new"><span id="countNew">0</span><small>New</small></button>
-    <button class="tab" data-tab="in_progress"><span id="countProgress">0</span><small>In Progress</small></button>
-    <button class="tab" data-tab="completed"><span id="countComplete">0</span><small>Complete</small></button>
-  </nav>
-  <section class="quick">
-    <div class="pill"><b id="countWood">0</b><span>Woodworking Active</span></div>
-    <div class="pill"><b id="countPrint">0</b><span>3D Print Active</span></div>
-  </section>
-  <main id="cards" class="cards"></main>
-  <p class="footer-note">This iPhone view is for quick job monitoring and small updates. Full editing stays on Admin/Woodworking.</p>
-</div>
-<nav class="bottom">
-  <button class="active" type="button" data-bottom="jobs"><i>📋</i><span>Jobs</span></button>
-  <button type="button" data-bottom="search"><i>🔍</i><span>Search</span></button>
-  <button type="button" data-bottom="stats"><i>📊</i><span>Stats</span></button>
-  <button type="button" data-bottom="more"><i>⚙️</i><span>More</span></button>
-</nav>
-<div id="notesModal" class="modal hidden"><div class="backdrop" data-close></div><div class="box"><button class="close" data-close>×</button><h3 id="notesTitle">Notes</h3><div id="notesViewer" class="note-viewer"></div><textarea id="notesEdit" class="note-notes" placeholder="Job notes..."></textarea><div class="actions"><button class="btn" data-close>Close</button><button id="saveNotes" class="btn gold">Save Notes</button></div></div></div>
-<div id="filesModal" class="modal hidden"><div class="backdrop" data-close-files></div><div class="box"><button class="close" data-close-files>×</button><h3 id="filesTitle">Files</h3><div id="filesBody"></div></div></div>
-<div id="mobileInfoModal" class="modal hidden"><div class="backdrop" data-close-info></div><div class="box"><button class="close" data-close-info>×</button><h3 id="mobileInfoTitle">Info</h3><div id="mobileInfoBody"></div></div></div>
-<script>
-const SUPABASE_URL = 'https://fprbzavehflzqcmxvbxx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_qjEyGhgiTpQKs-ti6yt3iQ_-AKzm3Qw';
-const $ = id => document.getElementById(id);
-let currentTab = 'new';
-let currentNotes = null;
-let appData = {version:2,items:[],orders:[],colors:[],woodworkingJobs:[],woodworkingItems:[],woodworkingMaterialInventory:[]};
+  <main class="mobile-shell">
+    <header class="mobile-topbar">
+      <div class="mobile-header-spacer" aria-hidden="true"></div>
+      <div>
+        <div class="mobile-brand">CajunVeteran Workshop</div>
+        <h1 id="screenTitle">Active Jobs</h1>
+      </div>
+      <img class="mobile-logo" src="images/apple-touch-icon.png" alt="CajunVeteran">
+    </header>
 
-function esc(v){return String(v ?? '').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-function num(n){return Number(n||0)||0;}
-function money(n){return '$'+num(n).toFixed(2);}
-function fmtDate(s){if(!s)return'No date';if(/^\d{4}-\d{2}-\d{2}$/.test(s)){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString()}try{return new Date(s).toLocaleDateString()}catch{return s}}
-function cleanStatus(s){s=String(s||'new').toLowerCase();if(['quote','approved','new'].includes(s))return'new';if(['in_progress','in process','printing','cutting'].includes(s))return'in_progress';if(['completed','complete','shipped','delivered'].includes(s))return'completed';return s;}
-function isActive(j){return ['new','in_progress','completed'].includes(cleanStatus(j.status));}
-function normalizeData(data){data=data||{};return {version:data.version||2,items:Array.isArray(data.items)?data.items:[],orders:Array.isArray(data.orders)?data.orders:[],colors:Array.isArray(data.colors)?data.colors:[],woodworkingJobs:Array.isArray(data.woodworkingJobs)?data.woodworkingJobs:[],woodworkingItems:Array.isArray(data.woodworkingItems)?data.woodworkingItems:[],woodworkingMaterialInventory:Array.isArray(data.woodworkingMaterialInventory)?data.woodworkingMaterialInventory:[]};}
-async function loadSupabase(){
-  try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/app_data?id=eq.main&select=data',{headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY,'Content-Type':'application/json'},cache:'no-store'});
-    if(!res.ok) throw new Error('Supabase read failed '+res.status);
-    const rows=await res.json();
-    appData=normalizeData(rows?.[0]?.data||{});
-  }catch(e){console.warn(e);appData=normalizeData({});}
-}
-async function saveSupabase(){
-  await fetch(SUPABASE_URL+'/rest/v1/app_data?on_conflict=id',{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify([{id:'main',data:appData,updated_at:new Date().toISOString()}])});
-}
-function orderTotal(o){return (o.lines||[]).reduce((a,l)=>{const it=(appData.items||[]).find(i=>String(i.sku)===String(l.sku))||{};return a+num(it.price)*num(l.qty||1)},0);}
-function gather(){
-  const jobs=[];
-  (appData.orders||[]).forEach(o=>{const first=(o.lines||[])[0]||{};const item=(appData.items||[]).find(i=>String(i.sku)===String(first.sku))||{};jobs.push({type:'print',key:'print:'+o.orderId,id:o.orderId||'',title:item.name||((o.lines||[]).map(l=>l.sku).join(', ')||'3D Print Order'),customer:o.customer||'',due:o.dueDate||o.orderDate||'',status:cleanStatus(o.status),rawStatus:o.status||'new',paid:!!o.paid,notes:o.notes||'',files:Array.isArray(o.files)?o.files:[],total:orderTotal(o)});});
-  (appData.woodworkingJobs||[]).forEach(j=>{const match=(appData.woodworkingItems||[]).find(i=>String(i.id)===String(j.sourceItemId)||String(i.name||'').trim().toLowerCase()===String(j.project||'').trim().toLowerCase())||{};jobs.push({type:'wood',key:'wood:'+j.id,sourceId:j.id,id:j.jobId||'',title:j.project||'',customer:j.customer||'',due:j.dueDate||'',status:cleanStatus(j.status),rawStatus:j.status||'quote',paid:!!j.paid,notes:j.notes||'',plaques:Array.isArray(j.plaques)?j.plaques:[],plaqueName:j.plaqueName||'',plaqueRank:j.plaqueRank||'',plaqueMonthPromoted:j.plaqueMonthPromoted||'',files:Array.isArray(j.files)?j.files:[],plans:Array.isArray(match.plans)?match.plans:[],total:num(j.total)});});
-  return jobs;
-}
-async function saveJob(job,patch){
-  if(job.type==='print'){
-    const o=(appData.orders||[]).find(x=>String(x.orderId)===String(job.id));
-    if(o){Object.assign(o,patch);}
-  }else{
-    const j=(appData.woodworkingJobs||[]).find(x=>String(x.id)===String(job.sourceId));
-    if(j){Object.assign(j,patch);}
-  }
-  await saveSupabase();
-  render();
-}
-function counts(){const all=gather();$('countNew').textContent=all.filter(j=>isActive(j)&&j.status==='new').length;$('countProgress').textContent=all.filter(j=>isActive(j)&&j.status==='in_progress').length;$('countComplete').textContent=all.filter(j=>isActive(j)&&j.status==='completed').length;$('countWood').textContent=all.filter(j=>j.type==='wood'&&isActive(j)).length;$('countPrint').textContent=all.filter(j=>j.type==='print'&&isActive(j)).length;}
-function card(j){return `<article class="job"><div class="job-head"><div><span class="type ${j.type==='print'?'print':''}">${j.type==='wood'?'🪵 Woodworking':'🖨️ 3D Print'}</span><div class="id">${esc(j.id||'No ID')}</div><div class="title">${esc(j.title||'Untitled Job')}</div></div><div style="text-align:right;color:#ffd36a;font-weight:900">${money(j.total)}</div></div><div class="meta"><div>👤 <b>${esc(j.customer||'No customer')}</b></div><div>📅 Due: <b>${fmtDate(j.due)}</b></div><div>💲 Paid: <b>${j.paid?'Yes':'No'}</b></div></div><div class="select-row"><select class="status-select" data-status="${esc(j.key)}"><option value="new" ${j.status==='new'?'selected':''}>New</option><option value="in_progress" ${j.status==='in_progress'?'selected':''}>In Progress</option><option value="completed" ${j.status==='completed'?'selected':''}>Complete</option><option value="delivered" ${j.rawStatus==='delivered'?'selected':''}>Delivered</option></select><label class="paid">Paid <input type="checkbox" data-paid="${esc(j.key)}" ${j.paid?'checked':''}></label></div><div class="actions"><button class="btn" data-notes="${esc(j.key)}">📝 Notes</button><button class="btn" data-files="${esc(j.key)}" ${(j.files.length||j.plans?.length)?'':'disabled'}>📁 Files</button></div></article>`;}
-function render(){counts();let jobs=gather().filter(isActive).filter(j=>j.status===currentTab);const q=$('search').value.toLowerCase().trim();if(q)jobs=jobs.filter(j=>`${j.id} ${j.title} ${j.customer}`.toLowerCase().includes(q));jobs.sort((a,b)=>String(a.due||'9999').localeCompare(String(b.due||'9999')));$('cards').innerHTML=jobs.length?jobs.map(card).join(''):`<div class="empty">No ${currentTab.replace('_',' ')} jobs found.</div>`;}
-function findJob(key){return gather().find(j=>j.key===key);}
-function open(id){$(id).classList.remove('hidden');}
-function close(id){$(id).classList.add('hidden');}
-function plaquesFor(j){if(Array.isArray(j.plaques)&&j.plaques.length)return j.plaques;if(j.plaqueName||j.plaqueRank||j.plaqueMonthPromoted)return [{name:j.plaqueName,rank:j.plaqueRank,monthPromoted:j.plaqueMonthPromoted}];return [];}
-function noteCards(j){const plaques=plaquesFor(j);let html='';if(plaques.length){html+=plaques.map((p,i)=>`<div class="note-card"><div class="note-card-head">🏅 Plaque #${i+1}</div><div class="note-card-body"><div class="note-name">${esc(p.name||'No name entered')}</div><div class="note-meta"><b>Rank:</b> ${esc(p.rank||'No rank')} &nbsp;•&nbsp; <b>Promoted:</b> ${esc(p.monthPromoted||'No promoted month')}</div></div></div>`).join('');}else{html+='<div class="note-section"><div class="note-section-title">Plaques</div><div>No plaque details for this job.</div></div>';}if(j.files&&j.files.length){html+=`<div class="note-section"><div class="note-section-title">Job Files</div><div>${esc(j.files.map(f=>f.name||f.storedName||'File').join('\n'))}</div></div>`;}return html;}
-function openNotes(j){currentNotes=j;$('notesTitle').textContent='Notes - '+(j.id||'Job');$('notesViewer').innerHTML=noteCards(j);$('notesEdit').value=j.notes||'';open('notesModal');}
-function isImage(f){const n=String(f.name||f.storedName||f.url||'').split('?')[0].toLowerCase();return ['png','jpg','jpeg','webp','gif','svg'].includes(n.split('.').pop())||String(f.type||'').startsWith('image/');}
-function fileCard(f){const name=esc(f.name||f.storedName||'File');if(isImage(f))return `<div class="file-card"><a href="${f.url}" target="_blank">🖼️ ${name}</a><img src="${f.url}" alt="${name}"></div>`;return `<div class="file-card"><a href="${f.url}" target="_blank" download>📎 ${name}</a></div>`;}
-function openInfo(title,html){$('mobileInfoTitle').textContent=title;$('mobileInfoBody').innerHTML=html;open('mobileInfoModal');}
-function buildStatsHtml(){const all=gather().filter(isActive);return `<div class="file-card"><strong>Active Work</strong><br><br>📋 Total Active: ${all.length}<br>🖨️ 3D Print: ${all.filter(j=>j.type==='print').length}<br>🪵 Woodworking: ${all.filter(j=>j.type==='wood').length}<br><br>🆕 New: ${all.filter(j=>j.status==='new').length}<br>🔨 In Progress: ${all.filter(j=>j.status==='in_progress').length}<br>✅ Complete: ${all.filter(j=>j.status==='completed').length}<br><br>💵 Active Value: ${money(all.reduce((s,j)=>s+num(j.total),0))}</div>`;}
-document.addEventListener('click',async e=>{const bottom=e.target.closest('[data-bottom]');if(bottom){document.querySelectorAll('.bottom [data-bottom]').forEach(b=>b.classList.toggle('active',b===bottom));const action=bottom.dataset.bottom;if(action==='jobs'){document.querySelector('.top')?.scrollIntoView({behavior:'smooth',block:'start'});render();}if(action==='search'){$('search').focus();document.querySelector('.top')?.scrollIntoView({behavior:'smooth',block:'start'});}if(action==='stats'){openInfo('Stats',buildStatsHtml());}if(action==='more'){openInfo('More','<div class="file-card"><strong>Mobile Quick View</strong><br><br>This mobile page is for quick job monitoring, status changes, paid checks, notes, files, and search.</div>');}return;}const t=e.target.closest('[data-tab]');if(t){currentTab=t.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));render();return;}const n=e.target.closest('[data-notes]');if(n){const j=findJob(n.dataset.notes);if(j)openNotes(j);return;}const f=e.target.closest('[data-files]');if(f){const j=findJob(f.dataset.files);if(j){$('filesTitle').textContent='Files - '+(j.id||'Job');const files=[...(j.files||[]),...(j.plans||[])];$('filesBody').innerHTML=files.length?files.map(fileCard).join(''):'<p>No files attached.</p>';open('filesModal');}return;}if(e.target.closest('[data-close]'))close('notesModal');if(e.target.closest('[data-close-files]'))close('filesModal');if(e.target.closest('[data-close-info]'))close('mobileInfoModal');});
-document.addEventListener('change',async e=>{const s=e.target.closest('[data-status]');if(s){const j=findJob(s.dataset.status);if(j)await saveJob(j,{status:s.value});}const p=e.target.closest('[data-paid]');if(p){const j=findJob(p.dataset.paid);if(j)await saveJob(j,{paid:!!p.checked});}});
-$('saveNotes').addEventListener('click',async()=>{if(currentNotes){await saveJob(currentNotes,{notes:$('notesEdit').value.trim()});currentNotes=null;close('notesModal');}});
-$('search').addEventListener('input',render);
-if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(regs=>regs.forEach(reg=>reg.unregister())).catch(()=>{});
-if ('caches' in window) caches.keys().then(keys=>keys.forEach(key=>caches.delete(key))).catch(()=>{});
-loadSupabase().then(()=>{render();setTimeout(render,500);setTimeout(render,1500);});
-</script>
+    <section class="mobile-view active" id="viewDashboard">
+      <div class="mobile-kpis">
+        <article class="mobile-kpi print"><span>Active 3D Print</span><strong id="kpiPrintActive">0</strong></article>
+        <article class="mobile-kpi wood"><span>Active Wood</span><strong id="kpiWoodActive">0</strong></article>
+        <article class="mobile-kpi done"><span>Completed</span><strong id="kpiCompleted">0</strong></article>
+        <article class="mobile-kpi warn"><span>Delivered</span><strong id="kpiDelivered">0</strong></article>
+      </div>
+
+      <div class="mobile-section-head">
+        <h2>Newest Active</h2>
+        <button class="text-btn" type="button" data-go="jobs">View All</button>
+      </div>
+      <div class="mobile-list" id="upcomingList"></div>
+      <button class="action-btn image-manager-home" type="button" data-view="itemImages">📷 Manage Item Images</button>
+    </section>
+
+    <section class="mobile-view" id="viewJobs">
+      <div class="filter-row type-filter">
+        <button class="filter-pill active" type="button" data-type="all">All</button>
+        <button class="filter-pill" type="button" data-type="print">3D Print <b id="typePrintCount">0</b></button>
+        <button class="filter-pill" type="button" data-type="wood">Woodworking <b id="typeWoodCount">0</b></button>
+      </div>
+
+      <div class="filter-row status-filter">
+        <button class="filter-pill active" type="button" data-status="active">Active</button>
+        <button class="filter-pill" type="button" data-status="completed">Completed</button>
+        <button class="filter-pill" type="button" data-status="delivered">Delivered</button>
+        <button class="filter-pill" type="button" data-status="all">All</button>
+      </div>
+
+      <div class="mobile-search-row">
+        <input id="mobileJobSearch" type="search" placeholder="Search job #, customer, or item...">
+        <button class="icon-btn" id="clearSearch" type="button" aria-label="Clear search">×</button>
+      </div>
+
+      <div class="mobile-list" id="mobileJobList"></div>
+    </section>
+
+
+
+    <section class="mobile-view" id="viewItemImages">
+      <button class="back-btn" id="itemImagesBack" type="button">‹ Back</button>
+      <div class="item-image-manager">
+        <h2>Item Images</h2>
+        <div class="filter-row type-filter image-type-filter">
+          <button class="filter-pill active" type="button" data-image-list="print">3D Print Items</button>
+          <button class="filter-pill" type="button" data-image-list="wood">Woodworking Items</button>
+        </div>
+        <div class="mobile-search-row big">
+          <input id="itemImageSearch" type="search" placeholder="Search item name, SKU, or item #...">
+        </div>
+        <div class="mobile-list" id="itemImageList"></div>
+      </div>
+    </section>
+
+    <section class="mobile-view" id="viewEditItemImage">
+      <button class="back-btn" id="editItemImageBack" type="button">‹ Back</button>
+      <div class="item-image-editor">
+        <h2>Edit Item Image</h2>
+        <div id="itemImageEditorBody"></div>
+      </div>
+    </section>
+
+    <section class="mobile-view" id="viewNewOrder">
+      <button class="back-btn" id="newOrderBack" type="button">‹ Back</button>
+      <div class="mobile-wizard-head">
+        <h2>Add New Order</h2>
+        <div class="wizard-steps"><span class="active" data-step-dot="1">1</span><span data-step-dot="2">2</span><span data-step-dot="3">3</span></div>
+      </div>
+      <form id="mobileOrderForm" class="mobile-order-form">
+        <section class="wizard-step active" data-step="1">
+          <h3>Order Information</h3>
+          <label>Order Type
+            <div class="segmented"><button class="seg active" type="button" data-order-type="print">3D Print</button><button class="seg" type="button" data-order-type="wood">Woodworking</button></div>
+          </label>
+          <label>Customer <input id="mCustomer" required placeholder="Customer name"></label>
+          <label>Order Date <input id="mOrderDate" type="date" required></label>
+          <label>Due Date <input id="mDueDate" type="date"></label>
+          <label>Status <select id="mStatus"><option value="new">New</option><option value="in_process">In Process</option></select></label>
+          <label>Priority <select id="mPriority"><option value="2">Normal</option><option value="1">Rush</option><option value="3">Whenever</option></select></label>
+          <label>Notes <textarea id="mNotes" placeholder="Optional notes..."></textarea></label>
+          <button class="action-btn primary" type="button" data-next-step="2">Next: Add Order Item</button>
+        </section>
+        <section class="wizard-step" data-step="2">
+          <h3>Add Order Item</h3>
+          <label>Select Item <select id="mItemSelect"></select></label>
+          <div class="mobile-item-preview" id="mItemPreview"></div>
+          <label>Quantity <input id="mQty" type="number" min="1" value="1"></label>
+          <label id="mColorWrap">Colors <select id="mColorSelect" multiple></select></label>
+          <button class="action-btn primary" type="button" data-next-step="3">Next: Review Order</button>
+          <button class="action-btn" type="button" data-prev-step="1">Back</button>
+        </section>
+        <section class="wizard-step" data-step="3">
+          <h3>Review Order</h3>
+          <div id="mReviewBox" class="review-box"></div>
+          <button class="action-btn done" type="submit">Create Order</button>
+          <button class="action-btn" type="button" data-prev-step="2">Back</button>
+        </section>
+      </form>
+    </section>
+
+
+
+    <section class="mobile-view" id="viewDetail">
+      <button class="back-btn" id="detailBack" type="button">‹ Back</button>
+      <div id="mobileJobDetail"></div>
+    </section>
+
+
+  </main>
+
+  <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+    <button class="nav-btn active" type="button" data-view="dashboard"><span>🏠</span>Home</button>
+    <button class="nav-btn" type="button" data-view="jobs" data-nav-status="active"><span>🔥</span>Active</button>
+    <button class="nav-btn" type="button" data-view="jobs" data-nav-status="completed"><span>✅</span>Completed</button>
+    <button class="nav-btn" type="button" data-view="jobs" data-nav-status="delivered"><span>📦</span>Delivered</button>
+    <button class="nav-btn new-order-nav" type="button" data-view="newOrder"><span>➕</span>New Order</button>
+  </nav>
+
+  <script src="js/database.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/mobile.js"></script>
 </body>
 </html>
+

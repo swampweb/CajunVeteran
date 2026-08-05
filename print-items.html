@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="images/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>3D Print Items</title>
+</head>
+<body>
+  <main class="v7-main pi-main">
+    <div class="v7-container">
+      <header class="pi-header">
+        <div>
+          <h1>3D Print Items</h1>
+          <p>Manage 3D print products, pricing, inventory, and item images</p>
+        </div>
+        <img class="pi-header-logo" src="images/CajunVeteran 3D Print Logo.png" alt="CajunVeteran 3D Printing">
+      </header>
+
+      <section class="v7-card">
+        <div class="v7-card-head">
+          <h2>Print Items</h2>
+          <button class="btn primary" id="newPrintItem" type="button">+ New Item</button>
+        </div>
+        <div class="v7-card-body">
+          <div class="pi-toolbar">
+            <input id="printItemSearch" type="search" placeholder="Search by SKU or item name">
+            <select id="printItemFilter">
+              <option value="all">All Items</option>
+              <option value="visible">Visible Items</option>
+              <option value="hidden">Hidden Items</option>
+              <option value="out">Out of Stock</option>
+            </select>
+          </div>
+
+          <div class="pi-stats">
+            <span>Total Items <b id="piTotal">0</b></span>
+            <span>Average Price <b id="piAverage">$0.00</b></span>
+            <span>Visible Items <b id="piVisible">0</b></span>
+            <span>Out of Stock <b id="piOut">0</b></span>
+          </div>
+
+          <form id="printItemForm" class="form-panel pi-form">
+            <label>SKU<input id="sku" required></label>
+            <label>Name<input id="name" required></label>
+            <label>Price<input id="price" type="number" step="0.01" min="0"></label>
+            <label>Stock<input id="stock" type="number" step="1" min="0"></label>
+            <label>Category<input id="category"></label>
+            <label>Status<select id="status"><option value="visible">Visible</option><option value="hidden">Hidden</option></select></label>
+            <div class="full upload-field">
+              <label>Item Image Upload<input id="image_file" type="file" accept="image/*"></label>
+              <input id="image_url" type="hidden">
+              <div class="upload-preview-wrap hidden" id="printImagePreviewWrap">
+                <img id="printImagePreview" alt="Item image preview">
+                <button class="small-btn" id="removePrintImage" type="button">Remove Image</button>
+              </div>
+              <small>Upload an image from your computer or phone. The image is saved with the item so it can be viewed online.</small>
+            </div>
+            <label class="full">Description<textarea id="description"></textarea></label>
+            <div class="actions full">
+              <button class="btn clear" id="clearPrintItem" type="button">Clear</button>
+              <button class="btn primary" type="submit">Save Item</button>
+              <button class="btn danger hidden" id="deletePrintItem" type="button">Delete</button>
+            </div>
+          </form>
+
+          <div id="printItemsGrid" class="pi-grid"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="v7-footer">★ CajunVeteran Workshop Management • Built By A Veteran ★</footer>
+  <script src="js/database.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/print-items.js"></script>
+</body>
+</html>
