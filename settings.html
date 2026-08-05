@@ -7,78 +7,65 @@
   <link rel="stylesheet" href="css/styles.css">
   <title>CajunVeteran Settings</title>
 </head>
-<body class="settings-page settings-clean-page">
+<body class="settings-page">
   <main class="v7-main">
     <div class="v7-container">
-      <header class="v7-header settings-header clean-settings-header">
+      <header class="v7-header settings-header">
         <div>
           <h1>Settings</h1>
-          <p>Manage CajunVeteran Workshop defaults and dropdown values</p>
+          <p>Manage default values used across CajunVeteran Workshop</p>
         </div>
       </header>
 
-      <div class="settings-clean-stack">
-        <section class="v7-card settings-card clean-settings-card pricing-settings-card">
+      <div class="settings-grid">
+        <section class="v7-card settings-card">
           <div class="v7-card-head"><h2 class="v7-panel-title">3D Print Pricing Defaults</h2></div>
           <div class="v7-card-body">
-            <p class="settings-help">These defaults are used for suggested pricing on 3D Print Items.</p>
-            <form id="pricingDefaultsForm" class="settings-pricing-form">
-              <label>Filament Cost Per Gram
-                <input id="defaultFilamentRate" type="number" step="0.001" min="0" value="0.02">
-                <small>$20/kg = $0.02/g</small>
-              </label>
-              <label>Machine Cost Per Hour
-                <input id="defaultMachineRate" type="number" step="0.01" min="0" value="0.75">
-                <small>Default based on your koozie pricing.</small>
-              </label>
-              <label>Markup Percent
-                <input id="defaultMarkupPercent" type="number" step="1" min="0" value="100">
-                <small>100% doubles calculated base cost.</small>
-              </label>
-              <label>Round Suggested Price To
-                <input id="defaultRoundTo" type="number" step="0.25" min="0" value="0.50">
-                <small>Rounds up to nearest value.</small>
-              </label>
-              <div class="settings-preview clean-preview full"><h3>Preview</h3><div id="pricingPreview"></div></div>
-              <div class="actions full clean-settings-actions">
-                <button class="btn clear" id="resetPricingDefaults" type="button">Reset Defaults</button>
-                <button class="btn primary" type="submit">Save Pricing Defaults</button>
-              </div>
+            <p class="settings-help">These defaults are used in 3D Print Items. The item screen shows these as view-only settings and calculates suggested price from components.</p>
+            <form id="pricingDefaultsForm" class="settings-form compact-settings-form">
+              <label>Filament Cost Per Gram<input id="defaultFilamentRate" type="number" step="0.001" min="0" value="0.02"><small>$20/kg = $0.02/g</small></label>
+              <label>Machine Cost Per Hour<input id="defaultMachineRate" type="number" step="0.01" min="0" value="0.75"><small>Default based on your $15 koozie pricing.</small></label>
+              <label>Markup Percent<input id="defaultMarkupPercent" type="number" step="1" min="0" value="100"><small>100% doubles calculated base cost.</small></label>
+              <label>Round Suggested Price To<input id="defaultRoundTo" type="number" step="0.25" min="0" value="0.50"><small>Rounds up to nearest value.</small></label>
+              <div class="settings-preview full"><h3>Preview</h3><div id="pricingPreview"></div></div>
+              <div class="actions full"><button class="btn clear" id="resetPricingDefaults" type="button">Reset Defaults</button><button class="btn primary" type="submit">Save Pricing Defaults</button></div>
             </form>
           </div>
         </section>
 
-        <section class="v7-card settings-card clean-settings-card">
+        <section class="v7-card settings-card">
           <div class="v7-card-head"><h2 class="v7-panel-title">3D Print Item Sizes</h2></div>
           <div class="v7-card-body">
-            <p class="settings-help">These values feed the Size / Type dropdown in 3D Print Items.</p>
-            <form id="sizeForm" class="settings-add-row">
+            <p class="settings-help">These values feed the Size/Type dropdown in 3D Print Items.</p>
+            <form id="sizeForm" class="settings-inline-form">
               <label>Size / Type Name<input id="sizeName" placeholder="Example: 12oz, Large, Coin Holder"></label>
               <button class="btn primary" type="submit">Add Size</button>
             </form>
-            <div id="sizeList" class="settings-pill-list"></div>
+            <div id="sizeList" class="settings-chip-list"></div>
           </div>
         </section>
 
-        <section class="v7-card settings-card clean-settings-card">
+
+
+        <section class="v7-card settings-card">
           <div class="v7-card-head"><h2 class="v7-panel-title">Filament Types</h2></div>
           <div class="v7-card-body">
             <p class="settings-help">These values feed the Type dropdown in Colors / Filament.</p>
-            <form id="filamentTypeForm" class="settings-add-row">
+            <form id="filamentTypeForm" class="settings-inline-form">
               <label>Filament Type Name<input id="filamentTypeName" placeholder="Example: PLA, PETG, Silk PLA"></label>
               <button class="btn primary" type="submit">Add Type</button>
             </form>
-            <div id="filamentTypeList" class="settings-pill-list"></div>
+            <div id="filamentTypeList" class="settings-chip-list"></div>
           </div>
         </section>
 
-        <section class="v7-card settings-card clean-settings-card">
+        <section class="v7-card settings-card">
           <div class="v7-card-head"><h2 class="v7-panel-title">Low Stock Settings</h2></div>
           <div class="v7-card-body">
-            <p class="settings-help">Default low stock value used when a specific item/material does not have its own value.</p>
-            <form id="stockSettingsForm" class="settings-add-row low-stock-row">
+            <p class="settings-help">Default low stock value used by item screens when a specific item/material does not have its own low stock value.</p>
+            <form id="stockSettingsForm" class="settings-form one-row-settings-form">
               <label>Woodworking Item Low Stock At<input id="woodLowStockThreshold" type="number" step="1" min="1" value="5"></label>
-              <button class="btn primary" type="submit">Save Low Stock</button>
+              <div class="actions"><button class="btn primary" type="submit">Save Low Stock Settings</button></div>
             </form>
           </div>
         </section>

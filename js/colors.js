@@ -1,3 +1,4 @@
+// CV COLORS TYPE SAVE FALLBACK FIX v1
 initNavigation('colors.html');
 
 let colorRows = [];
@@ -185,13 +186,30 @@ async function patchColor(row, payload) {
   if (row?.id) filters.push(`id=eq.${row.id}`);
   if (row?.color_id) filters.push(`color_id=eq.${encodeURIComponent(row.color_id)}`);
   if (row?.color) filters.push(`color=eq.${encodeURIComponent(row.color)}`);
+
+  const basicPayload = {
+    brand: payload.brand,
+    color: payload.color,
+    type: payload.type
+  };
+  const simplePayload = {
+    type: payload.type
+  };
+
+  const attempts = [payload, basicPayload, simplePayload];
   let last;
   for (const filter of filters) {
-    try { await CVDB.patch('cv_colors', filter, payload); return true; }
-    catch(e) { last = e; }
+    for (const attempt of attempts) {
+      try {
+        await CVDB.patch('cv_colors', filter, attempt);
+        return { ok:true, partial: attempt !== payload };
+      } catch(e) {
+        last = e;
+      }
+    }
   }
   if (last) throw last;
-  return false;
+  return { ok:false, partial:true };
 }
 async function saveColor() {
   syncInactive();
@@ -212,12 +230,22 @@ async function saveColor() {
   const key = editingColor ? rowKey(editingColor) : `${row.brand}|${row.color}|${row.type}`;
   saveLocal(key, row);
   try {
-    if (editingColor) await patchColor(editingColor, row);
-    else await CVDB.insert('cv_colors', row);
-    toast('Color saved');
+    if (editingColor) {
+      const result = await patchColor(editingColor, row);
+      if (result.partial) toast('Type/basic color info saved. Grams/spools saved locally until SQL is run.');
+      else toast('Color saved');
+    } else {
+      try {
+        await CVDB.insert('cv_colors', row);
+        toast('Color saved');
+      } catch(insertError) {
+        await CVDB.insert('cv_colors', { brand: row.brand, color: row.color, type: row.type });
+        toast('Color created. Grams/spools saved locally until SQL is run.');
+      }
+    }
   } catch(error) {
     console.warn('Saved locally only:', error);
-    toast('Color saved locally. Run the color SQL to save grams/spools/status in Supabase.', 'err');
+    toast('Could not save to Supabase. Changes saved locally only. Run the color SQL.', 'err');
   }
   clearForm();
   await load();
