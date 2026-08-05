@@ -13,6 +13,7 @@ const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const FILAMENT_STORE = 'cv_filament_local_v2';
 const LOW_DEFAULT = 200;
+const FILAMENT_LOW_GRAMS_STORE = 'cv_filament_low_grams_threshold';
 function cleanHex(value) { const v = String(value || '').trim(); return /^#[0-9a-fA-F]{6}$/.test(v) ? v.toLowerCase() : ''; }
 const FILAMENT_TYPE_STORE = 'cv_filament_types';
 const DEFAULT_FILAMENT_TYPES = ['PLA','PLA+','Silk PLA','PETG','ABS','TPU','ASA'];
@@ -64,15 +65,8 @@ function spoolArray(row) {
 }
 function spoolCount(row) { return statusOf(row) === 'inactive' ? 0 : spoolArray(row).length; }
 function estGrams(row) { return statusOf(row) === 'inactive' ? 0 : spoolArray(row).reduce((sum, value) => sum + Number(value || 0), 0); }
-function lowAt(row) { const local = localFor(row); return Number(local.low_grams ?? row.low_grams ?? row.low_at_grams ?? LOW_DEFAULT); }
-function colorHex(row) {
-  const local = localFor(row);
-  const direct = cleanHex(local.hex_color) || cleanHex(local.palette_color) || cleanHex(local.swatch) || cleanHex(row.hex_color) || cleanHex(row.palette_color) || cleanHex(row.swatch) || cleanHex(row.hex);
-  if (direct) return direct;
-  const raw = `${colorName(row)} ${local.hex_color || local.palette_color || local.swatch || row.hex_color || row.palette_color || row.swatch || row.hex || ''}`.toLowerCase();
-  const map = {black:'#111111',white:'#eeeeee',red:'#b71c1c',orange:'#f47b20',yellow:'#f3c316',green:'#159947',blue:'#1464d2',purple:'#6936c9',pink:'#e15aa2',gray:'#888888',grey:'#888888',brown:'#8b5a2b',gold:'#caa45f',silver:'#c0c0c0',teal:'#17a2a6'};
-  const key = Object.keys(map).find(name => raw.includes(name));
-  return map[key] || '#d8d8d8';
+function lowAt(row) {
+  return Number(localStorage.getItem(FILAMENT_LOW_GRAMS_STORE) || LOW_DEFAULT);
 }
 function filamentState(row) {
   const grams = estGrams(row);
@@ -182,8 +176,7 @@ function clearForm() {
   $('palette_color').value = '#8b5cf6';
   $('hex_color').value = '#8b5cf6';
   populateTypeDropdown('PLA');
-  $('low_grams').value = LOW_DEFAULT;
-  $('spools').value = 1;
+    $('spools').value = 1;
   spoolRows = [1000];
   $('deleteColor').classList.add('hidden');
   renderSpools();
@@ -198,8 +191,7 @@ function openEditor(row) {
   $('hex_color').value = colorHex(row);
   populateTypeDropdown(row.type || 'PLA');
   $('status').value = statusOf(row);
-  $('low_grams').value = lowAt(row);
-  spoolRows = spoolArray(row);
+    spoolRows = spoolArray(row);
   $('spools').value = statusOf(row) === 'inactive' ? 0 : spoolRows.length;
   $('notes').value = row.notes || '';
   $('deleteColor').classList.remove('hidden');
@@ -278,7 +270,7 @@ async function saveColor() {
     spools: Number($('spools').value || 0),
     spool_grams: spoolRows,
     estimated_grams: total,
-    low_grams: Number($('low_grams').value || LOW_DEFAULT),
+    low_grams: lowAt(),
     notes: $('notes').value,
     updated_at: new Date().toISOString()
   };

@@ -198,24 +198,333 @@ body.print-items-page #printItemsGrid,body.print-items-page .clean-print-grid,bo
 
 
 /* =====================================================
-   COLORS PALETTE COLOR EDITOR
+   SETTINGS CLEAN FIX - restores clean cards, compact inputs, pill tags
 ===================================================== */
-.colors-page input[type="color"]{
+.settings-clean-page .v7-container{
+  max-width:1280px!important;
+}
+.settings-clean-page .settings-clean-stack{
+  display:grid!important;
+  gap:16px!important;
+}
+.settings-clean-page .clean-settings-card{
+  border:1px solid #60451c!important;
+  border-radius:12px!important;
+  background:linear-gradient(145deg,#15120c,#0d0c08)!important;
+  overflow:hidden!important;
+}
+.settings-clean-page .clean-settings-card .v7-card-head{
+  padding:14px 18px!important;
+  border-bottom:1px solid #4a3516!important;
+  background:rgba(0,0,0,.14)!important;
+}
+.settings-clean-page .clean-settings-card .v7-card-body{
+  padding:16px!important;
+}
+.settings-clean-page .settings-help{
+  margin:0 0 12px!important;
+  color:#d8cbb7!important;
+  font-size:13px!important;
+  line-height:1.4!important;
+}
+.settings-clean-page label{
+  display:grid!important;
+  gap:6px!important;
+  color:#f3e6d1!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  letter-spacing:.02em!important;
+}
+.settings-clean-page label small{
+  color:#a99c88!important;
+  font-size:11px!important;
+  font-weight:600!important;
+}
+.settings-clean-page input,
+.settings-clean-page select{
+  min-height:40px!important;
+  height:40px!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  border:1px solid #60451c!important;
+  border-radius:7px!important;
+  background:#070705!important;
+  color:#f4ecdf!important;
+  padding:9px 11px!important;
+  font-size:13px!important;
+}
+.settings-clean-page input:focus,
+.settings-clean-page select:focus{
+  outline:2px solid rgba(240,180,41,.35)!important;
+  border-color:#f0b429!important;
+}
+.settings-clean-page .settings-pricing-form{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(160px,1fr))!important;
+  gap:12px!important;
+  align-items:start!important;
+}
+.settings-clean-page .settings-pricing-form .full{
+  grid-column:1/-1!important;
+}
+.settings-clean-page .settings-add-row{
+  display:flex!important;
+  align-items:flex-end!important;
+  gap:10px!important;
+  max-width:620px!important;
+  margin:0 0 14px!important;
+}
+.settings-clean-page .settings-add-row label{
+  flex:1 1 410px!important;
+  margin:0!important;
+}
+.settings-clean-page .settings-add-row .btn{
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:105px!important;
+  max-width:145px!important;
   height:40px!important;
   min-height:40px!important;
-  padding:4px!important;
+  padding:8px 14px!important;
+  white-space:nowrap!important;
+}
+.settings-clean-page .low-stock-row .btn{
+  min-width:135px!important;
+  max-width:160px!important;
+}
+.settings-clean-page .settings-pill-list,
+.settings-clean-page .settings-chip-list{
+  display:flex!important;
+  gap:9px!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  padding-top:2px!important;
+}
+.settings-clean-page .settings-pill,
+.settings-clean-page .settings-size-pill,
+.settings-clean-page .settings-chip{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-height:34px!important;
+  padding:6px 7px 6px 12px!important;
+  border:1px solid #6c4a18!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,#17120c,#0e0b07)!important;
+  color:#f3e6d1!important;
+  font-size:13px!important;
+  font-weight:850!important;
+  line-height:1!important;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.28)!important;
+}
+.settings-clean-page .settings-pill-name,
+.settings-clean-page .settings-size-name{
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+.settings-clean-page .settings-pill-remove,
+.settings-clean-page .settings-size-remove,
+.settings-clean-page .settings-chip button{
+  width:20px!important;
+  height:20px!important;
+  min-width:20px!important;
+  min-height:20px!important;
+  border:1px solid #d04338!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,#b93127,#7c1914)!important;
+  color:#fff!important;
+  display:inline-grid!important;
+  place-items:center!important;
+  font-size:14px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  cursor:pointer!important;
+  padding:0!important;
+  margin:0!important;
+}
+.settings-clean-page .settings-pill-remove:hover,
+.settings-clean-page .settings-size-remove:hover,
+.settings-clean-page .settings-chip button:hover{
+  background:linear-gradient(180deg,#d64439,#8c1f18)!important;
+  border-color:#ff6b5f!important;
+}
+.settings-clean-page .clean-preview{
+  padding:12px!important;
+  border:1px solid #60451c!important;
+  border-radius:10px!important;
+  background:#100e0a!important;
+}
+.settings-clean-page .clean-preview h3{
+  margin:0 0 10px!important;
+  color:#f0b429!important;
+  text-transform:uppercase!important;
+  font-size:14px!important;
+}
+.settings-clean-page .clean-preview > div{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(120px,1fr))!important;
+  gap:8px!important;
+}
+.settings-clean-page .clean-preview div div{
+  padding:8px!important;
+  border:1px solid #382a15!important;
+  border-radius:8px!important;
+  background:#0e0d09!important;
+}
+.settings-clean-page .clean-preview span{
+  display:block!important;
+  color:#b7aa96!important;
+  font-size:10px!important;
+  text-transform:uppercase!important;
+}
+.settings-clean-page .clean-preview strong{
+  display:block!important;
+  color:#ecc16e!important;
+  font-size:14px!important;
+}
+.settings-clean-page .clean-settings-actions{
+  display:flex!important;
+  gap:8px!important;
+  justify-content:flex-start!important;
+}
+@media(max-width:1100px){
+  .settings-clean-page .settings-pricing-form{grid-template-columns:repeat(2,minmax(160px,1fr))!important;}
+  .settings-clean-page .clean-preview > div{grid-template-columns:repeat(2,minmax(120px,1fr))!important;}
+}
+@media(max-width:680px){
+  .settings-clean-page .settings-pricing-form,
+  .settings-clean-page .clean-preview > div{grid-template-columns:1fr!important;}
+  .settings-clean-page .settings-add-row{display:grid!important;grid-template-columns:1fr!important;max-width:none!important;}
+  .settings-clean-page .settings-add-row .btn{max-width:150px!important;}
+}
+
+/* =====================================================
+   FINAL SETTINGS CLEAN LOCK - prevents row/white-x fallback
+===================================================== */
+body.settings-clean-page #sizeList,
+body.settings-clean-page #filamentTypeList{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  gap:9px!important;
+  padding:4px 0 0!important;
+  margin:0!important;
+}
+body.settings-clean-page #sizeList > span,
+body.settings-clean-page #filamentTypeList > span,
+body.settings-clean-page .settings-pill,
+body.settings-clean-page .settings-size-pill,
+body.settings-clean-page .settings-chip{
+  display:inline-flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  min-height:34px!important;
+  width:auto!important;
+  max-width:max-content!important;
+  padding:6px 7px 6px 12px!important;
+  border:1px solid #6c4a18!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,#17120c,#0e0b07)!important;
+  color:#f3e6d1!important;
+  font-size:13px!important;
+  font-weight:850!important;
+  line-height:1!important;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.28)!important;
+}
+body.settings-clean-page #sizeList button,
+body.settings-clean-page #filamentTypeList button,
+body.settings-clean-page .settings-pill-remove,
+body.settings-clean-page .settings-size-remove,
+body.settings-clean-page .settings-chip button{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  width:20px!important;
+  height:20px!important;
+  min-width:20px!important;
+  min-height:20px!important;
+  max-width:20px!important;
+  max-height:20px!important;
+  padding:0!important;
+  margin:0!important;
+  border:1px solid #d04338!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,#b93127,#7c1914)!important;
+  color:#ffffff!important;
+  display:inline-grid!important;
+  place-items:center!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  text-align:center!important;
   cursor:pointer!important;
 }
-.colors-page #hex_color{
-  font-family:ui-monospace,Consolas,monospace!important;
-  text-transform:lowercase!important;
+body.settings-clean-page #sizeList button:hover,
+body.settings-clean-page #filamentTypeList button:hover,
+body.settings-clean-page .settings-pill-remove:hover,
+body.settings-clean-page .settings-size-remove:hover,
+body.settings-clean-page .settings-chip button:hover{
+  background:linear-gradient(180deg,#d64439,#8c1f18)!important;
+  border-color:#ff6b5f!important;
 }
-.colors-page .color-form{
-  grid-template-columns:minmax(150px,1fr) minmax(180px,1.2fr) 120px 125px 130px 120px 120px 135px 140px!important;
+body.settings-clean-page .settings-add-row button,
+body.settings-clean-page #sizeForm button,
+body.settings-clean-page #filamentTypeForm button{
+  width:auto!important;
+  min-width:105px!important;
+  max-width:145px!important;
+  height:40px!important;
+  min-height:40px!important;
+  padding:8px 14px!important;
 }
-@media(max-width:1400px){
-  .colors-page .color-form{grid-template-columns:repeat(4,minmax(120px,1fr))!important;}
+
+
+/* =====================================================
+   SETTINGS LOW GRAMS CLEAN FIX - final override
+===================================================== */
+body.settings-clean-page .settings-pricing-form{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(160px,1fr))!important;
+  gap:12px!important;
+  align-items:start!important;
 }
-@media(max-width:900px){
-  .colors-page .color-form{grid-template-columns:1fr!important;}
+body.settings-clean-page .settings-add-row{
+  display:flex!important;
+  align-items:flex-end!important;
+  gap:10px!important;
+  max-width:620px!important;
+  margin:0 0 14px!important;
 }
+body.settings-clean-page .settings-add-row label{flex:1 1 410px!important;margin:0!important;}
+body.settings-clean-page .settings-add-row .btn{width:auto!important;min-width:105px!important;max-width:145px!important;height:40px!important;min-height:40px!important;padding:8px 14px!important;}
+body.settings-clean-page .settings-low-grid{
+  display:grid!important;
+  grid-template-columns:minmax(180px,260px) minmax(180px,260px) auto!important;
+  gap:12px!important;
+  align-items:end!important;
+  max-width:720px!important;
+}
+body.settings-clean-page .settings-low-grid .full{grid-column:auto!important;}
+body.settings-clean-page .settings-low-grid .btn{height:40px!important;min-height:40px!important;width:auto!important;min-width:135px!important;}
+body.settings-clean-page #sizeList,
+body.settings-clean-page #filamentTypeList,
+body.settings-clean-page .settings-pill-list{
+  display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:9px!important;padding-top:4px!important;
+}
+body.settings-clean-page #sizeList > span,
+body.settings-clean-page #filamentTypeList > span,
+body.settings-clean-page .settings-pill,
+body.settings-clean-page .settings-size-pill,
+body.settings-clean-page .settings-chip{
+  display:inline-flex!important;align-items:center!important;gap:8px!important;width:auto!important;max-width:max-content!important;min-height:34px!important;padding:6px 7px 6px 12px!important;border:1px solid #6c4a18!important;border-radius:999px!important;background:linear-gradient(180deg,#17120c,#0e0b07)!important;color:#f3e6d1!important;font-size:13px!important;font-weight:850!important;line-height:1!important;
+}
+body.settings-clean-page #sizeList button,
+body.settings-clean-page #filamentTypeList button,
+body.settings-clean-page .settings-pill-remove,
+body.settings-clean-page .settings-size-remove,
+body.settings-clean-page .settings-chip button{
+  appearance:none!important;-webkit-appearance:none!important;width:20px!important;height:20px!important;min-width:20px!important;min-height:20px!important;max-width:20px!important;max-height:20px!important;padding:0!important;margin:0!important;border:1px solid #d04338!important;border-radius:999px!important;background:linear-gradient(180deg,#b93127,#7c1914)!important;color:#fff!important;display:inline-grid!important;place-items:center!important;font-size:14px!important;font-weight:900!important;line-height:1!important;cursor:pointer!important;
+}
+@media(max-width:900px){body.settings-clean-page .settings-pricing-form,body.settings-clean-page .settings-low-grid{grid-template-columns:1fr!important;}body.settings-clean-page .settings-add-row{display:grid!important;grid-template-columns:1fr!important;}}
