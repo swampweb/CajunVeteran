@@ -80,8 +80,7 @@ function render() {
         <div class="print-kpis">
           <div><span>Stock</span><strong>${stock.value}</strong></div>
           <div><span>Type</span><strong>${esc(size)}</strong></div>
-          <div><span>Time</span><strong>${esc(printTime || '-')}</strong></div>
-          <div><span>Weight</span><strong>${esc(weight || '-')}</strong></div>
+          <div><span>Time</span><strong>${esc(printTime || weight || '-')}</strong></div>
         </div>
         <p class="print-desc">${esc(item.description || item.notes || '')}</p>
         <div class="print-actions"><button type="button" class="small-btn print-edit-btn" data-edit="${esc(sku)}">Edit</button></div>
