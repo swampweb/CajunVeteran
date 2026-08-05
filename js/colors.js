@@ -1,3 +1,4 @@
+// CV COLORS HEX SAVE FIX v2
 // CV COLORS PALETTE PERSIST FIX v1
 // CV COLORS PALETTE COLOR UPDATE v1
 // CV COLORS TYPE SAVE FALLBACK FIX v1
@@ -12,6 +13,7 @@ const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const FILAMENT_STORE = 'cv_filament_local_v2';
 const LOW_DEFAULT = 200;
+function cleanHex(value) { const v = String(value || '').trim(); return /^#[0-9a-fA-F]{6}$/.test(v) ? v.toLowerCase() : ''; }
 const FILAMENT_TYPE_STORE = 'cv_filament_types';
 const DEFAULT_FILAMENT_TYPES = ['PLA','PLA+','Silk PLA','PETG','ABS','TPU','ASA'];
 
@@ -65,10 +67,10 @@ function estGrams(row) { return statusOf(row) === 'inactive' ? 0 : spoolArray(ro
 function lowAt(row) { const local = localFor(row); return Number(local.low_grams ?? row.low_grams ?? row.low_at_grams ?? LOW_DEFAULT); }
 function colorHex(row) {
   const local = localFor(row);
-  const direct = local.palette_color || local.hex_color || row.palette_color || row.hex_color || row.hex || row.swatch;
-  if (String(direct || '').startsWith('#')) return direct;
-  const raw = `${colorName(row)} ${direct || ''}`.toLowerCase();
-  const map = {black:'#111',white:'#eee',red:'#b71c1c',orange:'#f47b20',yellow:'#f3c316',green:'#159947',blue:'#1464d2',purple:'#6936c9',pink:'#e15aa2',gray:'#888',grey:'#888',brown:'#8b5a2b',gold:'#caa45f',silver:'#c0c0c0',teal:'#17a2a6'};
+  const direct = cleanHex(local.hex_color) || cleanHex(local.palette_color) || cleanHex(local.swatch) || cleanHex(row.hex_color) || cleanHex(row.palette_color) || cleanHex(row.swatch) || cleanHex(row.hex);
+  if (direct) return direct;
+  const raw = `${colorName(row)} ${local.hex_color || local.palette_color || local.swatch || row.hex_color || row.palette_color || row.swatch || row.hex || ''}`.toLowerCase();
+  const map = {black:'#111111',white:'#eeeeee',red:'#b71c1c',orange:'#f47b20',yellow:'#f3c316',green:'#159947',blue:'#1464d2',purple:'#6936c9',pink:'#e15aa2',gray:'#888888',grey:'#888888',brown:'#8b5a2b',gold:'#caa45f',silver:'#c0c0c0',teal:'#17a2a6'};
   const key = Object.keys(map).find(name => raw.includes(name));
   return map[key] || '#d8d8d8';
 }
@@ -215,26 +217,40 @@ async function patchColor(row, payload) {
   if (row?.color_id) filters.push(`color_id=eq.${encodeURIComponent(row.color_id)}`);
   if (row?.color) filters.push(`color=eq.${encodeURIComponent(row.color)}`);
 
-  const basicPayload = {
+  const chosenHex = cleanHex(payload.hex_color) || cleanHex(payload.palette_color) || cleanHex(payload.swatch);
+
+  // Try the exact columns that exist in your cv_colors table first.
+  // This prevents new grams/spool fields from blocking the hex save.
+  const colorOnlyPayload = {
+    swatch: chosenHex,
+    hex_color: chosenHex,
+    palette_color: chosenHex
+  };
+  const typeAndColorPayload = {
     brand: payload.brand,
     color: payload.color,
     type: payload.type,
-    palette_color: payload.palette_color,
-    hex_color: payload.hex_color
+    label: payload.label,
+    swatch: chosenHex,
+    hex_color: chosenHex,
+    palette_color: chosenHex,
+    active: payload.status === 'inactive' ? false : true
   };
-  const simplePayload = {
+  const typeOnlyPayload = {
+    brand: payload.brand,
+    color: payload.color,
     type: payload.type,
-    palette_color: payload.palette_color,
-    hex_color: payload.hex_color
+    label: payload.label,
+    active: payload.status === 'inactive' ? false : true
   };
 
-  const attempts = [payload, basicPayload, simplePayload];
+  const attempts = [colorOnlyPayload, typeAndColorPayload, payload, typeOnlyPayload];
   let last;
   for (const filter of filters) {
     for (const attempt of attempts) {
       try {
         await CVDB.patch('cv_colors', filter, attempt);
-        return { ok:true, partial: attempt !== payload };
+        return { ok:true, partial: attempt !== payload, savedHex: chosenHex };
       } catch(e) {
         last = e;
       }
@@ -246,11 +262,19 @@ async function patchColor(row, payload) {
 async function saveColor() {
   syncInactive();
   const total = spoolRows.reduce((sum, value) => sum + Number(value || 0), 0);
+  const chosenHex = cleanHex($('hex_color').value) || cleanHex($('palette_color').value) || '#6936c9';
+  $('hex_color').value = chosenHex;
+  $('palette_color').value = chosenHex;
   const row = {
     brand: $('brand').value.trim(),
     color: $('color').value.trim(),
     type: $('type').value.trim(),
+    label: `${$('brand').value.trim()} ${$('type').value.trim()} - ${$('color').value.trim()}`.trim(),
     status: $('status').value,
+    active: $('status').value === 'inactive' ? false : true,
+    swatch: chosenHex,
+    hex_color: chosenHex,
+    palette_color: chosenHex,
     spools: Number($('spools').value || 0),
     spool_grams: spoolRows,
     estimated_grams: total,
@@ -269,14 +293,14 @@ async function saveColor() {
   try {
     if (editingColor) {
       const result = await patchColor(editingColor, row);
-      if (result.partial) toast('Type/basic color info saved. Grams/spools saved locally until SQL is run.');
+      if (result.partial) toast('Hex/palette color saved. Grams/spools saved locally until SQL is run.');
       else toast('Color saved');
     } else {
       try {
         await CVDB.insert('cv_colors', row);
         toast('Color saved');
       } catch(insertError) {
-        await CVDB.insert('cv_colors', { brand: row.brand, color: row.color, type: row.type });
+        await CVDB.insert('cv_colors', { brand: row.brand, color: row.color, type: row.type, label: row.label, swatch: row.swatch, hex_color: row.hex_color, palette_color: row.palette_color, active: row.active });
         toast('Color created. Grams/spools saved locally until SQL is run.');
       }
     }
@@ -316,7 +340,7 @@ function wire() {
   });
   $('colorSearch').oninput = render;
   $('palette_color').oninput = () => { $('hex_color').value = $('palette_color').value; };
-  $('hex_color').oninput = () => { if (/^#[0-9a-fA-F]{6}$/.test($('hex_color').value)) $('palette_color').value = $('hex_color').value; };
+  $('hex_color').oninput = () => { const h = cleanHex($('hex_color').value); if (h) $('palette_color').value = h; };
   $('newColorBtn').onclick = () => { clearForm(); expandForm(); };
   $('clearColor').onclick = clearForm;
   $('status').onchange = syncInactive;
