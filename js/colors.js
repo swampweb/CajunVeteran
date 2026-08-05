@@ -9,6 +9,8 @@ const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const FILAMENT_STORE = 'cv_filament_local_v2';
 const LOW_DEFAULT = 200;
+const FILAMENT_TYPE_STORE = 'cv_filament_types';
+const DEFAULT_FILAMENT_TYPES = ['PLA','PLA+','Silk PLA','PETG','ABS','TPU','ASA'];
 
 function readJson(key, fallback) { try { return JSON.parse(localStorage.getItem(key) || 'null') || fallback; } catch { return fallback; } }
 function writeJson(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
@@ -85,6 +87,16 @@ function renderSpools() {
   $('spoolRows').innerHTML = spoolRows.map((grams, index) => `<label class="spool-row">Spool ${index + 1}<input data-spool-index="${index}" type="number" min="0" step="0.1" value="${Number(grams || 0)}"></label>`).join('') || '<div class="spool-empty">No active spools.</div>';
   updateTotalGrams();
 }
+function filamentTypes() { return readJson(FILAMENT_TYPE_STORE, DEFAULT_FILAMENT_TYPES); }
+function typeOptions(selected = '') {
+  const types = filamentTypes();
+  if (selected && !types.some(type => String(type).toLowerCase() === String(selected).toLowerCase())) types.push(selected);
+  return types.map(type => `<option value="${esc(type)}" ${String(type) === String(selected) ? 'selected' : ''}>${esc(type)}</option>`).join('');
+}
+function populateTypeDropdown(selected = '') {
+  if (!$('type')) return;
+  $('type').innerHTML = typeOptions(selected || filamentTypes()[0] || 'PLA');
+}
 function rowMatchesFilter(row) {
   const state = filamentState(row).key;
   const status = statusOf(row);
@@ -140,6 +152,7 @@ function clearForm() {
   editingColor = null;
   $('colorForm').reset();
   $('status').value = 'active';
+  populateTypeDropdown('PLA');
   $('low_grams').value = LOW_DEFAULT;
   $('spools').value = 1;
   spoolRows = [1000];
@@ -152,7 +165,7 @@ function openEditor(row) {
   editingColor = row;
   $('brand').value = brandName(row) === 'No Brand' ? '' : brandName(row);
   $('color').value = colorName(row);
-  $('type').value = row.type || '';
+  populateTypeDropdown(row.type || 'PLA');
   $('status').value = statusOf(row);
   $('low_grams').value = lowAt(row);
   spoolRows = spoolArray(row);
