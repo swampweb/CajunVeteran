@@ -68,6 +68,22 @@ function estGrams(row) { return statusOf(row) === 'inactive' ? 0 : spoolArray(ro
 function lowAt(row) {
   return Number(localStorage.getItem(FILAMENT_LOW_GRAMS_STORE) || LOW_DEFAULT);
 }
+
+function colorHex(row) {
+  const local = localFor(row);
+  const direct = cleanHex(local.hex_color) || cleanHex(local.palette_color) || cleanHex(local.swatch) || cleanHex(row.hex_color) || cleanHex(row.palette_color) || cleanHex(row.swatch) || cleanHex(row.hex);
+  if (direct) return direct;
+
+  const raw = `${colorName(row)} ${local.hex_color || local.palette_color || local.swatch || row.hex_color || row.palette_color || row.swatch || row.hex || ''}`.toLowerCase();
+  const map = {
+    black:'#111111', white:'#eeeeee', red:'#b71c1c', orange:'#f47b20', yellow:'#f3c316',
+    green:'#159947', blue:'#1464d2', purple:'#6936c9', pink:'#e15aa2', gray:'#888888',
+    grey:'#888888', brown:'#8b5a2b', gold:'#caa45f', silver:'#c0c0c0', teal:'#17a2a6',
+    bone:'#f5f1e8', ivory:'#f2e9d8'
+  };
+  const key = Object.keys(map).find(name => raw.includes(name));
+  return map[key] || '#d8d8d8';
+}
 function filamentState(row) {
   const grams = estGrams(row);
   const low = lowAt(row);
