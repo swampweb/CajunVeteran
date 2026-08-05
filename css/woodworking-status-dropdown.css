@@ -1,0 +1,27 @@
+/* Woodworking Jobs: remove status rail and use search-row dropdown */
+.cv-wood-status-dropdown .cv-wood-old-status{display:none!important}
+.cv-wood-status-dropdown .cv-wood-workspace-two-column{
+  display:grid!important;
+  grid-template-columns:minmax(380px,470px) minmax(0,1fr)!important;
+  gap:14px!important;
+  align-items:start!important;
+}
+.cv-wood-status-dropdown .cv-wood-jobs-card{grid-column:1!important;min-width:0!important;width:100%!important}
+.cv-wood-filter-row{
+  display:grid!important;
+  grid-template-columns:minmax(220px,1fr) 150px!important;
+  gap:10px!important;
+  align-items:end!important;
+  margin-bottom:10px!important;
+}
+.cv-wood-filter-row>input{width:100%!important;margin:0!important}
+.cv-wood-status-filter{display:grid!important;gap:4px!important;color:#d7c6ac!important;font-size:9px!important;font-weight:900!important;text-transform:uppercase!important}
+.cv-wood-status-filter select{height:40px!important;min-height:40px!important;padding:8px 28px 8px 10px!important;border:1px solid #806021!important;border-radius:6px!important;background:#0e0e0b!important;color:#f4ecdf!important;font-weight:800!important}
+@media(max-width:1050px){
+  .cv-wood-status-dropdown .cv-wood-workspace-two-column{grid-template-columns:minmax(330px,400px) minmax(0,1fr)!important}
+}
+@media(max-width:850px){
+  .cv-wood-status-dropdown .cv-wood-workspace-two-column{grid-template-columns:1fr!important}
+  .cv-wood-filter-row{grid-template-columns:1fr 145px!important}
+}
+@media(max-width:520px){.cv-wood-filter-row{grid-template-columns:1fr!important}}

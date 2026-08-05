@@ -1,0 +1,7 @@
+/* Woodworking Jobs: filters first, completed/delivered groups at bottom */
+.cv-wood-group-order .cv-wood-filter-row{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;margin-bottom:12px!important}
+.cv-wood-group-order .cv-wood-status-filter{width:100%!important}
+.cv-wood-group-order .cv-wood-status-filter select{width:100%!important}
+.cv-wood-archive-groups{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;width:100%!important;margin-top:12px!important;padding-top:10px!important;border-top:1px solid #3e2c14!important}
+.cv-wood-bottom-group{display:block!important;width:100%!important;grid-column:1/-1!important;margin:0!important;position:static!important}
+.cv-wood-bottom-group .status-head,.cv-wood-bottom-group>header,.cv-wood-bottom-group>button{width:100%!important}

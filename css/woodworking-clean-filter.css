@@ -1,0 +1,10 @@
+/* Clean Woodworking Jobs filter layout */
+.v7-workspace{grid-template-columns:minmax(380px,470px) minmax(0,1fr)!important;gap:14px!important}
+.wood-status-filter{display:grid;gap:5px;margin-bottom:10px;color:#d7c6ac;font-size:9px;font-weight:900;text-transform:uppercase}
+.wood-status-filter select{height:40px;min-height:40px;width:100%;border:1px solid #806021;border-radius:6px;background:#0e0e0b;color:#f4ecdf;padding:8px 30px 8px 10px;font-weight:800}
+#jobSearch{width:100%;margin-bottom:10px}
+#jobsGrouped{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;margin-top:0!important}
+#jobsGrouped .status-group{display:block!important;width:100%!important;grid-column:1/-1!important;margin:0!important}
+#jobsGrouped .status-head{width:100%!important}
+#jobsGrouped .status-body{width:100%!important}
+@media(max-width:900px){.v7-workspace{grid-template-columns:1fr!important}}
