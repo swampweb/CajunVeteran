@@ -10,13 +10,6 @@
 <body class="print-items-page">
   <main class="v7-main pi-main">
     <div class="v7-container">
-      <header class="pi-header clean-page-header">
-        <div>
-          <h1>3D Print Items</h1>
-          <p>Manage 3D print products, pricing, sizes, stock, and item images</p>
-        </div>
-      </header>
-
       <section class="v7-card pi-card-shell">
         <div class="v7-card-head">
           <h2 class="v7-panel-title">Print Items</h2>
@@ -43,12 +36,12 @@
           <form id="printItemForm" class="form-panel pi-form clean-pi-form">
             <label>SKU<input id="sku" required></label>
             <label>Name<input id="name" required></label>
-            <label>Price<input id="price" type="number" step="0.01" min="0"></label>
-            <label>Stock<input id="stock" type="number" step="1" min="0"></label>
+            <label class="num-field">Price<input id="price" type="number" step="0.01" min="0"></label>
+            <label class="num-field">Stock<input id="stock" type="number" step="1" min="0"></label>
             <label>Size / Type<select id="category"></select></label>
             <label>Status<select id="status"><option value="visible">Visible</option><option value="hidden">Hidden</option></select></label>
-            <label>Print Time<input id="print_time" readonly placeholder="Calculated from components"></label>
-            <label>Total Grams<input id="grams" readonly placeholder="Calculated from components"></label>
+            <label class="calc-field">Print Time<input id="print_time" readonly placeholder="Calculated"></label>
+            <label class="calc-field">Total Grams<input id="grams" readonly placeholder="Calculated"></label>
 
             <section class="full pi-pricing-panel">
               <div class="pi-pricing-head">
@@ -71,7 +64,7 @@
               <div class="pi-section-title-row">
                 <div>
                   <h3>Print Components / Colors</h3>
-                  <p>Track grams and print time per color or part. Example: holder, 12oz insert, 8.4oz insert.</p>
+                  <p>Track grams and print time per color or part.</p>
                 </div>
                 <button class="small-btn" id="addComponent" type="button">Add Component</button>
               </div>
@@ -82,7 +75,7 @@
               <div class="pi-section-title-row">
                 <div>
                   <h3>Linked Item Options</h3>
-                  <p>Link optional items to a main item. Example: link 12oz insert and 8.4oz insert to a koozie holder.</p>
+                  <p>Link optional printed items to this main item.</p>
                 </div>
                 <button class="small-btn" id="addLinkedItem" type="button">Add Linked Item</button>
               </div>
@@ -96,8 +89,8 @@
                 <img id="printImagePreview" alt="Item image preview">
                 <button class="small-btn" id="removePrintImage" type="button">Remove Image</button>
               </div>
-              <small>Upload an image from your computer or phone. The image is saved with the item so it can be viewed online.</small>
             </div>
+
             <label class="full">Description<textarea id="description"></textarea></label>
             <div class="actions full">
               <button class="btn clear" id="clearPrintItem" type="button">Clear</button>
