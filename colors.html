@@ -13,16 +13,18 @@
       <header class="v7-header colors-header">
         <div>
           <h1>Colors / Filament</h1>
-          <p>Manage active filament colors, estimated grams, spool count, and low filament alerts</p>
+          <p>Manage filament by brand, spool grams, active status, low count, and out count.</p>
         </div>
         <button class="btn primary" id="newColorBtn" type="button">+ New Color</button>
       </header>
 
       <section class="v7-card colors-card">
-        <div class="v7-card-head">
+        <div class="v7-card-head colors-card-head">
           <h2 class="v7-panel-title">Filament Inventory</h2>
-          <div class="color-filter-pills" role="group" aria-label="Color status filter">
+          <div class="color-filter-pills" role="group" aria-label="Filament filter">
             <button type="button" class="filter-pill active" data-filter="active">Active</button>
+            <button type="button" class="filter-pill" data-filter="low">Low</button>
+            <button type="button" class="filter-pill" data-filter="out">Out</button>
             <button type="button" class="filter-pill" data-filter="inactive">Inactive</button>
             <button type="button" class="filter-pill" data-filter="all">All</button>
           </div>
@@ -30,17 +32,21 @@
         <div class="v7-card-body">
           <div class="colors-toolbar">
             <input id="colorSearch" type="search" placeholder="Search brand, color, type, or notes">
-            <div class="filament-low-summary" id="filamentLowSummary">Low Filament: 0</div>
+            <div class="filament-counts" id="filamentCounts">Low 0 • Out 0</div>
           </div>
 
           <form id="colorForm" class="form-panel color-form">
             <label>Brand<input id="brand" placeholder="Example: SUNLU"></label>
             <label>Color Name<input id="color" required placeholder="Example: Sunny Orange"></label>
-            <label>Type<input id="type" placeholder="PLA, PETG, ABS"></label>
-            <label class="num-field">Est. Grams<input id="estimated_grams" type="number" min="0" step="0.1" value="1000"></label>
-            <label class="num-field">Spools<input id="spools" type="number" min="0" step="1" value="1"></label>
-            <label class="num-field">Low At Grams<input id="low_grams" type="number" min="0" step="1" value="200"></label>
+            <label>Type<input id="type" placeholder="PLA, Silk PLA, PETG"></label>
             <label>Status<select id="status"><option value="active">Active</option><option value="inactive">Inactive</option></select></label>
+            <label class="num-field">Low At Grams<input id="low_grams" type="number" min="0" step="1" value="200"></label>
+            <label class="num-field">Number of Spools<input id="spools" type="number" min="0" step="1" value="1"></label>
+            <label class="num-field">Total Est. Grams<input id="estimated_grams" type="number" readonly value="1000"></label>
+            <div class="full spool-panel">
+              <div class="spool-panel-head"><h3>Spool Grams</h3><p>Each spool tracks its own remaining grams. Total Est. Grams is calculated.</p></div>
+              <div id="spoolRows" class="spool-rows"></div>
+            </div>
             <label class="full">Notes<textarea id="notes" placeholder="Optional notes"></textarea></label>
             <div class="actions full">
               <button class="btn clear" id="clearColor" type="button">Clear</button>
@@ -49,7 +55,7 @@
             </div>
           </form>
 
-          <div id="colorsGrid" class="colors-grid"></div>
+          <div id="colorsGrouped" class="colors-grouped"></div>
         </div>
       </section>
     </div>
