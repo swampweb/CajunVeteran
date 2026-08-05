@@ -45,7 +45,7 @@ function renderPreview() {
 }
 function renderSizes() {
   const sizes = loadSizes();
-  $('sizeList').innerHTML = sizes.map((size, index) => `<span class="settings-chip">${size}<button type="button" data-remove-size="${index}">x</button></span>`).join('') || '<div class="pi-empty-soft">No sizes saved.</div>';
+  $('sizeList').innerHTML = sizes.map((size, index) => `<span class="settings-size-pill"><span class="settings-size-name">${size}</span><button class="settings-size-remove" type="button" aria-label="Remove ${size}" data-remove-size="${index}">×</button></span>`).join('') || '<div class="pi-empty-soft">No sizes saved.</div>';
 }
 function populateStockSettings() { $('woodLowStockThreshold').value = localStorage.getItem(WOOD_LOW_STOCK_STORE) || 5; }
 
