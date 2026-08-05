@@ -34,7 +34,7 @@ function parseArray(value, fallback) { if (Array.isArray(value)) return value; i
 function itemKey(item) { return String(item?.sku ?? item?.item_sku ?? item?.item_id ?? item?.id ?? ''); }
 function imageFor(item) { return first(item, ['image_url','image','photo_url','thumbnail_url'], 'images/CajunVeteran 3D Print Logo.png'); }
 function visible(item) { const status = String(item.status || '').toLowerCase(); return !(status === 'hidden' || item.hidden === true || item.active === false); }
-function stockState(item) { const stock = stockValue(item); return stock <= 0 ? {key:'out', label:'Out of Stock', value:stock} : {key:'good', label:'In Stock', value:stock}; } : {key:'good', label:'In Stock', value:stock}; }
+function stockState(item) { const stock = stockValue(item); return stock <= 0 ? {key:'out', label:'Out of Stock', value:stock} : {key:'good', label:'In Stock', value:stock}; }
 function minutes(h, m) { return Number(h || 0) * 60 + Number(m || 0); }
 function formatMinutes(total) { const h = Math.floor(Number(total || 0) / 60); const m = Math.round(Number(total || 0) % 60); return `${h}h ${String(m).padStart(2,'0')}m`; }
 function roundTo(value, step) { step = Number(step || 0.5); return step > 0 ? Math.ceil(Number(value || 0) / step) * step : Number(value || 0); }
