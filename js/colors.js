@@ -77,10 +77,13 @@ function syncSpoolCount() {
   }
   renderSpools();
 }
-function renderSpools() {
-  $('spoolRows').innerHTML = spoolRows.map((grams, index) => `<label class="spool-row">Spool ${index + 1}<input data-spool-index="${index}" type="number" min="0" step="0.1" value="${Number(grams || 0)}"></label>`).join('') || '<div class="spool-empty">No active spools.</div>';
+function updateTotalGrams() {
   const total = spoolRows.reduce((sum, value) => sum + Number(value || 0), 0);
   $('estimated_grams').value = total.toFixed(1);
+}
+function renderSpools() {
+  $('spoolRows').innerHTML = spoolRows.map((grams, index) => `<label class="spool-row">Spool ${index + 1}<input data-spool-index="${index}" type="number" min="0" step="0.1" value="${Number(grams || 0)}"></label>`).join('') || '<div class="spool-empty">No active spools.</div>';
+  updateTotalGrams();
 }
 function rowMatchesFilter(row) {
   const state = filamentState(row).key;
@@ -125,6 +128,14 @@ function cardHtml(row) {
     <div class="filament-actions"><button type="button" class="small-btn" data-edit="${esc(rowKey(row))}">Edit</button></div>
   </article>`;
 }
+function expandForm() {
+  $('colorForm').classList.remove('collapsed');
+  $('colorForm').classList.add('expanded');
+}
+function collapseForm() {
+  $('colorForm').classList.add('collapsed');
+  $('colorForm').classList.remove('expanded');
+}
 function clearForm() {
   editingColor = null;
   $('colorForm').reset();
@@ -134,8 +145,10 @@ function clearForm() {
   spoolRows = [1000];
   $('deleteColor').classList.add('hidden');
   renderSpools();
+  collapseForm();
 }
 function openEditor(row) {
+  expandForm();
   editingColor = row;
   $('brand').value = brandName(row) === 'No Brand' ? '' : brandName(row);
   $('color').value = colorName(row);
@@ -220,7 +233,7 @@ function wire() {
     button.onclick = () => { filterMode = button.dataset.filter; document.querySelectorAll('[data-filter]').forEach(b => b.classList.toggle('active', b === button)); render(); };
   });
   $('colorSearch').oninput = render;
-  $('newColorBtn').onclick = clearForm;
+  $('newColorBtn').onclick = () => { clearForm(); expandForm(); };
   $('clearColor').onclick = clearForm;
   $('status').onchange = syncInactive;
   $('spools').oninput = syncSpoolCount;
@@ -228,7 +241,7 @@ function wire() {
     const index = event.target.dataset.spoolIndex;
     if (index === undefined) return;
     spoolRows[Number(index)] = Number(event.target.value || 0);
-    renderSpools();
+    updateTotalGrams();
   };
   $('colorForm').onsubmit = async event => { event.preventDefault(); await saveColor(); };
   $('colorsGrouped').onclick = event => { const btn = event.target.closest('[data-edit]'); if (!btn) return; const row = colorRows.find(c => rowKey(c) === btn.dataset.edit); if (row) openEditor(row); };
