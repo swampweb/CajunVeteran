@@ -308,3 +308,7 @@ body.print-items-page .print-color-chip i{width:13px!important;height:13px!impor
 @media(max-width:1350px){body.print-items-page #printItemsGrid,body.print-items-page .clean-print-grid,body.print-items-page .pi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:950px){body.print-items-page #printItemsGrid,body.print-items-page .clean-print-grid,body.print-items-page .pi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.print-items-page .clean-pi-form.show,.print-items-page .pi-component-row,.print-items-page .pi-linked-row{grid-template-columns:1fr!important}.print-items-page .readonly-pricing-grid,.print-items-page .pi-cost-summary{grid-template-columns:repeat(2,minmax(110px,1fr))!important}}
 @media(max-width:620px){body.print-items-page #printItemsGrid,body.print-items-page .clean-print-grid,body.print-items-page .pi-grid{grid-template-columns:1fr!important}}
+
+
+/* NO-CATEGORY SAVE FIX: prevent DB category errors and preserve layout */
+.v7-nav-icon,.v7-nav-icon *{background:transparent!important}.v7-nav-icon svg path{fill:none!important;stroke:currentColor!important}.v7-nav-link.active .v7-nav-icon svg path{stroke:#f0b429!important}.print-items-page .print-item-card img{width:64px!important;height:64px!important;max-width:64px!important;max-height:64px!important;object-fit:cover!important}.print-items-page #printItemsGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
