@@ -368,3 +368,48 @@ body.print-items-page .print-stock-pill{
 @media(max-width:650px){
   .settings-inline-form{grid-template-columns:1fr!important;}
 }
+
+/* =====================================================
+   NAV CLEANUP + NORMAL ADD SIZE BUTTON
+===================================================== */
+.clean-svg-nav-sidebar .v7-img-icon{display:none!important}
+.clean-svg-nav-sidebar .v7-nav-icon{width:22px!important;height:22px!important;min-width:22px!important;display:inline-grid!important;place-items:center!important;background:transparent!important;border:0!important;box-shadow:none!important;color:#e4ae55!important}
+.clean-svg-nav-sidebar .v7-nav-icon svg{width:20px!important;height:20px!important;display:block!important;fill:none!important;stroke:currentColor!important;stroke-width:1.9!important;stroke-linecap:round!important;stroke-linejoin:round!important;background:transparent!important}
+.clean-svg-nav-sidebar .v7-nav-icon svg path{fill:none!important;stroke:currentColor!important}
+.clean-svg-nav-sidebar .v7-nav-link{gap:12px!important;align-items:center!important}
+.clean-svg-nav-sidebar .v7-nav-link.active .v7-nav-icon,.clean-svg-nav-sidebar .v7-nav-link:hover .v7-nav-icon{color:#f0b429!important}
+.clean-svg-nav-sidebar .v7-brand img{background:transparent!important;object-fit:cover!important}
+/* Override previous image-nav styling if old class CSS remains cached */
+.image-nav-sidebar .v7-img-icon{display:none!important}
+.image-nav-sidebar .v7-nav-icon{display:inline-grid!important}
+
+.settings-inline-form{
+  display:flex!important;
+  align-items:flex-end!important;
+  gap:10px!important;
+  margin-bottom:16px!important;
+  max-width:620px!important;
+}
+.settings-inline-form label{
+  flex:1 1 390px!important;
+  margin:0!important;
+}
+.settings-inline-form input{
+  min-height:40px!important;
+}
+.settings-inline-form .btn,
+#sizeForm .btn{
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:96px!important;
+  max-width:120px!important;
+  height:40px!important;
+  min-height:40px!important;
+  padding:8px 14px!important;
+  white-space:nowrap!important;
+  justify-self:start!important;
+}
+@media(max-width:650px){
+  .settings-inline-form{display:grid!important;grid-template-columns:1fr!important;max-width:none!important}
+  .settings-inline-form .btn,#sizeForm .btn{width:auto!important;max-width:140px!important}
+}
