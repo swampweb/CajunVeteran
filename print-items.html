@@ -45,10 +45,10 @@
             <label>Name<input id="name" required></label>
             <label>Price<input id="price" type="number" step="0.01" min="0"></label>
             <label>Stock<input id="stock" type="number" step="1" min="0"></label>
-            <label>Category<input id="category"></label>
+            <label>Size / Type<select id="category"></select></label>
             <label>Status<select id="status"><option value="visible">Visible</option><option value="hidden">Hidden</option></select></label>
-            <label>Print Time<input id="print_time" placeholder="Example: 3hr 25m"></label>
-            <label>Weight<input id="weight" placeholder="Example: 146g"></label>
+            <label>Print Time<input id="print_time" readonly placeholder="Calculated from components"></label>
+            <label>Total Grams<input id="grams" readonly placeholder="Calculated from components"></label>
 
             <section class="full pi-pricing-panel">
               <div class="pi-pricing-head">
@@ -58,11 +58,11 @@
                 </div>
                 <div class="pi-suggested-total" id="suggestedPriceBox">$0.00</div>
               </div>
-              <div class="pi-pricing-grid">
-                <label>Filament $/gram<input id="filament_rate" type="number" step="0.001" value="0.02"></label>
-                <label>Machine $/hour<input id="machine_rate" type="number" step="0.01" value="0.75"></label>
-                <label>Markup %<input id="markup_percent" type="number" step="1" value="100"></label>
-                <label>Round To<input id="round_to" type="number" step="0.25" value="0.50"></label>
+              <div class="pi-pricing-grid readonly-pricing-grid">
+                <div><span>Filament $/gram</span><strong id="viewFilamentRate">0.02</strong></div>
+                <div><span>Machine $/hour</span><strong id="viewMachineRate">0.75</strong></div>
+                <div><span>Markup %</span><strong id="viewMarkupPercent">100</strong></div>
+                <div><span>Round To</span><strong id="viewRoundTo">0.50</strong></div>
               </div>
               <div class="pi-cost-summary" id="pricingSummary"></div>
             </section>
