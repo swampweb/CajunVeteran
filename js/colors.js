@@ -1,3 +1,4 @@
+// CV COLORS NOTES SAVE FIX v1
 // CV COLORS HEX SAVE FIX v2
 // CV COLORS PALETTE PERSIST FIX v1
 // CV COLORS PALETTE COLOR UPDATE v1
@@ -209,7 +210,7 @@ function openEditor(row) {
   $('status').value = statusOf(row);
     spoolRows = spoolArray(row);
   $('spools').value = statusOf(row) === 'inactive' ? 0 : spoolRows.length;
-  $('notes').value = row.notes || '';
+  $('notes').value = localFor(row).notes || row.notes || '';
   $('deleteColor').classList.remove('hidden');
   renderSpools();
   $('colorForm').scrollIntoView({ behavior:'smooth', block:'start' });
@@ -232,7 +233,8 @@ async function patchColor(row, payload) {
   const colorOnlyPayload = {
     swatch: chosenHex,
     hex_color: chosenHex,
-    palette_color: chosenHex
+    palette_color: chosenHex,
+    notes: payload.notes || ''
   };
   const typeAndColorPayload = {
     brand: payload.brand,
@@ -242,6 +244,8 @@ async function patchColor(row, payload) {
     swatch: chosenHex,
     hex_color: chosenHex,
     palette_color: chosenHex,
+    notes: payload.notes || '',
+    notes: payload.notes || '',
     active: payload.status === 'inactive' ? false : true
   };
   const typeOnlyPayload = {
@@ -252,7 +256,8 @@ async function patchColor(row, payload) {
     active: payload.status === 'inactive' ? false : true
   };
 
-  const attempts = [colorOnlyPayload, typeAndColorPayload, payload, typeOnlyPayload];
+  const notesOnlyPayload = { notes: payload.notes || '' };
+  const attempts = [colorOnlyPayload, typeAndColorPayload, payload, notesOnlyPayload, typeOnlyPayload];
   let last;
   for (const filter of filters) {
     for (const attempt of attempts) {
@@ -301,14 +306,14 @@ async function saveColor() {
   try {
     if (editingColor) {
       const result = await patchColor(editingColor, row);
-      if (result.partial) toast('Hex/palette color saved. Grams/spools saved locally until SQL is run.');
+      if (result.partial) toast('Color details saved. Grams/spools saved locally until SQL is run.');
       else toast('Color saved');
     } else {
       try {
         await CVDB.insert('cv_colors', row);
         toast('Color saved');
       } catch(insertError) {
-        await CVDB.insert('cv_colors', { brand: row.brand, color: row.color, type: row.type, label: row.label, swatch: row.swatch, hex_color: row.hex_color, palette_color: row.palette_color, active: row.active });
+        await CVDB.insert('cv_colors', { brand: row.brand, color: row.color, type: row.type, label: row.label, swatch: row.swatch, hex_color: row.hex_color, palette_color: row.palette_color, notes: row.notes || '', active: row.active });
         toast('Color created. Grams/spools saved locally until SQL is run.');
       }
     }
