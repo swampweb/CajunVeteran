@@ -1,22 +1,22 @@
 initNavigation('settings.html');
 
 const PRICING_DEFAULTS_STORE = 'cv_print_pricing_defaults_v1';
+const SIZE_STORE = 'cv_3d_item_sizes';
+const WOOD_LOW_STOCK_STORE = 'cv_wood_low_stock_threshold';
 const fallbackDefaults = { filamentRate: 0.02, machineRate: 0.75, markupPercent: 100, roundTo: 0.50 };
+const fallbackSizes = ['General','Small','Medium','Large','12oz','8.4oz','Coin Holder','Koozie','Plaque'];
 const $ = id => document.getElementById(id);
 const money = value => '$' + Number(value || 0).toFixed(2);
 
-function loadDefaults() {
-  try { return { ...fallbackDefaults, ...JSON.parse(localStorage.getItem(PRICING_DEFAULTS_STORE) || '{}') }; }
-  catch { return fallbackDefaults; }
-}
-function saveDefaults(values) {
-  localStorage.setItem(PRICING_DEFAULTS_STORE, JSON.stringify(values));
-}
-function roundTo(value, step) {
-  step = Number(step || 0.5);
-  return step > 0 ? Math.ceil(Number(value || 0) / step) * step : Number(value || 0);
-}
-function populateForm() {
+function readJson(key, fallback) { try { return JSON.parse(localStorage.getItem(key) || 'null') || fallback; } catch { return fallback; } }
+function saveJson(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+function loadDefaults() { return { ...fallbackDefaults, ...readJson(PRICING_DEFAULTS_STORE, {}) }; }
+function saveDefaults(values) { saveJson(PRICING_DEFAULTS_STORE, values); }
+function loadSizes() { return readJson(SIZE_STORE, fallbackSizes); }
+function saveSizes(values) { saveJson(SIZE_STORE, values); }
+function roundTo(value, step) { step = Number(step || 0.5); return step > 0 ? Math.ceil(Number(value || 0) / step) * step : Number(value || 0); }
+
+function populatePricingForm() {
   const values = loadDefaults();
   $('defaultFilamentRate').value = values.filamentRate;
   $('defaultMachineRate').value = values.machineRate;
@@ -24,7 +24,7 @@ function populateForm() {
   $('defaultRoundTo').value = values.roundTo;
   renderPreview();
 }
-function formValues() {
+function pricingFormValues() {
   return {
     filamentRate: Number($('defaultFilamentRate').value || fallbackDefaults.filamentRate),
     machineRate: Number($('defaultMachineRate').value || fallbackDefaults.machineRate),
@@ -33,7 +33,7 @@ function formValues() {
   };
 }
 function renderPreview() {
-  const values = formValues();
+  const values = pricingFormValues();
   const exampleGrams = 164.5;
   const exampleHours = 5 + 55 / 60;
   const materialCost = exampleGrams * values.filamentRate;
@@ -41,27 +41,39 @@ function renderPreview() {
   const baseCost = materialCost + machineCost;
   const suggestedRaw = baseCost * (1 + values.markupPercent / 100);
   const suggested = roundTo(suggestedRaw, values.roundTo);
-  $('pricingPreview').innerHTML = `
-    <div><span>Example</span><strong>Koozie holder + 12oz insert</strong></div>
-    <div><span>Material Cost</span><strong>${money(materialCost)}</strong></div>
-    <div><span>Machine Cost</span><strong>${money(machineCost)}</strong></div>
-    <div><span>Base Cost</span><strong>${money(baseCost)}</strong></div>
-    <div><span>Suggested Price</span><strong>${money(suggested)}</strong></div>`;
+  $('pricingPreview').innerHTML = `<div><span>Example</span><strong>Koozie + 12oz insert</strong></div><div><span>Material Cost</span><strong>${money(materialCost)}</strong></div><div><span>Machine Cost</span><strong>${money(machineCost)}</strong></div><div><span>Base Cost</span><strong>${money(baseCost)}</strong></div><div><span>Suggested Price</span><strong>${money(suggested)}</strong></div>`;
 }
+function renderSizes() {
+  const sizes = loadSizes();
+  $('sizeList').innerHTML = sizes.map((size, index) => `<span class="settings-chip">${size}<button type="button" data-remove-size="${index}">x</button></span>`).join('') || '<div class="pi-empty-soft">No sizes saved.</div>';
+}
+function populateStockSettings() { $('woodLowStockThreshold').value = localStorage.getItem(WOOD_LOW_STOCK_STORE) || 5; }
 
-document.addEventListener('input', event => {
-  if (event.target.closest('#pricingDefaultsForm')) renderPreview();
+document.addEventListener('input', event => { if (event.target.closest('#pricingDefaultsForm')) renderPreview(); });
+
+document.addEventListener('click', event => {
+  const remove = event.target.closest('[data-remove-size]');
+  if (!remove) return;
+  const sizes = loadSizes();
+  sizes.splice(Number(remove.dataset.removeSize), 1);
+  saveSizes(sizes);
+  renderSizes();
 });
 
-$('pricingDefaultsForm').onsubmit = event => {
+$('pricingDefaultsForm').onsubmit = event => { event.preventDefault(); saveDefaults(pricingFormValues()); alert('3D print pricing defaults saved.'); };
+$('resetPricingDefaults').onclick = () => { saveDefaults(fallbackDefaults); populatePricingForm(); };
+$('sizeForm').onsubmit = event => {
   event.preventDefault();
-  saveDefaults(formValues());
-  alert('3D print pricing defaults saved.');
+  const value = $('sizeName').value.trim();
+  if (!value) return;
+  const sizes = loadSizes();
+  if (!sizes.some(size => size.toLowerCase() === value.toLowerCase())) sizes.push(value);
+  saveSizes(sizes);
+  $('sizeName').value = '';
+  renderSizes();
 };
+$('stockSettingsForm').onsubmit = event => { event.preventDefault(); localStorage.setItem(WOOD_LOW_STOCK_STORE, String(Number($('woodLowStockThreshold').value || 5))); alert('Low stock settings saved.'); };
 
-$('resetPricingDefaults').onclick = () => {
-  saveDefaults(fallbackDefaults);
-  populateForm();
-};
-
-populateForm();
+populatePricingForm();
+renderSizes();
+populateStockSettings();
