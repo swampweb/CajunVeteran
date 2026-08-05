@@ -145,84 +145,114 @@
 }
 
 /* =====================================================
-   MATERIAL INVENTORY - RESTORED MATERIALS + LOW STOCK
+   FIX: PRINT ITEMS LOGO + WOODWORKING JOBS LAYOUT
 ===================================================== */
-.inv-header h1{margin:0;color:#dca95c;font:700 31px/1.1 Georgia,serif;text-transform:uppercase}.inv-head-tabs{display:flex;gap:8px;flex-wrap:wrap}.inv-tab.active{background:linear-gradient(180deg,#ad2b22,#801c16)!important;border-color:#d04338!important;color:#fff!important}.inv-toolbar{display:grid;grid-template-columns:minmax(280px,1fr) 190px;gap:10px;margin-bottom:10px}.inv-stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.inv-stats span{display:inline-flex;gap:5px;padding:6px 10px;border:1px solid #60451c;border-radius:999px;background:#100e0a;color:#d8cbb7;font-size:12px}.inv-stats b{color:#f0b429}.inv-form.show{display:grid!important}.inv-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.inv-card{display:grid;gap:10px;border:1px solid #60451c;border-radius:10px;background:linear-gradient(145deg,#17140e,#0e0d09);padding:13px;min-height:178px}.inv-card:hover{border-color:#c08425;transform:translateY(-1px)}.inv-card.low{border-color:#b47a00}.inv-card.out{border-color:#a33a31}.inv-card-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.inv-card h3{margin:0;color:#f3e8d7;font-size:15px;line-height:1.15}.inv-card small{color:#b9aa91}.inv-pill{white-space:nowrap;border-radius:999px;padding:4px 8px;font-size:9px;font-weight:900}.inv-pill.good{background:rgba(75,163,52,.17);border:1px solid #3f8f31;color:#72d65b}.inv-pill.low{background:rgba(240,180,41,.17);border:1px solid #9d7512;color:#f0c45d}.inv-pill.out{background:rgba(159,33,26,.2);border:1px solid #a63830;color:#ff7d73}.inv-card-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.inv-card-stats div{padding:7px;border:1px solid #382a15;border-radius:6px;background:#100e0a}.inv-card-stats span{display:block;color:#b7aa96;font-size:10px;text-transform:uppercase}.inv-card-stats strong{display:block;color:#ecc16e;font-size:15px}.inv-card p{margin:0;color:#cdbf9f;font-size:12px;line-height:1.25;min-height:30px;max-height:48px;overflow:hidden}.inv-actions{display:flex;justify-content:flex-end;margin-top:auto}.inv-edit{background:linear-gradient(180deg,#ad2b22,#801c16)!important;border-color:#d04338!important;color:#fff!important}@media(max-width:1350px){.inv-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:950px){.inv-toolbar{grid-template-columns:1fr}.inv-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.inv-grid{grid-template-columns:1fr}}
-
-
-/* =====================================================
-   MATERIAL SECTION QUICK REFERENCE - COMPACT FIX
-   Corrects Stripe/C-130/C-17 print materials and removes bulky badge.
-===================================================== */
-.inv-title-block{min-width:0;display:grid;gap:3px}.inv-title-line{display:flex;align-items:flex-start;gap:7px;min-width:0}.inv-title-line h3{margin:0;color:#f3e8d7;font-size:15px;line-height:1.18;min-width:0;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}.inv-use-chip{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:21px;padding:0 7px;border-radius:999px;font-size:10px;font-weight:950;letter-spacing:.03em;border:1px solid #60451c;background:#100e0a;color:#d8cbb7;margin-top:0}.inv-use-chip.print{border-color:#365e83;color:#7db7ef;background:rgba(49,91,133,.16)}.inv-use-chip.wood{border-color:#9b6810;color:#f0b429;background:rgba(155,104,16,.14)}.inv-use-chip.general{border-color:#60451c;color:#d8cbb7}.inv-section-badge{display:none!important}.inv-title-wrap{display:block!important}.inv-card-top{align-items:flex-start!important}.inv-card{min-height:160px!important}
-
-
-/* Material section pill color correction */
-.inv-use-chip.wood{border-color:#8b5a2b!important;color:#f0c17a!important;background:rgba(139,90,43,.26)!important}.inv-use-chip.print{border-color:#365e83!important;color:#7db7ef!important;background:rgba(49,91,133,.18)!important}.inv-use-chip.general{border-color:#60451c!important;color:#d8cbb7!important;background:#100e0a!important}
-
-/* =====================================================
-   MATERIAL INVENTORY - COMPACT EDIT FORM CLEANUP
-   Makes number fields smaller and keeps notes/actions clean.
-===================================================== */
-.inv-form.show{
+/* Print Items: stop the header logo/placeholder image from blowing up */
+body.print-items-page .pi-header{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:18px!important;
+  margin-bottom:18px!important;
+}
+body.print-items-page .pi-header-logo,
+body.print-items-page img[src*="3D Print Logo"]:not(.pi-img){
+  width:118px!important;
+  max-width:118px!important;
+  height:86px!important;
+  max-height:86px!important;
+  object-fit:contain!important;
+  display:block!important;
+  margin:0!important;
+  transform:none!important;
+}
+body.print-items-page .pi-main .v7-container{
+  max-width:1500px!important;
+}
+body.print-items-page .v7-card{
+  margin-top:12px!important;
+}
+body.print-items-page .pi-toolbar{
   display:grid!important;
-  grid-template-columns:minmax(280px, 1.6fr) minmax(220px, 1fr) repeat(4, minmax(110px, 145px))!important;
+  grid-template-columns:minmax(280px,1fr) 180px!important;
+  gap:10px!important;
+  margin-bottom:10px!important;
+}
+body.print-items-page .pi-stats{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+  margin-bottom:12px!important;
+}
+body.print-items-page .pi-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
   gap:12px!important;
-  align-items:end!important;
 }
-.inv-form label{
-  min-width:0!important;
+body.print-items-page .pi-img-wrap,
+body.print-items-page .pi-img{
+  width:86px!important;
+  height:86px!important;
+  max-width:86px!important;
+  max-height:86px!important;
+  object-fit:cover!important;
 }
-.inv-form label:nth-of-type(1){
-  grid-column:1 / 2!important;
+
+/* Woodworking Jobs: expand usable width and remove inner editor scrollbar */
+body.woodworking-jobs-page .v7-container{
+  max-width:1560px!important;
+  margin:0 auto!important;
 }
-.inv-form label:nth-of-type(2){
-  grid-column:2 / 3!important;
+body.woodworking-jobs-page .wood-jobs-workspace,
+body.woodworking-jobs-page .v7-workspace{
+  display:grid!important;
+  grid-template-columns:240px minmax(620px, 780px) minmax(420px, 1fr)!important;
+  gap:14px!important;
+  align-items:start!important;
 }
-.inv-form label:nth-of-type(3),
-.inv-form label:nth-of-type(4),
-.inv-form label:nth-of-type(5),
-.inv-form label:nth-of-type(6){
-  grid-column:auto!important;
+body.woodworking-jobs-page .wood-job-editor,
+body.woodworking-jobs-page .v7-editor{
+  max-height:none!important;
+  overflow:visible!important;
 }
-.inv-form label:nth-of-type(3) input,
-.inv-form label:nth-of-type(4) input,
-.inv-form label:nth-of-type(5) input,
-.inv-form label:nth-of-type(6) input{
-  max-width:145px!important;
-  text-align:right!important;
+body.woodworking-jobs-page .v7-card-body{
+  overflow:visible!important;
 }
-.inv-form label.full{
-  grid-column:1 / -1!important;
+body.woodworking-jobs-page .wood-job-form-grid,
+body.woodworking-jobs-page .form-grid{
+  grid-template-columns:minmax(190px,1fr) minmax(190px,1fr)!important;
+  gap:12px!important;
 }
-.inv-form label.full textarea{
-  min-height:74px!important;
+body.woodworking-jobs-page .wood-price-row,
+body.woodworking-jobs-page .price-row{
+  grid-template-columns:140px 140px!important;
+  justify-content:start!important;
 }
-.inv-form .actions.full{
-  grid-column:1 / -1!important;
-  margin-top:2px!important;
+body.woodworking-jobs-page .selected-material-box{
+  margin-top:14px!important;
 }
-.inv-form .actions .btn{
-  min-width:92px!important;
+body.woodworking-jobs-page .status-groups{
+  max-height:none!important;
+  overflow:visible!important;
 }
-@media(max-width:1250px){
-  .inv-form.show{
-    grid-template-columns:minmax(260px,1fr) minmax(220px,1fr) repeat(2,minmax(115px,145px))!important;
+@media(max-width:1200px){
+  body.woodworking-jobs-page .wood-jobs-workspace,
+  body.woodworking-jobs-page .v7-workspace{
+    grid-template-columns:230px minmax(560px,1fr)!important;
   }
 }
-@media(max-width:850px){
-  .inv-form.show{
-    grid-template-columns:1fr 1fr!important;
+@media(max-width:900px){
+  body.print-items-page .pi-toolbar,
+  body.woodworking-jobs-page .wood-jobs-workspace,
+  body.woodworking-jobs-page .v7-workspace{
+    grid-template-columns:1fr!important;
   }
-  .inv-form label:nth-of-type(3) input,
-  .inv-form label:nth-of-type(4) input,
-  .inv-form label:nth-of-type(5) input,
-  .inv-form label:nth-of-type(6) input{
-    max-width:none!important;
+  body.print-items-page .pi-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
   }
 }
 @media(max-width:560px){
-  .inv-form.show{
+  body.print-items-page .pi-grid{
     grid-template-columns:1fr!important;
   }
 }

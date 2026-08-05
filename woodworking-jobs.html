@@ -1,6 +1,77 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Woodworking Jobs</title><link rel="icon" href="images/apple-touch-icon.png"><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/woodworking-clean-filter.css">
-</head><body><main class="v7-main"><div class="v7-container"><header class="v7-header"><div><h1>Woodworking Jobs</h1><p>Manage custom jobs, materials, pricing, and plaque details</p></div><div class="v7-header-actions"><button class="btn" onclick="location.reload()">Refresh</button><button class="btn primary" id="newJobBtn">+ New Job</button></div></header><section class="v7-workspace"><section class="v7-card"><div class="v7-card-head"><h2>Jobs</h2></div><div class="v7-card-body"><label class="wood-status-filter">Status<select id="jobStatusFilter"><option value="all">All Jobs</option><option value="new">New</option><option value="in_process">In Process</option><option value="completed">Completed</option><option value="delivered">Delivered</option></select></label><input id="jobSearch" placeholder="Search job, customer, or project"><div id="jobsGrouped" class="status-groups v7-order-list" style="margin-top:10px"></div></div></section><section class="v7-card v7-editor"><div class="v7-card-head"><h2 id="jobTitle">New Job</h2><div id="jobSummary"></div></div><div class="v7-card-body"><form id="jobForm"><div class="form-grid"><label>Customer *<input id="customer" required list="customerList"></label><label>Woodworking Item *<select id="woodItem" required></select></label><label>Status *<select id="status"><option value="new">New</option><option value="in_process">In Process</option><option value="completed">Completed</option><option value="delivered">Delivered</option></select></label><label>Order Date<input id="orderDate" type="date"></label><label>Due Date<input id="dueDate" type="date"></label><label>Material Used *<select id="material"></select></label><label>Qty *<input id="qty" type="number" min="1" value="1"></label><label class="inline-check">Paid <input id="paid" type="checkbox"></label><label class="full">Notes<textarea id="notes"></textarea></label></div><div class="price-row two-prices"><div class="price-card"><span>Item Price Each</span><strong id="itemPrice">$0.00</strong></div><div class="price-card"><span>Job Total</span><strong id="jobTotal">$0.00</strong></div><strong id="matCost" class="hidden">$0.00</strong></div><div id="plaqueBox" class="section-soft hidden"><div class="plaque-section-title"><div><b>Plaque Details</b><span>Enter the information for each plaque</span></div><button type="button" class="btn" id="addPlaque">+ Add Plaque</button></div><div class="plaque-table"><div class="plaque-table-head"><span>#</span><span>Name</span><span>Rank</span><span>Month</span><span></span></div><div id="plaques"></div></div></div><div class="actions"><button type="button" class="btn danger hidden" id="deleteJob">Delete</button><button type="button" class="btn clear" id="clearJob">Clear</button><button class="btn primary" type="submit">Save Job</button></div></form><div class="v7-card" style="margin-top:14px"><div class="v7-card-head"><h2>Selected Material</h2></div><div class="v7-card-body" id="materialInfo"></div></div></div></section></section><table hidden><tbody id="activeOverview"></tbody></table><datalist id="customerList"></datalist></div></main><footer class="v7-footer">CajunVeteran Workshop Management | Built by a Veteran</footer><script src="js/database.js"></script><script src="js/navigation.js"></script><script src="js/modal.js"></script><script src="js/woodworking-jobs.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="images/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>Woodworking Jobs</title>
+</head>
+<body class="woodworking-jobs-page">
+  <main class="v7-main wood-jobs-main">
+    <div class="v7-container">
+      <header class="v7-header wood-jobs-header">
+        <div>
+          <h1>Woodworking Jobs</h1>
+          <p>Manage custom jobs, materials, pricing, and plaque details</p>
+        </div>
+        <div class="v7-header-actions">
+          <button class="btn" id="refreshWoodJobs" type="button" onclick="location.reload()">Refresh</button>
+          <button class="btn primary" id="newJobBtn" type="button">+ New Job</button>
+        </div>
+      </header>
 
+      <section class="v7-workspace wood-jobs-workspace">
+        <aside class="v7-card v7-status-rail wood-status-card">
+          <div class="v7-card-head"><h2 class="v7-panel-title">Jobs</h2></div>
+          <div class="v7-card-body">
+            <label>Status
+              <select id="jobStatusFilter">
+                <option value="all">All Jobs</option>
+                <option value="new">New</option>
+                <option value="in_process">In Process</option>
+                <option value="completed">Completed</option>
+                <option value="delivered">Delivered</option>
+              </select>
+            </label>
+            <div class="v7-search"><input id="jobSearch" placeholder="Search job, customer, or project"></div>
+            <div id="jobsGrouped" class="status-groups"></div>
+          </div>
+        </aside>
 
-
-
+        <section class="v7-card v7-editor wood-job-editor">
+          <div class="v7-card-head"><h2 id="jobTitle" class="v7-panel-title">New Job</h2><span id="jobSummary" class="small-btn">0 Active</span></div>
+          <div class="v7-card-body">
+            <form id="jobForm">
+              <div class="form-grid wood-job-form-grid">
+                <label>Customer *<input id="customer" required list="customerList"></label>
+                <label>Woodworking Item *<select id="woodItem" required></select></label>
+                <label>Status *<select id="status"><option value="new">New</option><option value="in_process">In Process</option><option value="completed">Completed</option><option value="delivered">Delivered</option></select></label>
+                <label>Order Date<input id="orderDate" type="date"></label>
+                <label>Due Date<input id="dueDate" type="date"></label>
+                <label>Material Used *<select id="material"></select></label>
+                <label>Qty *<input id="qty" type="number" min="1" value="1"></label>
+                <label class="inline-check">Paid <input id="paid" type="checkbox"></label>
+                <label class="full">Notes<textarea id="notes"></textarea></label>
+              </div>
+              <section id="plaqueBox" class="section-soft hidden">
+                <div class="v7-card-head"><h2 class="v7-panel-title">Plaque Details</h2><button class="small-btn" id="addPlaque" type="button">Add Plaque</button></div>
+                <div id="plaques"></div>
+              </section>
+              <div class="price-row wood-price-row"><div class="price-card"><span>Item Price Each</span><strong id="itemPrice">$0.00</strong></div><div class="price-card"><span>Job Total</span><strong id="jobTotal">$0.00</strong></div></div>
+              <div class="actions"><button class="btn clear" id="clearJob" type="button">Clear</button><button class="btn primary" type="submit">Save Job</button><button class="btn danger hidden" id="deleteJob" type="button">Delete</button></div>
+            </form>
+            <section class="section-soft selected-material-box"><h2 class="v7-panel-title">Selected Material</h2><div id="materialInfo">Select a material.</div></section>
+          </div>
+        </section>
+      </section>
+      <datalist id="customerList"></datalist>
+    </div>
+  </main>
+  <footer class="v7-footer">CajunVeteran Workshop Management - Built By A Veteran</footer>
+  <script src="js/database.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/woodworking-jobs.js"></script>
+</body>
+</html>
