@@ -1,7 +1,63 @@
-﻿<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="images/apple-touch-icon.png"><link rel="stylesheet" href="css/styles.css"><title>Colors / Filament</title>  <link rel="stylesheet" href="css/v7-update07.css">
-  <link rel="stylesheet" href="css/v7-update10.css">
-</head><body><main class="v7-main"><div class="v7-container"><header class="v7-header"><div><h1>Colors / Filament</h1><p>Browse the filament palette by brand and manage available colors</p></div><button class="btn primary" id="newColor">ï¼‹ New Color</button></header><section class="v7-card"><div class="v7-card-head"><h2>Filament Palette</h2></div><div class="v7-card-body"><div class="tool-row"><input id="colorSearch" placeholder="Search brand, type, color, or label"></div><form id="colorForm" class="form-panel"><label>Brand<input id="brand" list="brandList"></label><label>Type<input id="type"></label><label>Color<input id="color"></label><label>Label<input id="label"></label><label>Swatch<div style="display:flex;gap:7px"><input id="swatch"><input id="swatchPicker" type="color" value="#b8863b" style="width:55px"></div></label><label class="inline-check">Active <input id="active" type="checkbox" checked></label><div class="actions full"><button type="button" class="btn clear" id="clearColor">Clear</button><button class="btn primary">Save Color</button><button type="button" class="btn danger hidden" id="deleteColor">Delete</button><button type="button" class="small-btn" id="useBrand">Pick Brand</button></div></form><datalist id="brandList"></datalist><div id="paletteList" class="color-card-grid"></div></div></section></div></main><footer class="v7-footer">â˜… CajunVeteran Workshop Management â€¢ Built By A Veteran â˜…</footer><script src="js/database.js"></script><script src="js/navigation.js"></script><script src="js/modal.js"></script><script src="js/colors.js"></script>  <script src="js/colors-label-fix07.js"></script>
-  <script src="js/v7-update10.js"></script>
-</body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="images/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>Colors / Filament</title>
+</head>
+<body class="colors-page">
+  <main class="v7-main colors-main">
+    <div class="v7-container">
+      <header class="v7-header colors-header">
+        <div>
+          <h1>Colors / Filament</h1>
+          <p>Manage active filament colors, estimated grams, spool count, and low filament alerts</p>
+        </div>
+        <button class="btn primary" id="newColorBtn" type="button">+ New Color</button>
+      </header>
 
+      <section class="v7-card colors-card">
+        <div class="v7-card-head">
+          <h2 class="v7-panel-title">Filament Inventory</h2>
+          <div class="color-filter-pills" role="group" aria-label="Color status filter">
+            <button type="button" class="filter-pill active" data-filter="active">Active</button>
+            <button type="button" class="filter-pill" data-filter="inactive">Inactive</button>
+            <button type="button" class="filter-pill" data-filter="all">All</button>
+          </div>
+        </div>
+        <div class="v7-card-body">
+          <div class="colors-toolbar">
+            <input id="colorSearch" type="search" placeholder="Search brand, color, type, or notes">
+            <div class="filament-low-summary" id="filamentLowSummary">Low Filament: 0</div>
+          </div>
 
+          <form id="colorForm" class="form-panel color-form">
+            <label>Brand<input id="brand" placeholder="Example: SUNLU"></label>
+            <label>Color Name<input id="color" required placeholder="Example: Sunny Orange"></label>
+            <label>Type<input id="type" placeholder="PLA, PETG, ABS"></label>
+            <label class="num-field">Est. Grams<input id="estimated_grams" type="number" min="0" step="0.1" value="1000"></label>
+            <label class="num-field">Spools<input id="spools" type="number" min="0" step="1" value="1"></label>
+            <label class="num-field">Low At Grams<input id="low_grams" type="number" min="0" step="1" value="200"></label>
+            <label>Status<select id="status"><option value="active">Active</option><option value="inactive">Inactive</option></select></label>
+            <label class="full">Notes<textarea id="notes" placeholder="Optional notes"></textarea></label>
+            <div class="actions full">
+              <button class="btn clear" id="clearColor" type="button">Clear</button>
+              <button class="btn primary" type="submit">Save Color</button>
+              <button class="btn danger hidden" id="deleteColor" type="button">Delete</button>
+            </div>
+          </form>
+
+          <div id="colorsGrid" class="colors-grid"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="v7-footer">CajunVeteran Workshop Management - Built By A Veteran</footer>
+  <script src="js/database.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/colors.js"></script>
+</body>
+</html>

@@ -1,14 +1,175 @@
 initNavigation('colors.html');
-let rows=[],editing=null;
-const $=id=>document.getElementById(id);
-const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function fallback(value){const key=String(value||'').toLowerCase(),map={black:'#111',white:'#eee',red:'#b71c1c',orange:'#f47b20',yellow:'#f6c21a',green:'#159947',blue:'#1464d2',purple:'#6936c9',pink:'#e15aa2',gray:'#888',grey:'#888',brown:'#8b5a2b',gold:'#caa45f',silver:'#c0c0c0',olive:'#808000',teal:'#17a2a6'};const match=Object.keys(map).find(name=>key.includes(name));return match?map[match]:'#d8d8d8'}
-function grouped(list){const groups=new Map();list.forEach(row=>{const brand=(row.brand||'No Brand').trim()||'No Brand';if(!groups.has(brand))groups.set(brand,[]);groups.get(brand).push(row)});return [...groups].sort((a,b)=>a[0].localeCompare(b[0]))}
-function ensureColorUiStyles(){if(document.getElementById('colorUiAdditions'))return;const style=document.createElement('style');style.id='colorUiAdditions';style.textContent=`.filament-title-row{display:flex;align-items:center;gap:10px;width:100%}.color-count-pill{display:inline-grid;place-items:center;min-width:30px;height:24px;padding:0 8px;border:1px solid #8b6420;border-radius:999px;background:linear-gradient(180deg,#23190c,#120f09);color:#efb952;font-size:10px;font-weight:900;line-height:1;white-space:nowrap}.color-count-pill.total{min-width:34px;height:26px;font-size:11px}.color-card{position:relative}.color-card-status{position:absolute;right:11px;top:7px;display:grid;place-items:center;width:18px;height:18px;border-radius:50%;font:900 11px/1 Arial,sans-serif;z-index:3}.color-card-status.active{border:1px solid #3f8f46;background:#123618;color:#80e188}.color-card-status.inactive{border:1px solid #a13c32;background:#471612;color:#ff8278}.color-card .small-btn,.color-card .color-edit-btn{margin-top:20px}`;document.head.appendChild(style)}
-function updateTotalCount(count){ensureColorUiStyles();const head=document.querySelector('.v7-card-head'),title=head?.querySelector('h2');if(!head||!title)return;head.classList.add('filament-title-row');let pill=$('totalColorCount');if(!pill){pill=document.createElement('span');pill.id='totalColorCount';pill.className='color-count-pill total';title.insertAdjacentElement('afterend',pill)}pill.textContent=count;pill.title=`${count} total colors`}
-function render(){const query=$('colorSearch').value.toLowerCase(),list=rows.filter(row=>`${row.brand||''} ${row.type||''} ${row.color||''} ${row.label||''}`.toLowerCase().includes(query));updateTotalCount(list.length);$('paletteList').innerHTML=grouped(list).map(([brand,items])=>`<section class="color-brand-section"><div class="brand-group-head"><b>${esc(brand)}</b><span class="color-count-pill" title="${items.length} colors in ${esc(brand)}">${items.length}</span></div><div class="brand-color-grid">${items.map(row=>`<article class="color-card" data-edit="${esc(row.id)}"><i class="color-swatch" style="background:${esc(row.swatch||fallback(row.color))}"></i><div><h3>${esc(row.color||'Unnamed')}</h3><p>${esc(row.type||'No type')}</p><small>${esc(row.label||'')}</small></div><span class="color-card-status ${row.active!==false?'active':'inactive'}" title="${row.active!==false?'Active':'Inactive'}">${row.active!==false?'✓':'✕'}</span><button type="button" class="small-btn" data-edit-btn="${esc(row.id)}">Edit</button></article>`).join('')}</div></section>`).join('')||'<div class="empty-soft">No colors found.</div>'}
-function updateGeneratedLabel(){const value=[$('brand').value,$('type').value,$('color').value].filter(Boolean).join(' - ');$('label').value=value}
-function clear(){editing=null;$('colorForm').reset();$('active').checked=true;$('swatchPicker').value='#b8863b';$('swatch').value='';updateGeneratedLabel();$('colorForm').classList.remove('show');$('deleteColor').classList.add('hidden')}
-async function load(){rows=await CVDB.select('cv_colors','select=*&order=brand.asc,color.asc');$('brandList').innerHTML=[...new Set(rows.map(row=>row.brand).filter(Boolean))].map(value=>`<option value="${esc(value)}"></option>`).join('');render()}
-function openRow(id){const row=rows.find(value=>String(value.id)===String(id));if(!row)return;editing=row;$('colorForm').classList.add('show');['brand','type','color','swatch'].forEach(key=>$(key).value=row[key]||'');$('swatchPicker').value=row.swatch||fallback(row.color);$('active').checked=row.active!==false;updateGeneratedLabel();$('deleteColor').classList.remove('hidden');$('colorForm').scrollIntoView({behavior:'smooth',block:'start'})}
-$('newColor').onclick=()=>{clear();$('colorForm').classList.add('show');$('brand').focus()};$('clearColor').onclick=clear;$('colorSearch').oninput=render;$('paletteList').onclick=event=>{const target=event.target.closest('[data-edit-btn],[data-edit]');const id=target?.dataset.editBtn||target?.dataset.edit;if(id)openRow(id)};$('swatchPicker').oninput=event=>$('swatch').value=event.target.value;$('swatch').oninput=event=>{if(/^#[0-9a-f]{6}$/i.test(event.target.value))$('swatchPicker').value=event.target.value};['brand','type','color'].forEach(id=>$(id).addEventListener('input',updateGeneratedLabel));$('useBrand').onclick=()=>$('brand').focus();$('colorForm').onsubmit=async event=>{event.preventDefault();updateGeneratedLabel();const row={brand:$('brand').value.trim(),type:$('type').value.trim(),color:$('color').value.trim(),label:$('label').value,swatch:$('swatch').value||$('swatchPicker').value,active:$('active').checked};editing?await CVDB.patch('cv_colors',`id=eq.${editing.id}`,row):await CVDB.insert('cv_colors',row);toast('Color saved');clear();await load()};$('deleteColor').onclick=async()=>{if(!editing)return;const ok=await confirmAction({title:'Delete Color',message:`Delete ${editing.color||editing.label}?`,details:'This removes the color from the filament palette.',confirmText:'Delete Color'});if(!ok)return;await CVDB.remove('cv_colors',`id=eq.${editing.id}`);toast('Color deleted');clear();await load()};$('label').readOnly=true;load().catch(error=>toast(error.message,'err'));
+
+let colorRows = [];
+let editingColor = null;
+let filterMode = 'active';
+
+const $ = id => document.getElementById(id);
+const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const FILAMENT_STORE = 'cv_filament_local_v1';
+const LOW_DEFAULT = 200;
+
+function readJson(key, fallback) { try { return JSON.parse(localStorage.getItem(key) || 'null') || fallback; } catch { return fallback; } }
+function writeJson(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+function localStore() { return readJson(FILAMENT_STORE, {}); }
+function saveLocal(id, data) { const store = localStore(); store[String(id)] = { ...(store[String(id)] || {}), ...data }; writeJson(FILAMENT_STORE, store); }
+function rowKey(row) { return String(row.id ?? row.color_id ?? `${row.brand || ''}|${row.color || row.name || row.label || ''}|${row.type || ''}`); }
+function first(row, keys, fallback = '') { for (const key of keys) if (row && row[key] !== undefined && row[key] !== null && String(row[key]).trim() !== '') return row[key]; return fallback; }
+function localFor(row) { return localStore()[rowKey(row)] || {}; }
+function colorName(row) { return first(row, ['color','name','label','color_name'], 'Unnamed Color'); }
+function colorStatus(row) { const local = localFor(row); const raw = String(local.status || row.status || row.active_status || (row.active === false ? 'inactive' : 'active')).toLowerCase(); return raw === 'inactive' || raw === 'false' ? 'inactive' : 'active'; }
+function spoolCount(row) { const local = localFor(row); return Number(local.spools ?? row.spools ?? row.spool_count ?? 1); }
+function estGrams(row) { const local = localFor(row); return Number(local.estimated_grams ?? row.estimated_grams ?? row.est_grams ?? row.remaining_grams ?? 0); }
+function lowAt(row) { const local = localFor(row); return Number(local.low_grams ?? row.low_grams ?? row.low_at_grams ?? LOW_DEFAULT); }
+function colorHex(row) {
+  const raw = `${colorName(row)} ${row.hex || row.swatch || ''}`.toLowerCase();
+  if (String(row.hex || '').startsWith('#')) return row.hex;
+  if (String(row.swatch || '').startsWith('#')) return row.swatch;
+  const map = {black:'#111',white:'#eee',red:'#b71c1c',orange:'#f47b20',yellow:'#f3c316',green:'#159947',blue:'#1464d2',purple:'#6936c9',pink:'#e15aa2',gray:'#888',grey:'#888',brown:'#8b5a2b',gold:'#caa45f',silver:'#c0c0c0',teal:'#17a2a6'};
+  const key = Object.keys(map).find(name => raw.includes(name));
+  return map[key] || '#d8d8d8';
+}
+function filamentState(row) {
+  const grams = estGrams(row);
+  const low = lowAt(row);
+  if (grams <= 0 || colorStatus(row) === 'inactive') return { key:'out', label:'Out / Inactive' };
+  if (grams <= low) return { key:'low', label:'Low' };
+  return { key:'good', label:'In Stock' };
+}
+function lowColors() { return colorRows.filter(row => colorStatus(row) === 'active' && estGrams(row) > 0 && estGrams(row) <= lowAt(row)); }
+function syncStatusFields() {
+  if ($('status').value === 'inactive') {
+    $('spools').value = 0;
+    $('estimated_grams').value = 0;
+  } else if (Number($('spools').value || 0) <= 0) {
+    $('spools').value = 1;
+  }
+}
+function renderStats() { $('filamentLowSummary').textContent = `Low Filament: ${lowColors().length}`; }
+function render() {
+  const q = ($('colorSearch')?.value || '').toLowerCase();
+  renderStats();
+  const list = colorRows.filter(row => {
+    const status = colorStatus(row);
+    if (filterMode !== 'all' && status !== filterMode) return false;
+    const haystack = `${row.brand || ''} ${colorName(row)} ${row.type || ''} ${row.notes || ''}`.toLowerCase();
+    if (q && !haystack.includes(q)) return false;
+    return true;
+  });
+  $('colorsGrid').innerHTML = list.map(row => {
+    const state = filamentState(row);
+    const grams = estGrams(row);
+    const spools = spoolCount(row);
+    const low = lowAt(row);
+    const status = colorStatus(row);
+    const key = rowKey(row);
+    return `<article class="filament-card ${state.key}">
+      <div class="filament-card-top">
+        <div class="filament-title"><span class="filament-swatch" style="background:${esc(colorHex(row))}"></span><div><h3>${esc(colorName(row))}</h3><small>${esc(row.brand || 'No Brand')} ${row.type ? '• ' + esc(row.type) : ''}</small></div></div>
+        <span class="filament-status ${status}">${status}</span>
+      </div>
+      <div class="filament-grams-row"><strong>${grams.toFixed(1)}g</strong><span class="filament-state ${state.key}">${state.label}</span></div>
+      <div class="filament-kpis"><div><span>Spools</span><b>${spools}</b></div><div><span>Low At</span><b>${low}g</b></div></div>
+      <div class="filament-actions"><button type="button" class="small-btn" data-edit="${esc(key)}">Edit</button></div>
+    </article>`;
+  }).join('') || '<div class="color-empty">No colors match this filter.</div>';
+}
+function clearForm() {
+  editingColor = null;
+  $('colorForm').reset();
+  $('estimated_grams').value = 1000;
+  $('spools').value = 1;
+  $('low_grams').value = LOW_DEFAULT;
+  $('status').value = 'active';
+  $('deleteColor').classList.add('hidden');
+}
+function openEditor(row) {
+  editingColor = row;
+  $('brand').value = row.brand || '';
+  $('color').value = colorName(row);
+  $('type').value = row.type || '';
+  $('estimated_grams').value = estGrams(row);
+  $('spools').value = spoolCount(row);
+  $('low_grams').value = lowAt(row);
+  $('status').value = colorStatus(row);
+  $('notes').value = row.notes || '';
+  $('deleteColor').classList.remove('hidden');
+  $('colorForm').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+async function load() {
+  try { colorRows = await CVDB.select('cv_colors', 'select=*&order=color.asc'); }
+  catch { try { const dash = await CVDB.loadDashboard(); colorRows = dash.colors || []; } catch { colorRows = []; } }
+  render();
+}
+async function patchColor(row, payload) {
+  const filters = [];
+  if (row?.id) filters.push(`id=eq.${row.id}`);
+  if (row?.color_id) filters.push(`color_id=eq.${encodeURIComponent(row.color_id)}`);
+  if (row?.color) filters.push(`color=eq.${encodeURIComponent(row.color)}`);
+  let last;
+  for (const filter of filters) {
+    try { await CVDB.patch('cv_colors', filter, payload); return true; }
+    catch(e) { last = e; }
+  }
+  if (last) throw last;
+  return false;
+}
+async function saveColor() {
+  syncStatusFields();
+  const row = {
+    brand: $('brand').value.trim(),
+    color: $('color').value.trim(),
+    type: $('type').value.trim(),
+    status: $('status').value,
+    estimated_grams: Number($('estimated_grams').value || 0),
+    spools: Number($('spools').value || 0),
+    low_grams: Number($('low_grams').value || LOW_DEFAULT),
+    notes: $('notes').value,
+    updated_at: new Date().toISOString()
+  };
+  if (!row.color) { toast('Color name is required.', 'err'); return; }
+  const localKey = editingColor ? rowKey(editingColor) : `${row.brand}|${row.color}|${row.type}`;
+  saveLocal(localKey, row);
+  try {
+    if (editingColor) await patchColor(editingColor, row);
+    else await CVDB.insert('cv_colors', row);
+    toast('Color saved');
+  } catch(error) {
+    console.warn('Color save fallback local only:', error);
+    toast('Color saved locally. Run the SQL file to save grams/spools/status in Supabase.', 'err');
+  }
+  clearForm();
+  await load();
+}
+async function subtractFilamentUsage(colorNameOrKey, gramsUsed) {
+  const grams = Number(gramsUsed || 0);
+  if (!grams) return;
+  const row = colorRows.find(color => rowKey(color) === colorNameOrKey || colorName(color).toLowerCase() === String(colorNameOrKey).toLowerCase());
+  if (!row) return;
+  const next = Math.max(0, estGrams(row) - grams);
+  saveLocal(rowKey(row), { estimated_grams: next });
+  try { await patchColor(row, { estimated_grams: next, updated_at: new Date().toISOString() }); }
+  catch(error) { console.warn('Filament usage saved locally only:', error); }
+}
+window.CVFilamentTracker = { subtractFilamentUsage };
+function wire() {
+  document.querySelectorAll('[data-filter]').forEach(button => {
+    button.onclick = () => { filterMode = button.dataset.filter; document.querySelectorAll('[data-filter]').forEach(b => b.classList.toggle('active', b === button)); render(); };
+  });
+  $('colorSearch').oninput = render;
+  $('newColorBtn').onclick = clearForm;
+  $('clearColor').onclick = clearForm;
+  $('status').onchange = () => { syncStatusFields(); };
+  $('colorForm').onsubmit = async event => { event.preventDefault(); await saveColor(); };
+  $('colorsGrid').onclick = event => { const btn = event.target.closest('[data-edit]'); if (!btn) return; const row = colorRows.find(color => rowKey(color) === btn.dataset.edit); if (row) openEditor(row); };
+  $('deleteColor').onclick = async () => {
+    if (!editingColor) return;
+    if (!confirm('Delete this color?')) return;
+    try { await CVDB.remove('cv_colors', editingColor.id ? `id=eq.${editingColor.id}` : `color=eq.${encodeURIComponent(colorName(editingColor))}`); }
+    catch(error) { console.warn(error); }
+    clearForm();
+    await load();
+  };
+}
+wire();
+load().catch(error => { console.error(error); toast(error.message, 'err'); });
