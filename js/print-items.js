@@ -245,7 +245,8 @@ function mergeSavedItemIntoGrid(row) {
     stock: row.stock,
     category: row.category || row.type,
     type: row.type || row.category,
-    status: row.status,
+    status: row.status || (row.visible===false?'hidden':'visible'),
+    visible: row.visible,
     description: $('description') ? $('description').value : row.description,
     image_url: $('image_url') ? $('image_url').value : row.image_url,
     price_components: JSON.stringify(componentRows || []),
@@ -295,6 +296,6 @@ function wire(){ $('printItemSearch').oninput=render; $('printItemFilter').oncha
   $('image_url').value = thumb || '';
   setPrintPreview(thumb || 'images/CajunVeteran 3D Print Logo.png');
   toast(thumb ? '3MF thumbnail extracted and model file attached.' : `${type.toUpperCase()} file attached. No embedded thumbnail found, using default logo.`);
-}; $('removePrintImage').onclick=()=>{ $('image_url').value=''; $('image_file').value=''; ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); setPrintPreview(''); }; $('printItemForm').onsubmit=async event=>{ event.preventDefault(); const calc=calcPricing(); const row={sku:$('sku').value.trim(),name:$('name').value.trim(),price:Number($('price').value||0),stock:Number($('stock').value||0),type:$('category').value,status:$('status').value,print_time:formatMinutes(calc.minutes),weight:`${calc.grams.toFixed(1)}g`,description:$('description').value,updated_at:new Date().toISOString()}; if(!row.sku||!row.name){toast('SKU and Name are required','err');return;} try{ await saveItem(row); await refreshAfterSave(row); }catch(error){ console.error(error); toast(error.message||'Print item save failed','err'); } }; $('deletePrintItem').onclick=async()=>{ if(!editingPrintItem)return; const ok=await confirmAction({title:'Delete Print Item',message:`Delete ${editingPrintItem.name}?`,details:'Existing orders keep their line item text, but this item will be removed from the pick list.',confirmText:'Delete Item'}); if(!ok)return; await CVDB.remove('cv_items',`sku=eq.${encodeURIComponent(editingPrintItem.sku)}`); toast('Print item deleted'); clearForm(); await load(); }; }
+}; $('removePrintImage').onclick=()=>{ $('image_url').value=''; $('image_file').value=''; ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); setPrintPreview(''); }; $('printItemForm').onsubmit=async event=>{ event.preventDefault(); const calc=calcPricing(); const row={sku:$('sku').value.trim(),name:$('name').value.trim(),price:Number($('price').value||0),stock:Number($('stock').value||0),type:$('category').value,visible:$('status').value==='visible',print_time:formatMinutes(calc.minutes),weight:`${calc.grams.toFixed(1)}g`,description:$('description').value,updated_at:new Date().toISOString()}; if(!row.sku||!row.name){toast('SKU and Name are required','err');return;} try{ await saveItem(row); await refreshAfterSave(row); }catch(error){ console.error(error); toast(error.message||'Print item save failed','err'); } }; $('deletePrintItem').onclick=async()=>{ if(!editingPrintItem)return; const ok=await confirmAction({title:'Delete Print Item',message:`Delete ${editingPrintItem.name}?`,details:'Existing orders keep their line item text, but this item will be removed from the pick list.',confirmText:'Delete Item'}); if(!ok)return; await CVDB.remove('cv_items',`sku=eq.${encodeURIComponent(editingPrintItem.sku)}`); toast('Print item deleted'); clearForm(); await load(); }; }
 wire();
 load().catch(error=>toast(error.message,'err'));
