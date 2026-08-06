@@ -231,6 +231,47 @@ async function saveItem(row){
     }
   }
 }
+
+function mergeSavedItemIntoGrid(row) {
+  const sku = String(row.sku || '');
+  if (!sku) return;
+  const calc = calcPricing();
+  const saved = {
+    ...(editingPrintItem || {}),
+    ...row,
+    sku: row.sku,
+    name: row.name,
+    price: row.price,
+    stock: row.stock,
+    category: row.category,
+    status: row.status,
+    description: $('description') ? $('description').value : row.description,
+    image_url: $('image_url') ? $('image_url').value : row.image_url,
+    price_components: JSON.stringify(componentRows || []),
+    linked_items: JSON.stringify(linkedRows || []),
+    suggested_price: calc.suggested,
+    total_grams: calc.grams,
+    total_print_minutes: calc.minutes,
+    print_time: formatMinutes(calc.minutes),
+    weight: `${calc.grams.toFixed(1)}g`,
+    updated_at: new Date().toISOString()
+  };
+  const index = printRows.findIndex(item => String(item.sku || item.item_id || '') === sku);
+  if (index >= 0) printRows[index] = { ...printRows[index], ...saved };
+  else printRows.unshift(saved);
+}
+async function refreshAfterSave(row) {
+  // Immediate UI update first so Save feels successful without a full page refresh.
+  mergeSavedItemIntoGrid(row);
+  render();
+  clearForm();
+  try {
+    printRows = await CVDB.select('cv_items','select=*&order=name.asc');
+    render();
+  } catch (err) {
+    console.warn('Background item reload skipped after save', err);
+  }
+}
 function wire(){ $('printItemSearch').oninput=render; $('printItemFilter').onchange=render; $('newPrintItem').onclick=()=>{ clearForm(); $('printItemForm').classList.add('show'); $('sku').focus(); }; $('clearPrintItem').onclick=clearForm; $('addComponent').onclick=()=>{ componentRows.push({name:'',color:'',grams:0,hours:0,minutes:0,required:true}); renderComponents(); }; $('addLinkedItem').onclick=()=>{ linkedRows.push({sku:'',label:'',defaultSelected:false}); renderComponents(); }; document.addEventListener('input',event=>{ const rowEl=event.target.closest('[data-component-index]'); if(rowEl&&event.target.dataset.componentField){ const index=Number(rowEl.dataset.componentIndex); const field=event.target.dataset.componentField; componentRows[index][field]=['grams','hours','minutes'].includes(field)?Number(event.target.value||0):event.target.value; renderPricingSummary(); } const linkedEl=event.target.closest('[data-linked-index]'); if(linkedEl&&event.target.dataset.linkedField){ linkedRows[Number(linkedEl.dataset.linkedIndex)][event.target.dataset.linkedField]=event.target.value; } }); document.addEventListener('change',event=>{ const rowEl=event.target.closest('[data-component-index]'); if(rowEl&&event.target.dataset.componentField==='required') componentRows[Number(rowEl.dataset.componentIndex)].required=event.target.checked; const linkedEl=event.target.closest('[data-linked-index]'); if(linkedEl&&event.target.dataset.linkedField){ const index=Number(linkedEl.dataset.linkedIndex); const field=event.target.dataset.linkedField; linkedRows[index][field]=field==='defaultSelected'?event.target.checked:event.target.value; if(field==='sku'){ const item=printRows.find(x=>String(x.sku)===String(event.target.value)); if(item&&!linkedRows[index].label) linkedRows[index].label=item.name; } renderComponents(); } }); document.addEventListener('click',event=>{ if(event.target.dataset.removeComponent!==undefined){ componentRows.splice(Number(event.target.dataset.removeComponent),1); renderComponents(); } if(event.target.dataset.removeLinked!==undefined){ linkedRows.splice(Number(event.target.dataset.removeLinked),1); renderComponents(); } }); $('printItemsGrid').onclick=event=>{ const button=event.target.closest('[data-edit]'); if(!button)return; const row=printRows.find(item=>String(item.sku)===String(button.dataset.edit)); if(row)openEditor(row); }; $('image_file').onchange=async event=>{
   const file=event.target.files&&event.target.files[0];
   if(!file)return;
@@ -253,6 +294,6 @@ function wire(){ $('printItemSearch').oninput=render; $('printItemFilter').oncha
   $('image_url').value = thumb || '';
   setPrintPreview(thumb || 'images/CajunVeteran 3D Print Logo.png');
   toast(thumb ? '3MF thumbnail extracted and model file attached.' : `${type.toUpperCase()} file attached. No embedded thumbnail found, using default logo.`);
-}; $('removePrintImage').onclick=()=>{ $('image_url').value=''; $('image_file').value=''; ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); setPrintPreview(''); }; $('printItemForm').onsubmit=async event=>{ event.preventDefault(); const calc=calcPricing(); const row={sku:$('sku').value.trim(),name:$('name').value.trim(),price:Number($('price').value||0),stock:Number($('stock').value||0),category:$('category').value,status:$('status').value,print_time:formatMinutes(calc.minutes),weight:`${calc.grams.toFixed(1)}g`,description:$('description').value,updated_at:new Date().toISOString()}; if(!row.sku||!row.name){toast('SKU and Name are required','err');return;} await saveItem(row); await load(); clearForm(); render(); }; $('deletePrintItem').onclick=async()=>{ if(!editingPrintItem)return; const ok=await confirmAction({title:'Delete Print Item',message:`Delete ${editingPrintItem.name}?`,details:'Existing orders keep their line item text, but this item will be removed from the pick list.',confirmText:'Delete Item'}); if(!ok)return; await CVDB.remove('cv_items',`sku=eq.${encodeURIComponent(editingPrintItem.sku)}`); toast('Print item deleted'); clearForm(); await load(); }; }
+}; $('removePrintImage').onclick=()=>{ $('image_url').value=''; $('image_file').value=''; ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); setPrintPreview(''); }; $('printItemForm').onsubmit=async event=>{ event.preventDefault(); const calc=calcPricing(); const row={sku:$('sku').value.trim(),name:$('name').value.trim(),price:Number($('price').value||0),stock:Number($('stock').value||0),category:$('category').value,status:$('status').value,print_time:formatMinutes(calc.minutes),weight:`${calc.grams.toFixed(1)}g`,description:$('description').value,updated_at:new Date().toISOString()}; if(!row.sku||!row.name){toast('SKU and Name are required','err');return;} try{ await saveItem(row); await refreshAfterSave(row); }catch(error){ console.error(error); toast(error.message||'Print item save failed','err'); } }; $('deletePrintItem').onclick=async()=>{ if(!editingPrintItem)return; const ok=await confirmAction({title:'Delete Print Item',message:`Delete ${editingPrintItem.name}?`,details:'Existing orders keep their line item text, but this item will be removed from the pick list.',confirmText:'Delete Item'}); if(!ok)return; await CVDB.remove('cv_items',`sku=eq.${encodeURIComponent(editingPrintItem.sku)}`); toast('Print item deleted'); clearForm(); await load(); }; }
 wire();
 load().catch(error=>toast(error.message,'err'));
