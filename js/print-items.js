@@ -26,7 +26,7 @@ function isImageAsset(value) {
   return v.startsWith('data:image/') || /\.(png|jpg|jpeg|webp|gif|svg)(\?|#|$)/.test(v);
 }
 function itemImage(item) {
-  const value = firstValue(item, ['image_url','image','photo_url','thumbnail_url'], '');
+  const value = itemSavedImage(item);
   return isImageAsset(value) ? value : 'images/CajunVeteran 3D Print Logo.png';
 }
 function fileAssetType(file) {
@@ -101,11 +101,41 @@ function itemStock(item) { const stock = Number(firstValue(item, ['stock','qty',
 function isVisible(item) { const status = String(item.status || '').toLowerCase(); return !(status === 'hidden' || item.hidden === true || item.active === false); }
 function parseJson(value, fallback) { if (Array.isArray(value)) return value; if (!value) return fallback; try { return JSON.parse(value); } catch { return fallback; } }
 function localPricing() { return readJson(PRICING_STORE, {}); }
-function saveLocalPricing(sku, data) { const store = localPricing(); store[sku] = data; localStorage.setItem(PRICING_STORE, JSON.stringify(store)); }
+function saveLocalPricing(sku, data) { const store = localPricing(); store[sku] = { ...(store[sku] || {}), ...(data || {}) }; localStorage.setItem(PRICING_STORE, JSON.stringify(store)); }
 function itemPricingData(item) {
   const store = localPricing(); const sku = item.sku || item.item_id || ''; const defaults = pricingDefaults();
   return { components: parseJson(item.price_components, store[sku]?.components || []), linked: parseJson(item.linked_items, store[sku]?.linked || []), rate: Number(item.filament_rate || store[sku]?.rate || defaults.filamentRate), machine: Number(item.machine_rate || store[sku]?.machine || defaults.machineRate), markup: Number(item.markup_percent || store[sku]?.markup || defaults.markupPercent), round: Number(item.round_to || store[sku]?.round || defaults.roundTo), suggested: Number(item.suggested_price || store[sku]?.suggested || 0) };
 }
+function localItemData(item) {
+  const sku = item?.sku || item?.item_id || '';
+  return localPricing()[sku] || {};
+}
+function itemDescription(item) {
+  const local = localItemData(item);
+  if (local.description !== undefined) return local.description;
+  return item.description || item.notes || '';
+}
+function itemSavedImage(item) {
+  const local = localItemData(item);
+  return local.image_url || item.image_url || item.image || item.photo_url || item.thumbnail_url || '';
+}
+function componentDisplayName(row) {
+  if (row.name) return row.name;
+  if (!row.color) return '';
+  const label = colorOptionLabel(row.color);
+  return String(label || row.color).replace(/^.*-\s*/, '').replace(/\s*\/.*$/, '').trim();
+}
+function componentColorHex(row) {
+  const found = colors.find(color => colorOptionValue(color) === row.color);
+  return found?.hex_color || found?.palette_color || found?.hex || '#b88728';
+}
+function renderComponentChips(item) {
+  const pricing = itemPricingData(item);
+  const comps = (pricing.components || []).filter(row => componentDisplayName(row));
+  if (!comps.length) return '';
+  return `<div class="print-card-colors" title="Assigned colors">${comps.map(row => `<span class="print-color-chip"><i style="background:${esc(componentColorHex(row))}"></i>${esc(componentDisplayName(row))}</span>`).join('')}</div>`;
+}
+
 function minutesFrom(h, m) { return Number(h || 0) * 60 + Number(m || 0); }
 function roundTo(value, step) { step = Number(step || 0.5); return step > 0 ? Math.ceil(Number(value || 0) / step) * step : Number(value || 0); }
 function calcPricing(components = componentRows) { const d = pricingDefaults(); const grams = components.reduce((sum,row)=>sum+Number(row.grams||0),0); const minutes = components.reduce((sum,row)=>sum+minutesFrom(row.hours,row.minutes),0); const filamentCost = grams * Number(d.filamentRate); const machineCost = (minutes/60) * Number(d.machineRate); const baseCost = filamentCost + machineCost; const suggestedRaw = baseCost * (1 + Number(d.markupPercent)/100); const suggested = roundTo(suggestedRaw, Number(d.roundTo)); return { grams, minutes, filamentCost, machineCost, baseCost, suggestedRaw, suggested, filamentRate:Number(d.filamentRate), machineRate:Number(d.machineRate), markup:Number(d.markupPercent), round:Number(d.roundTo) }; }
@@ -132,10 +162,10 @@ function linkedTemplate(row, index) { const linked=printRows.find(item=>String(i
 function renderComponents() { $('componentRows').innerHTML = componentRows.map(componentTemplate).join('') || '<div class="pi-empty-soft">No components added yet.</div>'; $('linkedRows').innerHTML = linkedRows.map(linkedTemplate).join('') || '<div class="pi-empty-soft">No linked item options added yet.</div>'; renderPricingSummary(); }
 function renderPricingSummary() { const calc=calcPricing(); const d=pricingDefaults(); if($('suggestedPriceBox')) $('suggestedPriceBox').textContent=money(calc.suggested); if($('viewFilamentRate')) $('viewFilamentRate').textContent=d.filamentRate; if($('viewMachineRate')) $('viewMachineRate').textContent=d.machineRate; if($('viewMarkupPercent')) $('viewMarkupPercent').textContent=d.markupPercent; if($('viewRoundTo')) $('viewRoundTo').textContent=d.roundTo; if($('grams')) $('grams').value = `${calc.grams.toFixed(1)}g`; if($('print_time')) $('print_time').value = formatMinutes(calc.minutes); if($('pricingSummary')) $('pricingSummary').innerHTML = `<div><span>Total Grams</span><strong>${calc.grams.toFixed(1)}g</strong></div><div><span>Total Print Time</span><strong>${formatMinutes(calc.minutes)}</strong></div><div><span>Material Cost</span><strong>${money(calc.filamentCost)}</strong></div><div><span>Machine Cost</span><strong>${money(calc.machineCost)}</strong></div><div><span>Base Cost</span><strong>${money(calc.baseCost)}</strong></div><div><span>Suggested</span><strong>${money(calc.suggested)}</strong></div>`; }
 function renderStats(){ const total=printRows.length; const avg=total?printRows.reduce((sum,item)=>sum+Number(item.price||0),0)/total:0; $('piTotal').textContent=total; $('piAverage').textContent=money(avg); $('piVisible').textContent=printRows.filter(isVisible).length; $('piOut').textContent=printRows.filter(item=>itemStock(item).key==='out').length; }
-function render(){ const q=($('printItemSearch')?.value||'').toLowerCase(); const filter=$('printItemFilter')?.value||'all'; renderStats(); const list=printRows.filter(item=>{ const haystack=`${item.sku||''} ${item.name||''} ${item.category||''}`.toLowerCase(); if(q&&!haystack.includes(q)) return false; if(filter==='visible') return isVisible(item); if(filter==='hidden') return !isVisible(item); if(filter==='out') return itemStock(item).key==='out'; return true; }); $('printItemsGrid').innerHTML=list.map(item=>{ const stock=itemStock(item); const sku=item.sku||item.item_id||''; const pricing=itemPricingData(item); const calc=pricing.components?.length?calcPricing(pricing.components):null; const printTime=calc?formatMinutes(calc.minutes):firstValue(item,['print_time','printTime','duration','time'],''); const size=firstValue(item,['size','dimensions','category'],item.category||'Other'); return `<article class="print-item-card" data-sku="${esc(sku)}"><div class="print-item-thumb-wrap"><img class="print-item-thumb" src="${esc(itemImage(item))}" alt="${esc(item.name||'Print item')}" loading="lazy" onerror="this.src='images/CajunVeteran 3D Print Logo.png'"></div><div class="print-item-content"><div class="print-item-head"><div class="print-title-block"><h3>${esc(item.name||'Unnamed Item')}</h3><small>SKU: ${esc(sku)}</small></div><span class="print-stock-pill ${stock.key}">${stock.label}</span></div><div class="print-price">${money(item.price)}</div><div class="print-suggested">Suggested: <b>${money(pricing.suggested||0)}</b></div><div class="print-kpis"><div><span>Stock</span><strong>${stock.value}</strong></div><div><span>Type</span><strong>${esc(size)}</strong></div><div><span>Time</span><strong>${esc(printTime||'-')}</strong></div></div><div class="print-actions"><button type="button" class="small-btn print-edit-btn" data-edit="${esc(sku)}">Edit</button></div></div></article>`; }).join('')||'<div class="color-empty">No print items found.</div>'; }
+function render(){ const q=($('printItemSearch')?.value||'').toLowerCase(); const filter=$('printItemFilter')?.value||'all'; renderStats(); const list=printRows.filter(item=>{ const haystack=`${item.sku||''} ${item.name||''} ${item.category||''}`.toLowerCase(); if(q&&!haystack.includes(q)) return false; if(filter==='visible') return isVisible(item); if(filter==='hidden') return !isVisible(item); if(filter==='out') return itemStock(item).key==='out'; return true; }); $('printItemsGrid').innerHTML=list.map(item=>{ const stock=itemStock(item); const sku=item.sku||item.item_id||''; const pricing=itemPricingData(item); const calc=pricing.components?.length?calcPricing(pricing.components):null; const printTime=calc?formatMinutes(calc.minutes):firstValue(item,['print_time','printTime','duration','time'],''); const size=firstValue(item,['size','dimensions','category'],item.category||'Other'); return `<article class="print-item-card" data-sku="${esc(sku)}"><div class="print-item-thumb-wrap"><img class="print-item-thumb" src="${esc(itemImage(item))}" alt="${esc(item.name||'Print item')}" loading="lazy" onerror="this.src='images/CajunVeteran 3D Print Logo.png'"></div><div class="print-item-content"><div class="print-item-head"><div class="print-title-block"><h3>${esc(item.name||'Unnamed Item')}</h3><small>SKU: ${esc(sku)}</small></div><span class="print-stock-pill ${stock.key}">${stock.label}</span></div><div class="print-price">${money(item.price)}</div><div class="print-suggested">Suggested: <b>${money(pricing.suggested||0)}</b></div><div class="print-kpis"><div><span>Stock</span><strong>${stock.value}</strong></div><div><span>Type</span><strong>${esc(size)}</strong></div><div><span>Time</span><strong>${esc(printTime||'-')}</strong></div></div><div class="print-card-bottom">${renderComponentChips(item)}<button type="button" class="small-btn print-edit-btn" data-edit="${esc(sku)}">Edit</button></div></div></article>`; }).join('')||'<div class="color-empty">No print items found.</div>'; }
 function populateSizeDropdown(selected=''){ $('category').innerHTML=sizeOptions(selected); }
 function clearForm(){ editingPrintItem=null; componentRows=[]; linkedRows=[]; $('printItemForm').reset(); populateSizeDropdown('General'); $('printItemForm').classList.remove('show'); $('deletePrintItem').classList.add('hidden'); setPrintPreview(''); ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); renderComponents(); }
-function openEditor(item){ editingPrintItem=item; const pricing=itemPricingData(item); componentRows=pricing.components||[]; linkedRows=pricing.linked||[]; $('printItemForm').classList.add('show'); $('sku').value=item.sku||''; $('name').value=item.name||''; $('price').value=Number(item.price||0); $('stock').value=Number(firstValue(item,['stock','qty','quantity','on_hand'],0)); populateSizeDropdown(item.category||'General'); $('status').value=isVisible(item)?'visible':'hidden'; $('description').value=item.description||item.notes||''; $('image_url').value=item.image_url||item.image||item.photo_url||item.thumbnail_url||''; ensureHidden('model_file_name').value=item.model_file_name||''; ensureHidden('model_file_type').value=item.model_file_type||''; ensureHidden('model_file_data').value=item.model_file_data||''; setPrintPreview($('image_url').value); $('deletePrintItem').classList.remove('hidden'); renderComponents(); $('printItemForm').scrollIntoView({behavior:'smooth',block:'start'}); }
+function openEditor(item){ editingPrintItem=item; const pricing=itemPricingData(item); componentRows=pricing.components||[]; linkedRows=pricing.linked||[]; $('printItemForm').classList.add('show'); $('sku').value=item.sku||''; $('name').value=item.name||''; $('price').value=Number(item.price||0); $('stock').value=Number(firstValue(item,['stock','qty','quantity','on_hand'],0)); populateSizeDropdown(item.category||'General'); $('status').value=isVisible(item)?'visible':'hidden'; const local=localItemData(item); $('description').value=itemDescription(item); $('image_url').value=itemSavedImage(item); ensureHidden('model_file_name').value=local.model_file_name||item.model_file_name||''; ensureHidden('model_file_type').value=local.model_file_type||item.model_file_type||''; ensureHidden('model_file_data').value=local.model_file_data||item.model_file_data||''; setPrintPreview($('image_url').value); $('deletePrintItem').classList.remove('hidden'); renderComponents(); $('printItemForm').scrollIntoView({behavior:'smooth',block:'start'}); }
 async function load(){ printRows=await CVDB.select('cv_items','select=*&order=name.asc'); try{ const data=await CVDB.loadDashboard(); colors=data.colors||[]; }catch{ try{ colors=await CVDB.select('cv_colors','select=*&order=brand.asc,color.asc'); }catch{ colors=[]; } } populateSizeDropdown('General'); renderComponents(); render(); }
 async function saveItem(row){
   const calc=calcPricing();
@@ -151,6 +181,7 @@ async function saveItem(row){
     updated_at: new Date().toISOString()
   };
   const withModel = modelFields.model_file_name ? {...baseRow, ...modelFields} : baseRow;
+  saveLocalPricing(row.sku,{components:componentRows,linked:linkedRows,suggested:calc.suggested,description:baseRow.description,image_url:baseRow.image_url,...modelFields});
   const extended={...withModel, price_components:componentRows, linked_items:linkedRows, filament_rate:calc.filamentRate, machine_rate:calc.machineRate, markup_percent:calc.markup, round_to:calc.round, suggested_price:calc.suggested, total_grams:calc.grams, total_print_minutes:calc.minutes, filament_cost:calc.filamentCost, machine_cost:calc.machineCost, print_time:formatMinutes(calc.minutes), weight:`${calc.grams.toFixed(1)}g`};
   const target = editingPrintItem ? `sku=eq.${encodeURIComponent(editingPrintItem.sku)}` : '';
   async function write(payload){
@@ -159,7 +190,7 @@ async function saveItem(row){
   }
   try{
     await write(extended);
-    toast('Print item saved');
+    saveLocalPricing(row.sku,{components:componentRows,linked:linkedRows,suggested:calc.suggested,description:baseRow.description,image_url:baseRow.image_url,...modelFields}); toast('Print item saved');
   }catch(error){
     console.warn('Extended print item save failed, trying basic save', error);
     try{
@@ -197,6 +228,6 @@ function wire(){ $('printItemSearch').oninput=render; $('printItemFilter').oncha
   $('image_url').value = thumb || '';
   setPrintPreview(thumb || 'images/CajunVeteran 3D Print Logo.png');
   toast(thumb ? '3MF thumbnail extracted and model file attached.' : `${type.toUpperCase()} file attached. No embedded thumbnail found, using default logo.`);
-}; $('removePrintImage').onclick=()=>{ $('image_url').value=''; $('image_file').value=''; ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); setPrintPreview(''); }; $('printItemForm').onsubmit=async event=>{ event.preventDefault(); const calc=calcPricing(); const row={sku:$('sku').value.trim(),name:$('name').value.trim(),price:Number($('price').value||0),stock:Number($('stock').value||0),category:$('category').value,status:$('status').value,print_time:formatMinutes(calc.minutes),weight:`${calc.grams.toFixed(1)}g`,description:$('description').value,updated_at:new Date().toISOString()}; if(!row.sku||!row.name){toast('SKU and Name are required','err');return;} await saveItem(row); clearForm(); await load(); }; $('deletePrintItem').onclick=async()=>{ if(!editingPrintItem)return; const ok=await confirmAction({title:'Delete Print Item',message:`Delete ${editingPrintItem.name}?`,details:'Existing orders keep their line item text, but this item will be removed from the pick list.',confirmText:'Delete Item'}); if(!ok)return; await CVDB.remove('cv_items',`sku=eq.${encodeURIComponent(editingPrintItem.sku)}`); toast('Print item deleted'); clearForm(); await load(); }; }
+}; $('removePrintImage').onclick=()=>{ $('image_url').value=''; $('image_file').value=''; ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); setPrintPreview(''); }; $('printItemForm').onsubmit=async event=>{ event.preventDefault(); const calc=calcPricing(); const row={sku:$('sku').value.trim(),name:$('name').value.trim(),price:Number($('price').value||0),stock:Number($('stock').value||0),category:$('category').value,status:$('status').value,print_time:formatMinutes(calc.minutes),weight:`${calc.grams.toFixed(1)}g`,description:$('description').value,updated_at:new Date().toISOString()}; if(!row.sku||!row.name){toast('SKU and Name are required','err');return;} await saveItem(row); await load(); clearForm(); render(); }; $('deletePrintItem').onclick=async()=>{ if(!editingPrintItem)return; const ok=await confirmAction({title:'Delete Print Item',message:`Delete ${editingPrintItem.name}?`,details:'Existing orders keep their line item text, but this item will be removed from the pick list.',confirmText:'Delete Item'}); if(!ok)return; await CVDB.remove('cv_items',`sku=eq.${encodeURIComponent(editingPrintItem.sku)}`); toast('Print item deleted'); clearForm(); await load(); }; }
 wire();
 load().catch(error=>toast(error.message,'err'));
