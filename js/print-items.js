@@ -101,10 +101,34 @@ function itemStock(item) { const stock = Number(firstValue(item, ['stock','qty',
 function isVisible(item) { const status = String(item.status || '').toLowerCase(); return !(status === 'hidden' || item.hidden === true || item.active === false); }
 function parseJson(value, fallback) { if (Array.isArray(value)) return value; if (!value) return fallback; try { return JSON.parse(value); } catch { return fallback; } }
 function localPricing() { return readJson(PRICING_STORE, {}); }
-function saveLocalPricing(sku, data) { const store = localPricing(); store[sku] = { ...(store[sku] || {}), ...(data || {}) }; localStorage.setItem(PRICING_STORE, JSON.stringify(store)); }
+function saveLocalPricing(sku, data) {
+  try {
+    const store = localPricing();
+    const clean = { ...(data || {}) };
+    // Do NOT put the full 3MF/STL/OBJ data URL in localStorage. It can exceed browser quota and stop the whole save.
+    delete clean.model_file_data;
+    store[sku] = { ...(store[sku] || {}), ...clean };
+    localStorage.setItem(PRICING_STORE, JSON.stringify(store));
+  } catch (err) {
+    console.warn('Local item cache save skipped', err);
+  }
+}
 function itemPricingData(item) {
-  const store = localPricing(); const sku = item.sku || item.item_id || ''; const defaults = pricingDefaults();
-  return { components: parseJson(item.price_components, store[sku]?.components || []), linked: parseJson(item.linked_items, store[sku]?.linked || []), rate: Number(item.filament_rate || store[sku]?.rate || defaults.filamentRate), machine: Number(item.machine_rate || store[sku]?.machine || defaults.machineRate), markup: Number(item.markup_percent || store[sku]?.markup || defaults.markupPercent), round: Number(item.round_to || store[sku]?.round || defaults.roundTo), suggested: Number(item.suggested_price || store[sku]?.suggested || 0) };
+  const store = localPricing();
+  const sku = item.sku || item.item_id || '';
+  const defaults = pricingDefaults();
+  const local = store[sku] || {};
+  const localHasComponents = Array.isArray(local.components);
+  const localHasLinked = Array.isArray(local.linked);
+  return {
+    components: localHasComponents ? local.components : parseJson(item.price_components, []),
+    linked: localHasLinked ? local.linked : parseJson(item.linked_items, []),
+    rate: Number(local.rate || item.filament_rate || defaults.filamentRate),
+    machine: Number(local.machine || item.machine_rate || defaults.machineRate),
+    markup: Number(local.markup || item.markup_percent || defaults.markupPercent),
+    round: Number(local.round || item.round_to || defaults.roundTo),
+    suggested: Number(local.suggested || item.suggested_price || 0)
+  };
 }
 function localItemData(item) {
   const sku = item?.sku || item?.item_id || '';
@@ -172,7 +196,7 @@ async function saveItem(row){
   const modelFields = {
     model_file_name: ($('model_file_name') && $('model_file_name').value) || '',
     model_file_type: ($('model_file_type') && $('model_file_type').value) || '',
-    model_file_data: ($('model_file_data') && $('model_file_data').value) || ''
+    model_file_data: ''
   };
   const baseRow = {
     ...row,
@@ -180,8 +204,9 @@ async function saveItem(row){
     image_url: $('image_url').value || null,
     updated_at: new Date().toISOString()
   };
-  const withModel = modelFields.model_file_name ? {...baseRow, ...modelFields} : baseRow;
-  saveLocalPricing(row.sku,{components:componentRows,linked:linkedRows,suggested:calc.suggested,description:baseRow.description,image_url:baseRow.image_url,...modelFields});
+  const modelMeta = modelFields.model_file_name ? {model_file_name:modelFields.model_file_name, model_file_type:modelFields.model_file_type} : {};
+  const withModel = modelFields.model_file_name ? {...baseRow, ...modelMeta} : baseRow;
+  saveLocalPricing(row.sku,{components:componentRows,linked:linkedRows,suggested:calc.suggested,description:baseRow.description,image_url:baseRow.image_url,model_file_name:modelFields.model_file_name,model_file_type:modelFields.model_file_type});
   const extended={...withModel, price_components:componentRows, linked_items:linkedRows, filament_rate:calc.filamentRate, machine_rate:calc.machineRate, markup_percent:calc.markup, round_to:calc.round, suggested_price:calc.suggested, total_grams:calc.grams, total_print_minutes:calc.minutes, filament_cost:calc.filamentCost, machine_cost:calc.machineCost, print_time:formatMinutes(calc.minutes), weight:`${calc.grams.toFixed(1)}g`};
   const target = editingPrintItem ? `sku=eq.${encodeURIComponent(editingPrintItem.sku)}` : '';
   async function write(payload){
@@ -190,7 +215,7 @@ async function saveItem(row){
   }
   try{
     await write(extended);
-    saveLocalPricing(row.sku,{components:componentRows,linked:linkedRows,suggested:calc.suggested,description:baseRow.description,image_url:baseRow.image_url,...modelFields}); toast('Print item saved');
+    saveLocalPricing(row.sku,{components:componentRows,linked:linkedRows,suggested:calc.suggested,description:baseRow.description,image_url:baseRow.image_url,model_file_name:modelFields.model_file_name,model_file_type:modelFields.model_file_type}); toast('Print item saved');
   }catch(error){
     console.warn('Extended print item save failed, trying basic save', error);
     try{
@@ -200,7 +225,7 @@ async function saveItem(row){
     }catch(modelError){
       console.warn('Model save failed, trying thumbnail/basic item only', modelError);
       const withoutModel = {...baseRow};
-      saveLocalPricing(row.sku,{components:componentRows,linked:linkedRows,suggested:calc.suggested,model:modelFields});
+      saveLocalPricing(row.sku,{components:componentRows,linked:linkedRows,suggested:calc.suggested,description:baseRow.description,image_url:baseRow.image_url,model_file_name:modelFields.model_file_name,model_file_type:modelFields.model_file_type});
       await write(withoutModel);
       toast(modelFields.model_file_name ? 'Item saved. Model file saved locally because Supabase model columns are missing.' : 'Item saved.');
     }
