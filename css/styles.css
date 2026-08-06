@@ -310,3 +310,17 @@ body.print-items-page .pi-item-meta b,
 body.print-items-page .print-item-meta b{color:#fff!important;}
 body.print-items-page [data-edit]{justify-self:start!important;margin-top:6px!important;min-width:58px!important;min-height:32px!important;}
 @media(max-width:900px){body.print-items-page .pi-toolbar,body.print-items-page .pi-form.show,body.print-items-page .pi-component-row,body.print-items-page .pi-linked-row{grid-template-columns:1fr!important;}body.print-items-page .pi-suggested-metrics{grid-template-columns:repeat(2,minmax(120px,1fr))!important;}}
+
+
+/* =====================================================
+   PRINT ITEMS V2 COMPACT FORM - field width fix
+===================================================== */
+body.print-items-page .pi-form.show{max-width:1180px!important;margin-left:auto!important;margin-right:auto!important;grid-template-columns:repeat(4,minmax(150px,1fr))!important;gap:12px!important;}
+body.print-items-page .pi-form > label:nth-of-type(1){grid-column:span 1!important;}
+body.print-items-page .pi-form > label:nth-of-type(2){grid-column:span 2!important;}
+body.print-items-page .pi-form > label:nth-of-type(3),body.print-items-page .pi-form > label:nth-of-type(4),body.print-items-page .pi-form > label:nth-of-type(5),body.print-items-page .pi-form > label:nth-of-type(6),body.print-items-page .pi-form > label:nth-of-type(7),body.print-items-page .pi-form > label:nth-of-type(8){grid-column:span 1!important;}
+body.print-items-page .pi-suggested-box,.print-items-page .upload-field,.print-items-page .pi-components-panel,.print-items-page .pi-linked-panel{max-width:100%!important;}
+body.print-items-page .pi-component-row{grid-template-columns:1.35fr 1.2fr .6fr .6fr .6fr auto auto!important;}
+body.print-items-page .pi-linked-row{grid-template-columns:1.4fr 1fr auto auto!important;}
+body.print-items-page #description{min-height:76px!important;}
+@media(max-width:1100px){body.print-items-page .pi-form.show{grid-template-columns:repeat(2,minmax(180px,1fr))!important;}body.print-items-page .pi-form > label{grid-column:span 1!important;}body.print-items-page .pi-form > label:nth-of-type(2){grid-column:span 1!important;}body.print-items-page .pi-component-row,body.print-items-page .pi-linked-row{grid-template-columns:1fr!important;}}
