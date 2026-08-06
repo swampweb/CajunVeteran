@@ -207,7 +207,7 @@ async function saveItem(row){
   const modelMeta = modelFields.model_file_name ? {model_file_name:modelFields.model_file_name, model_file_type:modelFields.model_file_type} : {};
   const withModel = modelFields.model_file_name ? {...baseRow, ...modelMeta} : baseRow;
   saveLocalPricing(row.sku,{components:componentRows,linked:linkedRows,suggested:calc.suggested,description:baseRow.description,image_url:baseRow.image_url,model_file_name:modelFields.model_file_name,model_file_type:modelFields.model_file_type});
-  const extended={...withModel, price_components:componentRows, linked_items:linkedRows, filament_rate:calc.filamentRate, machine_rate:calc.machineRate, markup_percent:calc.markup, round_to:calc.round, suggested_price:calc.suggested, total_grams:calc.grams, total_print_minutes:calc.minutes, filament_cost:calc.filamentCost, machine_cost:calc.machineCost, print_time:formatMinutes(calc.minutes), weight:`${calc.grams.toFixed(1)}g`};
+  const extended={...withModel, price_components:componentRows, linked_items:linkedRows, suggested_price:calc.suggested, total_grams:calc.grams, total_print_minutes:calc.minutes, grams:calc.grams, print_hours:Math.floor(calc.minutes/60), print_minutes:calc.minutes%60};
   const target = editingPrintItem ? `sku=eq.${encodeURIComponent(editingPrintItem.sku)}` : '';
   async function write(payload){
     if(editingPrintItem) return CVDB.patch('cv_items',target,payload);
@@ -226,8 +226,13 @@ async function saveItem(row){
       console.warn('Model save failed, trying thumbnail/basic item only', modelError);
       const withoutModel = {...baseRow};
       saveLocalPricing(row.sku,{components:componentRows,linked:linkedRows,suggested:calc.suggested,description:baseRow.description,image_url:baseRow.image_url,model_file_name:modelFields.model_file_name,model_file_type:modelFields.model_file_type});
-      await write(withoutModel);
-      toast(modelFields.model_file_name ? 'Item saved. Model file saved locally because Supabase model columns are missing.' : 'Item saved.');
+      try {
+        await write(withoutModel);
+        toast(modelFields.model_file_name ? 'Item saved. Model file saved locally because Supabase model columns are missing.' : 'Item saved.');
+      } catch(finalError) {
+        console.warn('Supabase save failed after local cache save', finalError);
+        toast('Item updated on this device. Supabase rejected one or more fields.', 'warn');
+      }
     }
   }
 }
@@ -266,8 +271,8 @@ function mergeSavedItemIntoGrid(row) {
 async function refreshAfterSave(row) {
   // Immediate UI update first so Save feels successful without a full page refresh.
   mergeSavedItemIntoGrid(row);
-  render();
   clearForm();
+  render();
   try {
     printRows = await CVDB.select('cv_items','select=*&order=name.asc');
     render();
@@ -297,6 +302,6 @@ function wire(){ $('printItemSearch').oninput=render; $('printItemFilter').oncha
   $('image_url').value = thumb || '';
   setPrintPreview(thumb || 'images/CajunVeteran 3D Print Logo.png');
   toast(thumb ? '3MF thumbnail extracted and model file attached.' : `${type.toUpperCase()} file attached. No embedded thumbnail found, using default logo.`);
-}; $('removePrintImage').onclick=()=>{ $('image_url').value=''; $('image_file').value=''; ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); setPrintPreview(''); }; $('printItemForm').onsubmit=async event=>{ event.preventDefault(); const calc=calcPricing(); const row={sku:$('sku').value.trim(),name:$('name').value.trim(),price:Number($('price').value||0),qty:Number($('stock').value||0),size:$('category').value,visible:$('status').value==='visible',print_time:formatMinutes(calc.minutes),weight:`${calc.grams.toFixed(1)}g`,description:$('description').value,updated_at:new Date().toISOString()}; if(!row.sku||!row.name){toast('SKU and Name are required','err');return;} try{ await saveItem(row); await refreshAfterSave(row); }catch(error){ console.error(error); toast(error.message||'Print item save failed','err'); } }; $('deletePrintItem').onclick=async()=>{ if(!editingPrintItem)return; const ok=await confirmAction({title:'Delete Print Item',message:`Delete ${editingPrintItem.name}?`,details:'Existing orders keep their line item text, but this item will be removed from the pick list.',confirmText:'Delete Item'}); if(!ok)return; await CVDB.remove('cv_items',`sku=eq.${encodeURIComponent(editingPrintItem.sku)}`); toast('Print item deleted'); clearForm(); await load(); }; }
+}; $('removePrintImage').onclick=()=>{ $('image_url').value=''; $('image_file').value=''; ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); setPrintPreview(''); }; $('printItemForm').onsubmit=async event=>{ event.preventDefault(); const calc=calcPricing(); const row={sku:$('sku').value.trim(),name:$('name').value.trim(),price:Number($('price').value||0),qty:Number($('stock').value||0),size:$('category').value,visible:$('status').value==='visible',description:$('description').value,grams:calc.grams,print_hours:Math.floor(calc.minutes/60),print_minutes:calc.minutes%60,total_grams:calc.grams,total_print_minutes:calc.minutes,updated_at:new Date().toISOString()}; if(!row.sku||!row.name){toast('SKU and Name are required','err');return;} try{ await saveItem(row); await refreshAfterSave(row); }catch(error){ console.error(error); toast(error.message||'Print item save failed','err'); } }; $('deletePrintItem').onclick=async()=>{ if(!editingPrintItem)return; const ok=await confirmAction({title:'Delete Print Item',message:`Delete ${editingPrintItem.name}?`,details:'Existing orders keep their line item text, but this item will be removed from the pick list.',confirmText:'Delete Item'}); if(!ok)return; await CVDB.remove('cv_items',`sku=eq.${encodeURIComponent(editingPrintItem.sku)}`); toast('Print item deleted'); clearForm(); await load(); }; }
 wire();
 load().catch(error=>toast(error.message,'err'));
