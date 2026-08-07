@@ -206,12 +206,55 @@ function uniquePrintRows(rows) {
   });
   return [...bySku.values(), ...noSku];
 }
+
+function nextPrintSku() {
+  const used = new Set((printRows || []).map(item => String(item.sku || item.item_id || '').trim().toLowerCase()).filter(Boolean));
+  let max = 0;
+  used.forEach(sku => {
+    const match = sku.match(/^i(\d{6})$/i);
+    if (match) max = Math.max(max, Number(match[1] || 0));
+  });
+  let candidateNumber = max + 1;
+  let candidate = `i${String(candidateNumber).padStart(6, '0')}`;
+  while (used.has(candidate.toLowerCase())) {
+    candidateNumber += 1;
+    candidate = `i${String(candidateNumber).padStart(6, '0')}`;
+  }
+  return candidate;
+}
+function lockSkuField() {
+  const skuField = $('sku');
+  if (!skuField) return;
+  skuField.readOnly = true;
+  skuField.setAttribute('aria-readonly', 'true');
+  skuField.title = 'SKU is auto-generated and locked to prevent duplicate item records.';
+}
+function prepareNewSku() {
+  const skuField = $('sku');
+  if (!skuField || editingPrintItem) return;
+  skuField.value = nextPrintSku();
+  lockSkuField();
+}
+function ensureSubmittedSku() {
+  const skuField = $('sku');
+  if (!skuField) return '';
+  let sku = String(skuField.value || '').trim();
+  if (!editingPrintItem) {
+    const duplicate = (printRows || []).some(item => String(item.sku || item.item_id || '').trim().toLowerCase() === sku.toLowerCase());
+    if (!/^i\d{6}$/i.test(sku) || duplicate) {
+      sku = nextPrintSku();
+      skuField.value = sku;
+    }
+  }
+  lockSkuField();
+  return sku;
+}
 function renderStats(){ const rows=uniquePrintRows(printRows); const total=rows.length; const avg=total?rows.reduce((sum,item)=>sum+Number(item.price||0),0)/total:0; $('piTotal').textContent=total; $('piAverage').textContent=money(avg); $('piVisible').textContent=rows.filter(isVisible).length; $('piOut').textContent=rows.filter(item=>itemStock(item).key==='out').length; }
 function render(){ const q=($('printItemSearch')?.value||'').toLowerCase(); const filter=$('printItemFilter')?.value||'all'; renderStats(); const list=uniquePrintRows(printRows).filter(item=>{ const haystack=`${item.sku||''} ${item.name||''} ${item.size||''} ${item.category||''}`.toLowerCase(); if(q&&!haystack.includes(q)) return false; if(filter==='visible') return isVisible(item); if(filter==='hidden') return !isVisible(item); if(filter==='out') return itemStock(item).key==='out'; return true; }); $('printItemsGrid').innerHTML=list.map(item=>{ const stock=itemStock(item); const sku=item.sku||item.item_id||''; const pricing=itemPricingData(item); const calc=pricing.components?.length?calcPricing(pricing.components):null; const printTime=calc?formatMinutes(calc.minutes):firstValue(item,['print_time','printTime','duration','time'],''); const size=firstValue(item,['size','dimensions','category'],item.size||item.category||'Other'); return `<article class="print-item-card" data-sku="${esc(sku)}"><div class="print-item-thumb-wrap"><img class="print-item-thumb" src="${esc(itemImage(item))}" alt="${esc(item.name||'Print item')}" loading="lazy" onerror="this.src='images/CajunVeteran 3D Print Logo.png'"></div><div class="print-item-content"><div class="print-item-head"><div class="print-title-block"><h3>${esc(item.name||'Unnamed Item')}</h3><small>SKU: ${esc(sku)}</small></div><span class="print-stock-pill ${stock.key}">${stock.label}</span></div><div class="print-price">${money(item.price)}</div><div class="print-suggested">Suggested: <b>${money(pricing.suggested||0)}</b></div><div class="print-kpis"><div><span>Stock</span><strong>${stock.value}</strong></div><div><span>Type</span><strong>${esc(size)}</strong></div><div><span>Time</span><strong>${esc(printTime||'-')}</strong></div></div><div class="print-card-bottom">${renderComponentChips(item)}<button type="button" class="small-btn print-edit-btn" data-edit="${esc(itemKey(item))}">Edit</button></div></div></article>`; }).join('')||'<div class="color-empty">No print items found.</div>'; }
 function populateSizeDropdown(selected=''){ $('category').innerHTML=sizeOptions(selected); }
-function clearForm(){ editingPrintItem=null; componentRows=[]; linkedRows=[]; $('printItemForm').reset(); populateSizeDropdown('General'); $('printItemForm').classList.remove('show'); $('deletePrintItem').classList.add('hidden'); setPrintPreview(''); ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); renderComponents(); }
-function openEditor(item){ editingPrintItem=item; const pricing=itemPricingData(item); componentRows=pricing.components||[]; linkedRows=pricing.linked||[]; $('printItemForm').classList.add('show'); $('sku').value=item.sku||''; $('name').value=item.name||''; $('price').value=Number(item.price||0); $('stock').value=Number(firstValue(item,['stock','qty','quantity','on_hand'],0)); populateSizeDropdown(item.size||item.category||'General'); $('status').value=isVisible(item)?'visible':'hidden'; const local=localItemData(item); $('description').value=itemDescription(item); $('image_url').value=itemSavedImage(item); ensureHidden('model_file_name').value=local.model_file_name||item.model_file_name||''; ensureHidden('model_file_type').value=local.model_file_type||item.model_file_type||''; ensureHidden('model_file_data').value=local.model_file_data||item.model_file_data||''; setPrintPreview($('image_url').value); $('deletePrintItem').classList.remove('hidden'); renderComponents(); $('printItemForm').scrollIntoView({behavior:'smooth',block:'start'}); }
-async function load(){ printRows=uniquePrintRows(await CVDB.select('cv_items','select=*&order=name.asc')); try{ const data=await CVDB.loadDashboard(); colors=data.colors||[]; }catch{ try{ colors=await CVDB.select('cv_colors','select=*&order=brand.asc,color.asc'); }catch{ colors=[]; } } populateSizeDropdown('General'); renderComponents(); render(); }
+function clearForm(){ editingPrintItem=null; componentRows=[]; linkedRows=[]; $('printItemForm').reset(); populateSizeDropdown('General'); prepareNewSku(); $('printItemForm').classList.remove('show'); $('deletePrintItem').classList.add('hidden'); setPrintPreview(''); ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); renderComponents(); }
+function openEditor(item){ editingPrintItem=item; const pricing=itemPricingData(item); componentRows=pricing.components||[]; linkedRows=pricing.linked||[]; $('printItemForm').classList.add('show'); $('sku').value=item.sku||''; lockSkuField(); $('name').value=item.name||''; $('price').value=Number(item.price||0); $('stock').value=Number(firstValue(item,['stock','qty','quantity','on_hand'],0)); populateSizeDropdown(item.size||item.category||'General'); $('status').value=isVisible(item)?'visible':'hidden'; const local=localItemData(item); $('description').value=itemDescription(item); $('image_url').value=itemSavedImage(item); ensureHidden('model_file_name').value=local.model_file_name||item.model_file_name||''; ensureHidden('model_file_type').value=local.model_file_type||item.model_file_type||''; ensureHidden('model_file_data').value=local.model_file_data||item.model_file_data||''; setPrintPreview($('image_url').value); $('deletePrintItem').classList.remove('hidden'); renderComponents(); $('printItemForm').scrollIntoView({behavior:'smooth',block:'start'}); }
+async function load(){ printRows=uniquePrintRows(await CVDB.select('cv_items','select=*&order=name.asc')); try{ const data=await CVDB.loadDashboard(); colors=data.colors||[]; }catch{ try{ colors=await CVDB.select('cv_colors','select=*&order=brand.asc,color.asc'); }catch{ colors=[]; } } populateSizeDropdown('General'); renderComponents(); render(); prepareNewSku(); }
 async function saveItem(row){
   const calc=calcPricing();
   const modelFields = {
@@ -325,6 +368,6 @@ function wire(){ $('printItemSearch').oninput=render; $('printItemFilter').oncha
   $('image_url').value = thumb || '';
   setPrintPreview(thumb || 'images/CajunVeteran 3D Print Logo.png');
   toast(thumb ? '3MF thumbnail extracted and model file attached.' : `${type.toUpperCase()} file attached. No embedded thumbnail found, using default logo.`);
-}; $('removePrintImage').onclick=()=>{ $('image_url').value=''; $('image_file').value=''; ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); setPrintPreview(''); }; $('printItemForm').onsubmit=async event=>{ event.preventDefault(); const calc=calcPricing(); const row={sku:$('sku').value.trim(),name:$('name').value.trim(),price:Number($('price').value||0),qty:Number($('stock').value||0),size:$('category').value,visible:$('status').value==='visible',description:$('description').value,grams:calc.grams,print_hours:Math.floor(calc.minutes/60),print_minutes:calc.minutes%60,total_grams:calc.grams,total_print_minutes:calc.minutes,updated_at:new Date().toISOString()}; if(!row.sku||!row.name){toast('SKU and Name are required','err');return;} try{ await saveItem(row); await refreshAfterSave(row); }catch(error){ console.error(error); toast(error.message||'Print item save failed','err'); } }; $('deletePrintItem').onclick=async()=>{ if(!editingPrintItem)return; const ok=await confirmAction({title:'Delete Print Item',message:`Delete ${editingPrintItem.name}?`,details:'Existing orders keep their line item text, but this item will be removed from the pick list.',confirmText:'Delete Item'}); if(!ok)return; await CVDB.remove('cv_items', editingPrintItem.id ? `id=eq.${encodeURIComponent(editingPrintItem.id)}` : `sku=eq.${encodeURIComponent(editingPrintItem.sku)}`); toast('Print item deleted'); clearForm(); await load(); }; }
+}; $('removePrintImage').onclick=()=>{ $('image_url').value=''; $('image_file').value=''; ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); setPrintPreview(''); }; $('printItemForm').onsubmit=async event=>{ event.preventDefault(); const calc=calcPricing(); const row={sku:ensureSubmittedSku(),name:$('name').value.trim(),price:Number($('price').value||0),qty:Number($('stock').value||0),size:$('category').value,visible:$('status').value==='visible',description:$('description').value,grams:calc.grams,print_hours:Math.floor(calc.minutes/60),print_minutes:calc.minutes%60,total_grams:calc.grams,total_print_minutes:calc.minutes,updated_at:new Date().toISOString()}; if(!row.sku||!row.name){toast('SKU and Name are required','err');return;} try{ await saveItem(row); await refreshAfterSave(row); }catch(error){ console.error(error); toast(error.message||'Print item save failed','err'); } }; $('deletePrintItem').onclick=async()=>{ if(!editingPrintItem)return; const ok=await confirmAction({title:'Delete Print Item',message:`Delete ${editingPrintItem.name}?`,details:'Existing orders keep their line item text, but this item will be removed from the pick list.',confirmText:'Delete Item'}); if(!ok)return; await CVDB.remove('cv_items', editingPrintItem.id ? `id=eq.${encodeURIComponent(editingPrintItem.id)}` : `sku=eq.${encodeURIComponent(editingPrintItem.sku)}`); toast('Print item deleted'); clearForm(); await load(); }; }
 wire();
 load().catch(error=>toast(error.message,'err'));
