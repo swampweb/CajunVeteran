@@ -153,6 +153,15 @@ function componentColorHex(row) {
   const found = colors.find(color => colorOptionValue(color) === row.color);
   return found?.hex_color || found?.palette_color || found?.hex || '#b88728';
 }
+
+function injectPrintBundleStyles() {
+  if (document.getElementById('printBundleStyles')) return;
+  const style = document.createElement('style');
+  style.id = 'printBundleStyles';
+  style.textContent = `.print-bundle-summary{margin:10px 0;padding:9px 10px;border:1px solid rgba(184,135,40,.45);border-radius:8px;background:rgba(0,0,0,.18)}.print-bundle-title{color:#f0b64f;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}.print-bundle-line,.print-bundle-total{display:flex;justify-content:space-between;gap:10px;font-size:12px;line-height:1.35}.print-bundle-line span{color:#f4ead8}.print-bundle-line b,.print-bundle-total b{color:#ffc24f}.print-bundle-total{border-top:1px solid rgba(184,135,40,.35);margin-top:6px;padding-top:6px;font-weight:900}`;
+  document.head.appendChild(style);
+}
+
 function renderComponentChips(item) {
   const pricing = itemPricingData(item);
   const comps = (pricing.components || []).filter(row => componentDisplayName(row));
@@ -160,6 +169,71 @@ function renderComponentChips(item) {
   return `<div class="print-card-colors" title="Assigned colors">${comps.map(row => `<span class="print-color-chip"><i style="background:${esc(componentColorHex(row))}"></i>${esc(componentDisplayName(row))}</span>`).join('')}</div>`;
 }
 
+
+function itemBaseMinutes(item) {
+  const pricing = itemPricingData(item);
+  if (Array.isArray(pricing.components) && pricing.components.length) return calcPricing(pricing.components).minutes;
+  if (item?.total_print_minutes !== undefined && item?.total_print_minutes !== null) return Number(item.total_print_minutes || 0);
+  if (item?.print_hours !== undefined || item?.print_minutes !== undefined) return minutesFrom(item.print_hours, item.print_minutes);
+  return 0;
+}
+function itemBaseGrams(item) {
+  const pricing = itemPricingData(item);
+  if (Array.isArray(pricing.components) && pricing.components.length) return calcPricing(pricing.components).grams;
+  if (item?.total_grams !== undefined && item?.total_grams !== null) return Number(item.total_grams || 0);
+  if (item?.grams !== undefined && item?.grams !== null) return Number(item.grams || 0);
+  return 0;
+}
+function defaultLinkedRowsForItem(item) {
+  const pricing = itemPricingData(item);
+  return (pricing.linked || []).filter(row => row && row.sku && row.defaultSelected === true);
+}
+function linkedItemBySku(sku) {
+  return uniquePrintRows(printRows).find(item => String(item.sku || item.item_id || '') === String(sku || '')) || null;
+}
+function itemBundleSummary(item) {
+  const basePrice = Number(item?.price || 0);
+  const baseMinutes = itemBaseMinutes(item);
+  const baseGrams = itemBaseGrams(item);
+  const baseLine = {
+    sku: item?.sku || item?.item_id || '',
+    name: item?.name || 'Main Item',
+    price: basePrice,
+    minutes: baseMinutes,
+    grams: baseGrams,
+    type: 'main'
+  };
+  const linkedRows = defaultLinkedRowsForItem(item);
+  const linkedLines = linkedRows.map(row => {
+    const linked = linkedItemBySku(row.sku);
+    if (!linked) return null;
+    return {
+      sku: linked.sku || linked.item_id || row.sku,
+      name: row.label || linked.name || row.sku,
+      sourceName: linked.name || row.label || row.sku,
+      price: Number(linked.price || 0),
+      minutes: itemBaseMinutes(linked),
+      grams: itemBaseGrams(linked),
+      type: 'linked'
+    };
+  }).filter(Boolean);
+  const allLines = [baseLine, ...linkedLines];
+  return {
+    hasDefaultLinked: linkedLines.length > 0,
+    baseLine,
+    linkedLines,
+    allLines,
+    totalPrice: allLines.reduce((sum, line) => sum + Number(line.price || 0), 0),
+    totalMinutes: allLines.reduce((sum, line) => sum + Number(line.minutes || 0), 0),
+    totalGrams: allLines.reduce((sum, line) => sum + Number(line.grams || 0), 0)
+  };
+}
+function renderBundleLines(item) {
+  const bundle = itemBundleSummary(item);
+  if (!bundle.hasDefaultLinked) return '';
+  const rows = bundle.allLines.map(line => `<div class="print-bundle-line"><span>${esc(line.name)}</span><b>${money(line.price)}</b></div>`).join('');
+  return `<div class="print-bundle-summary"><div class="print-bundle-title">Default Bundle Includes</div>${rows}<div class="print-bundle-total"><span>Total</span><b>${money(bundle.totalPrice)}</b></div></div>`;
+}
 function minutesFrom(h, m) { return Number(h || 0) * 60 + Number(m || 0); }
 function roundTo(value, step) { step = Number(step || 0.5); return step > 0 ? Math.ceil(Number(value || 0) / step) * step : Number(value || 0); }
 function calcPricing(components = componentRows) { const d = pricingDefaults(); const grams = components.reduce((sum,row)=>sum+Number(row.grams||0),0); const minutes = components.reduce((sum,row)=>sum+minutesFrom(row.hours,row.minutes),0); const filamentCost = grams * Number(d.filamentRate); const machineCost = (minutes/60) * Number(d.machineRate); const baseCost = filamentCost + machineCost; const suggestedRaw = baseCost * (1 + Number(d.markupPercent)/100); const suggested = roundTo(suggestedRaw, Number(d.roundTo)); return { grams, minutes, filamentCost, machineCost, baseCost, suggestedRaw, suggested, filamentRate:Number(d.filamentRate), machineRate:Number(d.machineRate), markup:Number(d.markupPercent), round:Number(d.roundTo) }; }
@@ -182,9 +256,9 @@ function setPrintPreview(value) {
 function fileToDataUrl(file) { return new Promise((resolve,reject)=>{ const reader=new FileReader(); reader.onload=()=>resolve(reader.result); reader.onerror=reject; reader.readAsDataURL(file); }); }
 function linkedItemOptions(selected = '') { return `<option value="">Select linked item...</option>` + printRows.filter(item => !editingPrintItem || String(item.sku) !== String(editingPrintItem.sku)).map(item => `<option value="${esc(item.sku || '')}" ${String(selected) === String(item.sku) ? 'selected' : ''}>${esc(item.name || item.sku)} (${esc(item.sku || '')})</option>`).join(''); }
 function componentTemplate(row, index) { return `<div class="pi-component-row" data-component-index="${index}"><label>Part / Color<input data-component-field="name" value="${esc(row.name || '')}" placeholder="Orange holder"></label><label>Filament Color<select data-component-field="color">${colorOptions(row.color || '')}</select></label><label>Grams<input data-component-field="grams" type="number" step="0.1" value="${Number(row.grams || 0)}"></label><label>Hours<input data-component-field="hours" type="number" step="1" value="${Number(row.hours || 0)}"></label><label>Minutes<input data-component-field="minutes" type="number" step="1" value="${Number(row.minutes || 0)}"></label><label class="inline-check component-check">Required <input data-component-field="required" type="checkbox" ${row.required !== false ? 'checked' : ''}></label><button class="small-btn red" type="button" data-remove-component="${index}">Remove</button></div>`; }
-function linkedTemplate(row, index) { const linked=printRows.find(item=>String(item.sku)===String(row.sku))||{}; const data=itemPricingData(linked); return `<div class="pi-linked-row" data-linked-index="${index}"><label>Linked Item<select data-linked-field="sku">${linkedItemOptions(row.sku)}</select></label><label>Option Label<input data-linked-field="label" value="${esc(row.label || linked.name || '')}" placeholder="12oz Insert"></label><label class="inline-check component-check">Default Selected <input data-linked-field="defaultSelected" type="checkbox" ${row.defaultSelected ? 'checked' : ''}></label><div class="linked-preview">${row.sku ? `Suggested: <b>${money(data.suggested || 0)}</b>` : 'Select an item option.'}</div><button class="small-btn red" type="button" data-remove-linked="${index}">Remove</button></div>`; }
+function linkedTemplate(row, index) { const linked=printRows.find(item=>String(item.sku)===String(row.sku))||{}; const data=itemPricingData(linked); const linkedMinutes=itemBaseMinutes(linked); const linkedPrice=Number(linked.price||0); return `<div class="pi-linked-row" data-linked-index="${index}"><label>Linked Item<select data-linked-field="sku">${linkedItemOptions(row.sku)}</select></label><label>Option Label<input data-linked-field="label" value="${esc(row.label || linked.name || '')}" placeholder="12oz Insert"></label><label class="inline-check component-check">Default Selected <input data-linked-field="defaultSelected" type="checkbox" ${row.defaultSelected ? 'checked' : ''}></label><div class="linked-preview">${row.sku ? `Price: <b>${money(linkedPrice)}</b><br>Time: <b>${linkedMinutes ? formatMinutes(linkedMinutes) : '-'}</b><br>Suggested: <b>${money(data.suggested || 0)}</b>` : 'Select an item option.'}</div><button class="small-btn red" type="button" data-remove-linked="${index}">Remove</button></div>`; }
 function renderComponents() { $('componentRows').innerHTML = componentRows.map(componentTemplate).join('') || '<div class="pi-empty-soft">No components added yet.</div>'; $('linkedRows').innerHTML = linkedRows.map(linkedTemplate).join('') || '<div class="pi-empty-soft">No linked item options added yet.</div>'; renderPricingSummary(); }
-function renderPricingSummary() { const calc=calcPricing(); const d=pricingDefaults(); if($('suggestedPriceBox')) $('suggestedPriceBox').textContent=money(calc.suggested); if($('viewFilamentRate')) $('viewFilamentRate').textContent=d.filamentRate; if($('viewMachineRate')) $('viewMachineRate').textContent=d.machineRate; if($('viewMarkupPercent')) $('viewMarkupPercent').textContent=d.markupPercent; if($('viewRoundTo')) $('viewRoundTo').textContent=d.roundTo; if($('grams')) $('grams').value = `${calc.grams.toFixed(1)}g`; if($('print_time')) $('print_time').value = formatMinutes(calc.minutes); if($('pricingSummary')) $('pricingSummary').innerHTML = `<div><span>Total Grams</span><strong>${calc.grams.toFixed(1)}g</strong></div><div><span>Total Print Time</span><strong>${formatMinutes(calc.minutes)}</strong></div><div><span>Material Cost</span><strong>${money(calc.filamentCost)}</strong></div><div><span>Machine Cost</span><strong>${money(calc.machineCost)}</strong></div><div><span>Base Cost</span><strong>${money(calc.baseCost)}</strong></div><div><span>Suggested</span><strong>${money(calc.suggested)}</strong></div>`; }
+function renderPricingSummary() { const calc=calcPricing(); const d=pricingDefaults(); if($('suggestedPriceBox')) $('suggestedPriceBox').textContent=money(calc.suggested); if($('viewFilamentRate')) $('viewFilamentRate').textContent=d.filamentRate; if($('viewMachineRate')) $('viewMachineRate').textContent=d.machineRate; if($('viewMarkupPercent')) $('viewMarkupPercent').textContent=d.markupPercent; if($('viewRoundTo')) $('viewRoundTo').textContent=d.roundTo; if($('grams')) $('grams').value = `${calc.grams.toFixed(1)}g`; if($('print_time')) $('print_time').value = formatMinutes(calc.minutes); if($('pricingSummary')) { const bundle = editingPrintItem ? itemBundleSummary({...editingPrintItem, price:Number($('price')?.value||editingPrintItem.price||0)}) : null; const bundleExtra = bundle && bundle.hasDefaultLinked ? `<div><span>Default Bundle Price</span><strong>${money(Number($('price')?.value||0)+bundle.linkedLines.reduce((sum,line)=>sum+Number(line.price||0),0))}</strong></div><div><span>Default Bundle Time</span><strong>${formatMinutes(calc.minutes + bundle.linkedLines.reduce((sum,line)=>sum+Number(line.minutes||0),0))}</strong></div>` : ''; $('pricingSummary').innerHTML = `<div><span>Total Grams</span><strong>${calc.grams.toFixed(1)}g</strong></div><div><span>Total Print Time</span><strong>${formatMinutes(calc.minutes)}</strong></div><div><span>Material Cost</span><strong>${money(calc.filamentCost)}</strong></div><div><span>Machine Cost</span><strong>${money(calc.machineCost)}</strong></div><div><span>Base Cost</span><strong>${money(calc.baseCost)}</strong></div><div><span>Suggested</span><strong>${money(calc.suggested)}</strong></div>${bundleExtra}`; } }
 
 function itemKey(item) {
   return String(item?.id || item?.sku || item?.item_id || '');
@@ -250,7 +324,7 @@ function ensureSubmittedSku() {
   return sku;
 }
 function renderStats(){ const rows=uniquePrintRows(printRows); const total=rows.length; const avg=total?rows.reduce((sum,item)=>sum+Number(item.price||0),0)/total:0; $('piTotal').textContent=total; $('piAverage').textContent=money(avg); $('piVisible').textContent=rows.filter(isVisible).length; $('piOut').textContent=rows.filter(item=>itemStock(item).key==='out').length; }
-function render(){ const q=($('printItemSearch')?.value||'').toLowerCase(); const filter=$('printItemFilter')?.value||'all'; renderStats(); const list=uniquePrintRows(printRows).filter(item=>{ const haystack=`${item.sku||''} ${item.name||''} ${item.size||''} ${item.category||''}`.toLowerCase(); if(q&&!haystack.includes(q)) return false; if(filter==='visible') return isVisible(item); if(filter==='hidden') return !isVisible(item); if(filter==='out') return itemStock(item).key==='out'; return true; }); $('printItemsGrid').innerHTML=list.map(item=>{ const stock=itemStock(item); const sku=item.sku||item.item_id||''; const pricing=itemPricingData(item); const calc=pricing.components?.length?calcPricing(pricing.components):null; const printTime=calc?formatMinutes(calc.minutes):firstValue(item,['print_time','printTime','duration','time'],''); const size=firstValue(item,['size','dimensions','category'],item.size||item.category||'Other'); return `<article class="print-item-card" data-sku="${esc(sku)}"><div class="print-item-thumb-wrap"><img class="print-item-thumb" src="${esc(itemImage(item))}" alt="${esc(item.name||'Print item')}" loading="lazy" onerror="this.src='images/CajunVeteran 3D Print Logo.png'"></div><div class="print-item-content"><div class="print-item-head"><div class="print-title-block"><h3>${esc(item.name||'Unnamed Item')}</h3><small>SKU: ${esc(sku)}</small></div><span class="print-stock-pill ${stock.key}">${stock.label}</span></div><div class="print-price">${money(item.price)}</div><div class="print-suggested">Suggested: <b>${money(pricing.suggested||0)}</b></div><div class="print-kpis"><div><span>Stock</span><strong>${stock.value}</strong></div><div><span>Type</span><strong>${esc(size)}</strong></div><div><span>Time</span><strong>${esc(printTime||'-')}</strong></div></div><div class="print-card-bottom">${renderComponentChips(item)}<button type="button" class="small-btn print-edit-btn" data-edit="${esc(itemKey(item))}">Edit</button></div></div></article>`; }).join('')||'<div class="color-empty">No print items found.</div>'; }
+function render(){ const q=($('printItemSearch')?.value||'').toLowerCase(); const filter=$('printItemFilter')?.value||'all'; renderStats(); const list=uniquePrintRows(printRows).filter(item=>{ const haystack=`${item.sku||''} ${item.name||''} ${item.size||''} ${item.category||''}`.toLowerCase(); if(q&&!haystack.includes(q)) return false; if(filter==='visible') return isVisible(item); if(filter==='hidden') return !isVisible(item); if(filter==='out') return itemStock(item).key==='out'; return true; }); $('printItemsGrid').innerHTML=list.map(item=>{ const stock=itemStock(item); const sku=item.sku||item.item_id||''; const pricing=itemPricingData(item); const calc=pricing.components?.length?calcPricing(pricing.components):null; const bundle=itemBundleSummary(item); const displayPrice=bundle.hasDefaultLinked?bundle.totalPrice:Number(item.price||0); const displayMinutes=bundle.hasDefaultLinked?bundle.totalMinutes:(calc?calc.minutes:itemBaseMinutes(item)); const printTime=displayMinutes?formatMinutes(displayMinutes):firstValue(item,['print_time','printTime','duration','time'],''); const size=firstValue(item,['size','dimensions','category'],item.size||item.category||'Other'); return `<article class="print-item-card" data-sku="${esc(sku)}"><div class="print-item-thumb-wrap"><img class="print-item-thumb" src="${esc(itemImage(item))}" alt="${esc(item.name||'Print item')}" loading="lazy" onerror="this.src='images/CajunVeteran 3D Print Logo.png'"></div><div class="print-item-content"><div class="print-item-head"><div class="print-title-block"><h3>${esc(item.name||'Unnamed Item')}</h3><small>SKU: ${esc(sku)}</small></div><span class="print-stock-pill ${stock.key}">${stock.label}</span></div><div class="print-price">${money(displayPrice)}</div>${bundle.hasDefaultLinked?`<div class="print-suggested">Base: <b>${money(item.price)}</b> | Linked: <b>${money(displayPrice-Number(item.price||0))}</b></div>`:`<div class="print-suggested">Suggested: <b>${money(pricing.suggested||0)}</b></div>`}<div class="print-kpis"><div><span>Stock</span><strong>${stock.value}</strong></div><div><span>Type</span><strong>${esc(size)}</strong></div><div><span>Time</span><strong>${esc(printTime||'-')}</strong></div></div>${renderBundleLines(item)}<div class="print-card-bottom">${renderComponentChips(item)}<button type="button" class="small-btn print-edit-btn" data-edit="${esc(itemKey(item))}">Edit</button></div></div></article>`; }).join('')||'<div class="color-empty">No print items found.</div>'; }
 function populateSizeDropdown(selected=''){ $('category').innerHTML=sizeOptions(selected); }
 function clearForm(){ editingPrintItem=null; componentRows=[]; linkedRows=[]; $('printItemForm').reset(); populateSizeDropdown('General'); prepareNewSku(); $('printItemForm').classList.remove('show'); $('deletePrintItem').classList.add('hidden'); setPrintPreview(''); ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); renderComponents(); }
 function openEditor(item){ editingPrintItem=item; const pricing=itemPricingData(item); componentRows=pricing.components||[]; linkedRows=pricing.linked||[]; $('printItemForm').classList.add('show'); $('sku').value=item.sku||''; lockSkuField(); $('name').value=item.name||''; $('price').value=Number(item.price||0); $('stock').value=Number(firstValue(item,['stock','qty','quantity','on_hand'],0)); populateSizeDropdown(item.size||item.category||'General'); $('status').value=isVisible(item)?'visible':'hidden'; const local=localItemData(item); $('description').value=itemDescription(item); $('image_url').value=itemSavedImage(item); ensureHidden('model_file_name').value=local.model_file_name||item.model_file_name||''; ensureHidden('model_file_type').value=local.model_file_type||item.model_file_type||''; ensureHidden('model_file_data').value=local.model_file_data||item.model_file_data||''; setPrintPreview($('image_url').value); $('deletePrintItem').classList.remove('hidden'); renderComponents(); $('printItemForm').scrollIntoView({behavior:'smooth',block:'start'}); }
@@ -369,5 +443,6 @@ function wire(){ $('printItemSearch').oninput=render; $('printItemFilter').oncha
   setPrintPreview(thumb || 'images/CajunVeteran 3D Print Logo.png');
   toast(thumb ? '3MF thumbnail extracted and model file attached.' : `${type.toUpperCase()} file attached. No embedded thumbnail found, using default logo.`);
 }; $('removePrintImage').onclick=()=>{ $('image_url').value=''; $('image_file').value=''; ['model_file_name','model_file_type','model_file_data'].forEach(id=>{ if($(id)) $(id).value=''; }); setPrintPreview(''); }; $('printItemForm').onsubmit=async event=>{ event.preventDefault(); const calc=calcPricing(); const row={sku:ensureSubmittedSku(),name:$('name').value.trim(),price:Number($('price').value||0),qty:Number($('stock').value||0),size:$('category').value,visible:$('status').value==='visible',description:$('description').value,grams:calc.grams,print_hours:Math.floor(calc.minutes/60),print_minutes:calc.minutes%60,total_grams:calc.grams,total_print_minutes:calc.minutes,updated_at:new Date().toISOString()}; if(!row.sku||!row.name){toast('SKU and Name are required','err');return;} try{ await saveItem(row); await refreshAfterSave(row); }catch(error){ console.error(error); toast(error.message||'Print item save failed','err'); } }; $('deletePrintItem').onclick=async()=>{ if(!editingPrintItem)return; const ok=await confirmAction({title:'Delete Print Item',message:`Delete ${editingPrintItem.name}?`,details:'Existing orders keep their line item text, but this item will be removed from the pick list.',confirmText:'Delete Item'}); if(!ok)return; await CVDB.remove('cv_items', editingPrintItem.id ? `id=eq.${encodeURIComponent(editingPrintItem.id)}` : `sku=eq.${encodeURIComponent(editingPrintItem.sku)}`); toast('Print item deleted'); clearForm(); await load(); }; }
+injectPrintBundleStyles();
 wire();
 load().catch(error=>toast(error.message,'err'));
