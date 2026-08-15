@@ -158,18 +158,39 @@ function injectPrintBundleStyles() {
   if (document.getElementById('printBundleStyles')) return;
   const style = document.createElement('style');
   style.id = 'printBundleStyles';
-  style.textContent = `.print-bundle-summary{margin:10px 0;padding:9px 10px;border:1px solid rgba(184,135,40,.45);border-radius:8px;background:rgba(0,0,0,.18)}.print-bundle-title{color:#f0b64f;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}.print-bundle-line,.print-bundle-total{display:flex;justify-content:space-between;gap:10px;font-size:12px;line-height:1.35}.print-bundle-line span{color:#f4ead8}.print-bundle-line b,.print-bundle-total b{color:#ffc24f}.print-bundle-total{border-top:1px solid rgba(184,135,40,.35);margin-top:6px;padding-top:6px;font-weight:900}`;
+  style.textContent = `.print-bundle-summary{margin:10px 0;padding:9px 10px;border:1px solid rgba(184,135,40,.45);border-radius:8px;background:rgba(0,0,0,.18)}.print-bundle-title{color:#f0b64f;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}.print-bundle-line,.print-bundle-total{display:flex;justify-content:space-between;gap:10px;font-size:12px;line-height:1.35}.print-bundle-line span{color:#f4ead8}.print-bundle-line b,.print-bundle-total b{color:#ffc24f}.print-bundle-total{border-top:1px solid rgba(184,135,40,.35);margin-top:6px;padding-top:6px;font-weight:900}.print-bundle-title.time-title{margin-top:10px;padding-top:8px;border-top:1px dashed rgba(184,135,40,.35)}`;
   document.head.appendChild(style);
 }
 
-function renderComponentChips(item) {
-  const pricing = itemPricingData(item);
-  const comps = (pricing.components || []).filter(row => componentDisplayName(row));
-  if (!comps.length) return '';
-  return `<div class="print-card-colors" title="Assigned colors">${comps.map(row => `<span class="print-color-chip"><i style="background:${esc(componentColorHex(row))}"></i>${esc(componentDisplayName(row))}</span>`).join('')}</div>`;
+function componentKey(row) {
+  const name = componentDisplayName(row).toLowerCase();
+  const color = String(row.color || '').toLowerCase();
+  return `${name}|${color}`;
 }
-
-
+function bundleComponentsForItem(item) {
+  const pricing = itemPricingData(item);
+  const rows = [...((pricing.components || []).filter(row => componentDisplayName(row)))];
+  const bundle = itemBundleSummary(item);
+  bundle.linkedLines.forEach(line => {
+    const linked = linkedItemBySku(line.sku);
+    const linkedPricing = linked ? itemPricingData(linked) : {components: []};
+    (linkedPricing.components || []).forEach(row => {
+      if (componentDisplayName(row)) rows.push(row);
+    });
+  });
+  const seen = new Set();
+  return rows.filter(row => {
+    const key = componentKey(row);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+function renderComponentChips(item) {
+  const comps = bundleComponentsForItem(item);
+  if (!comps.length) return '';
+  return `<div class="print-card-colors" title="Assigned colors including default linked items">${comps.map(row => `<span class="print-color-chip"><i style="background:${esc(componentColorHex(row))}"></i>${esc(componentDisplayName(row))}</span>`).join('')}</div>`;
+}
 function itemBaseMinutes(item) {
   const pricing = itemPricingData(item);
   if (Array.isArray(pricing.components) && pricing.components.length) return calcPricing(pricing.components).minutes;
@@ -231,8 +252,9 @@ function itemBundleSummary(item) {
 function renderBundleLines(item) {
   const bundle = itemBundleSummary(item);
   if (!bundle.hasDefaultLinked) return '';
-  const rows = bundle.allLines.map(line => `<div class="print-bundle-line"><span>${esc(line.name)}</span><b>${money(line.price)}</b></div>`).join('');
-  return `<div class="print-bundle-summary"><div class="print-bundle-title">Default Bundle Includes</div>${rows}<div class="print-bundle-total"><span>Total</span><b>${money(bundle.totalPrice)}</b></div></div>`;
+  const moneyRows = bundle.allLines.map(line => `<div class="print-bundle-line"><span>${esc(line.name)}</span><b>${money(line.price)}</b></div>`).join('');
+  const timeRows = bundle.allLines.map(line => `<div class="print-bundle-line"><span>${esc(line.name)} Time</span><b>${line.minutes ? formatMinutes(line.minutes) : '-'}</b></div>`).join('');
+  return `<div class="print-bundle-summary"><div class="print-bundle-title">Default Bundle Includes</div>${moneyRows}<div class="print-bundle-total"><span>Total</span><b>${money(bundle.totalPrice)}</b></div><div class="print-bundle-title time-title">Linked Hours</div>${timeRows}<div class="print-bundle-total"><span>Total Time</span><b>${formatMinutes(bundle.totalMinutes)}</b></div></div>`;
 }
 function minutesFrom(h, m) { return Number(h || 0) * 60 + Number(m || 0); }
 function roundTo(value, step) { step = Number(step || 0.5); return step > 0 ? Math.ceil(Number(value || 0) / step) * step : Number(value || 0); }
