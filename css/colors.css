@@ -1,0 +1,396 @@
+/* Colors / Filament isolated page styles
+   Scope: body.colors-page only.
+   Purpose: restore filament cards and protect this page from other updates.
+*/
+body.colors-page {
+  background: linear-gradient(180deg, #0c0905 0%, #060504 100%);
+  color: #f4ead8;
+}
+
+body.colors-page .v7-container {
+  max-width: 1550px;
+}
+
+body.colors-page .colors-header h1 {
+  color: #e5ae55;
+  font-family: Georgia, serif;
+  font-size: 31px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+body.colors-page .colors-card {
+  border: 1px solid rgba(184, 135, 40, 0.75);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #15120d, #100e0a);
+  overflow: hidden;
+}
+
+body.colors-page .colors-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 17px;
+  border-bottom: 1px solid rgba(184, 135, 40, 0.35);
+}
+
+body.colors-page .color-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+body.colors-page .filter-pill {
+  min-height: 30px;
+  padding: 5px 10px;
+  border: 1px solid rgba(184, 135, 40, 0.75);
+  border-radius: 5px;
+  background: #17140e;
+  color: #f3e8d6;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+body.colors-page .filter-pill.active,
+body.colors-page .filter-pill:hover {
+  background: linear-gradient(180deg, #ad2b22, #801c16);
+  border-color: #d04338;
+  color: #fff;
+}
+
+body.colors-page .colors-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+body.colors-page #colorSearch {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid rgba(184, 135, 40, 0.75);
+  border-radius: 8px;
+  background: #070604;
+  color: #fff6e6;
+  padding: 10px 12px;
+  outline: none;
+}
+
+body.colors-page #colorSearch:focus {
+  border-color: #f0b64f;
+  box-shadow: 0 0 0 3px rgba(240, 182, 79, 0.14);
+}
+
+body.colors-page .filament-counts {
+  color: #f0b64f;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+body.colors-page .color-form.collapsed {
+  display: none;
+}
+
+body.colors-page .color-form.expanded {
+  display: grid;
+}
+
+body.colors-page .color-form {
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 14px;
+  margin: 0 0 18px;
+  padding: 16px;
+  border: 1px solid rgba(184, 135, 40, 0.55);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.20);
+}
+
+body.colors-page .color-form .full {
+  grid-column: 1 / -1;
+}
+
+body.colors-page .color-form label {
+  display: grid;
+  gap: 7px;
+  color: #f5e7cb;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+body.colors-page .color-form input,
+body.colors-page .color-form select,
+body.colors-page .color-form textarea {
+  width: 100%;
+  min-height: 40px;
+  box-sizing: border-box;
+  border: 1px solid rgba(184, 135, 40, 0.72);
+  border-radius: 8px;
+  background: #070604;
+  color: #fff6e6;
+  padding: 9px 11px;
+  font: inherit;
+}
+
+body.colors-page .color-form textarea {
+  min-height: 88px;
+}
+
+body.colors-page .spool-panel {
+  padding: 14px;
+  border: 1px solid rgba(184, 135, 40, 0.45);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+body.colors-page .spool-panel-head h3 {
+  margin: 0;
+  color: #f0b64f;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+body.colors-page .spool-panel-head p {
+  margin: 5px 0 12px;
+  color: #cdbf9f;
+  font-size: 13px;
+}
+
+body.colors-page .spool-rows {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+body.colors-page .spool-empty {
+  color: #cdbf9f;
+  padding: 10px;
+  border: 1px dashed rgba(184, 135, 40, 0.35);
+  border-radius: 8px;
+}
+
+body.colors-page .colors-grouped {
+  display: grid;
+  gap: 20px;
+}
+
+body.colors-page .brand-group {
+  display: grid;
+  gap: 12px;
+}
+
+body.colors-page .brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 2px;
+}
+
+body.colors-page .brand-row h3 {
+  margin: 0;
+  color: #f4ead8;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+}
+
+body.colors-page .brand-row span {
+  color: #cdbf9f;
+  font-size: 13px;
+}
+
+body.colors-page .colors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  gap: 14px;
+}
+
+body.colors-page .filament-card {
+  display: grid;
+  gap: 12px;
+  min-height: 230px;
+  padding: 14px;
+  border: 1px solid rgba(184, 135, 40, 0.72);
+  border-radius: 13px;
+  background: linear-gradient(180deg, #17120b, #0d0b07);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+}
+
+body.colors-page .filament-card.low {
+  border-color: #dba23a;
+}
+
+body.colors-page .filament-card.out {
+  border-color: #d04338;
+}
+
+body.colors-page .filament-card.inactive {
+  opacity: 0.70;
+}
+
+body.colors-page .filament-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+body.colors-page .filament-title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+body.colors-page .filament-swatch {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+}
+
+body.colors-page .filament-title h3 {
+  margin: 0;
+  color: #fff2d6;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+body.colors-page .filament-title small {
+  display: block;
+  margin-top: 4px;
+  color: #cdbf9f;
+  font-size: 12px;
+}
+
+body.colors-page .filament-state {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 3px 8px;
+  border: 1px solid #4c9d39;
+  border-radius: 999px;
+  color: #80cf62;
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+body.colors-page .filament-state.low {
+  border-color: #dba23a;
+  color: #ffc24f;
+}
+
+body.colors-page .filament-state.out {
+  border-color: #d04338;
+  color: #ff7b70;
+}
+
+body.colors-page .filament-state.inactive {
+  border-color: #777;
+  color: #bbb;
+}
+
+body.colors-page .filament-grams-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+body.colors-page .filament-grams-row strong {
+  color: #ffc24f;
+  font-size: 23px;
+  line-height: 1;
+}
+
+body.colors-page .filament-grams-row span {
+  color: #cdbf9f;
+  font-size: 12px;
+}
+
+body.colors-page .spool-mini-list {
+  display: grid;
+  gap: 5px;
+  color: #f4ead8;
+  font-size: 12px;
+}
+
+body.colors-page .spool-mini-list span {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid rgba(184, 135, 40, 0.30);
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+body.colors-page .spool-mini-list b {
+  color: #ffc24f;
+}
+
+body.colors-page .filament-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+body.colors-page .filament-kpis div {
+  padding: 8px;
+  border: 1px solid rgba(184, 135, 40, 0.38);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+body.colors-page .filament-kpis span {
+  display: block;
+  margin-bottom: 4px;
+  color: #cdbf9f;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+body.colors-page .filament-kpis b {
+  color: #fff2d6;
+  font-size: 13px;
+}
+
+body.colors-page .filament-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+body.colors-page .small-btn {
+  min-height: 31px;
+  border-radius: 7px;
+  padding: 5px 10px;
+}
+
+body.colors-page .color-empty {
+  padding: 16px;
+  border: 1px dashed rgba(184, 135, 40, 0.45);
+  border-radius: 10px;
+  color: #cdbf9f;
+}
+
+@media (max-width: 900px) {
+  body.colors-page .colors-toolbar,
+  body.colors-page .color-form,
+  body.colors-page .spool-rows {
+    grid-template-columns: 1fr;
+  }
+
+  body.colors-page .colors-card-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
