@@ -10,6 +10,11 @@ const money = value => '$' + Number(value || 0).toFixed(2);
 const norm = value => String(value || 'new').toLowerCase().replace(/\s+/g, '_');
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 
+const PLAQUE_STORE = 'cv_woodworking_job_plaques_v1';
+function plaqueStore(){try{return JSON.parse(localStorage.getItem(PLAQUE_STORE)||'{}')||{};}catch{return {};}}
+function savedPlaques(jobId){const rows=plaqueStore()[String(jobId||'')];return Array.isArray(rows)?rows:[];}
+function savePlaques(jobId, rows){const store=plaqueStore();store[String(jobId||'')]=(rows||[]).map(row=>({...row}));localStorage.setItem(PLAQUE_STORE,JSON.stringify(store));}
+
 function isPlaqueItem(item) { return /plaque/i.test(item?.name || ''); }
 function nextJobId() {
   const ids = state.jobs.map(job => Number(String(job.job_id || '').replace(/\D/g, ''))).filter(Boolean);
@@ -171,8 +176,9 @@ function openJob(id) {
   $('adjustmentType').value = job.adjustment_type || 'amount';
   $('adjustmentValue').value = adjustmentValue || Math.abs(Number(job.adjustment || 0));
   $('adjustmentBox').classList.toggle('hidden', !hasAdjustment);
-  state.plaques = [];
-  if (job.plaque_name) state.plaques.push({ name: job.plaque_name, rank: job.plaque_rank || 'NCO', month_promoted: job.plaque_month_promoted || '' });
+  state.plaques = savedPlaques(job.job_id);
+  if (!state.plaques.length && job.plaque_name) state.plaques.push({ name: job.plaque_name, rank: job.plaque_rank || 'NCO', month_promoted: job.plaque_month_promoted || '' });
+  if (isPlaqueItem(selectedItem())) { const target=Math.max(1,Number($('qty').value||1)); while(state.plaques.length<target) state.plaques.push({rank:'NCO'}); while(state.plaques.length>target) state.plaques.pop(); }
   $('deleteJob').classList.remove('hidden');
   renderPlaques();
   renderPrices();
@@ -257,6 +263,7 @@ $('jobForm').onsubmit = async event => {
     updated_at: new Date().toISOString()
   };
   if (!row.customer || !row.source_item_id) { toast('Customer and Woodworking Item are required.', 'err'); return; }
+  savePlaques(jobId, state.plaques);
   try {
     const extended = { ...row, adjustment: calc.adjustment, adjustment_mode: $('adjustmentMode').value, adjustment_type: $('adjustmentType').value, adjustment_value: Number($('adjustmentValue').value || 0), subtotal: calc.subtotal };
     if (state.editing) await CVDB.patch('cv_woodworking_jobs', `job_id=eq.${encodeURIComponent(jobId)}`, extended);

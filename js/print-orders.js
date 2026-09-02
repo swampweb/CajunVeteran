@@ -49,7 +49,7 @@ function orderComponentsForLine(line){if(Array.isArray(line.components)&&line.co
 function createLineForItem(item, qty=1, includeLinked=false){const bundle=bundleForItem(item);const lines=includeLinked?bundle.lines:[bundle.base];const colors=[...new Set(lines.flatMap(x=>(x.components||[]).map(c=>c.color).filter(Boolean)))];return{item_sku:itemSku(item),qty:Number(qty||1),colors,components:lines.flatMap(x=>x.components||[]),bundle:includeLinked&&bundle.linked.length?bundle:null};}
 function ensureItemDatalist(){if($('printItemPickerList'))return;const list=document.createElement('datalist');list.id='printItemPickerList';document.body.appendChild(list);}
 function renderItemDatalist(){ensureItemDatalist();$('printItemPickerList').innerHTML=sortedItems().map(item=>`<option value="${esc(itemLabel(item))}"></option>`).join('');}
-function ensureOrderInfoPanel(){if($('selectedItemInfo'))return;const table=document.querySelector('.table-wrap');if(!table)return;const panel=document.createElement('div');panel.id='selectedItemInfo';panel.className='po-selected-info';table.parentNode.insertBefore(panel,table);}
+function ensureOrderInfoPanel(){if($('selectedItemInfo'))return;const host=document.querySelector('.po-selection-host');if(!host)return;host.innerHTML='';const panel=document.createElement('div');panel.id='selectedItemInfo';panel.className='po-selected-info';host.appendChild(panel);}
 function currentSelectionPreview(){const lines=state.lines||[];if(!lines.length)return '<div class="po-info-empty">Choose an item to see time, cost, colors, and grams.</div>';return lines.map((line,index)=>lineInfoHtml(line,index)).join('');}
 function lineInfoHtml(line,index){const item=itemBySku(line.item_sku)||{};const comps=orderComponentsForLine(line);const totalPrice=lineTotal(line);const totalMinutes=lineMinutes(line);const totalGrams=lineGrams(line);const colorRows=comps.length?comps.map(c=>`<div><span>${esc(componentName(c)||colorName(c.color))}</span><b>${Number(c.grams||0)}g</b></div>`).join(''):'<div><span>No colors assigned</span><b>-</b></div>';const bundleRows=line.bundle?line.bundle.lines.map(x=>`<div><span>${esc(x.name)}</span><b>${money(x.price)} | ${formatMinutes(x.minutes)}</b></div>`).join(''):'';return `<section class="po-info-card"><h4>${esc(item.name||line.item_sku||'Selected Item')}</h4>${bundleRows?`<div class="po-info-subtitle">Grouped Bundle</div>${bundleRows}`:''}<div class="po-info-grid"><div><span>Total Cost</span><strong>${money(totalPrice)}</strong></div><div><span>Total Time</span><strong>${formatMinutes(totalMinutes)}</strong></div><div><span>Total Grams</span><strong>${totalGrams.toFixed(1)}g</strong></div></div><div class="po-info-subtitle">Color - Gram</div>${colorRows}</section>`;}
 function renderSelectedInfo(){ensureOrderInfoPanel();if($('selectedItemInfo'))$('selectedItemInfo').innerHTML=currentSelectionPreview();}
@@ -90,17 +90,17 @@ function renderLines(){
   $('lineTable').innerHTML=state.lines.map((line,index)=>{
     const item=itemBySku(line.item_sku)||{};
     const comps=orderComponentsForLine(line);
-    const bundleDetail=line.bundle?`<div class="po-bundle-detail">${line.bundle.lines.map(x=>`${esc(x.name)}: ${money(x.price)} / ${formatMinutes(x.minutes)}`).join('<br>')}</div>`:'';
-    const colorText=comps.length?comps.map(c=>`${componentName(c)} ${Number(c.grams||0)}g`).join(', '):'';
-    return `<tr>
-      <td><input class="po-item-search" list="printItemPickerList" data-line-item-search="${index}" value="${esc(item.name?itemLabel(item):(line.item_sku||''))}" placeholder="Search item or SKU"><small>SKU: ${esc(line.item_sku||'')}</small>${bundleDetail}</td>
-      <td>${money(lineUnitPrice(line))}</td>
+    const bundleDetail=line.bundle?`<div class="po-bundle-detail">${line.bundle.lines.map(x=>`<span><b>${esc(x.name)}</b><em>${money(x.price)} / ${formatMinutes(x.minutes)}</em></span>`).join('')}</div>`:'';
+    const gramRows=comps.length?`<div class="po-line-grams">${comps.map(c=>`<span><i style="background:${colorBg(c.color)}"></i><b>${esc(componentName(c))}</b><em>${Number(c.grams||0).toFixed(1)}g</em></span>`).join('')}</div>`:'';
+    return `<tr class="po-order-line-row">
+      <td class="po-line-item-cell"><div class="po-line-item-name">${esc(item.name||line.item_sku||'Select an item')}</div><input class="po-item-search" list="printItemPickerList" data-line-item-search="${index}" value="${esc(item.name?itemLabel(item):(line.item_sku||''))}" placeholder="Search item or SKU"><small>SKU: ${esc(line.item_sku||'')}</small>${bundleDetail}</td>
+      <td class="po-line-price">${money(lineUnitPrice(line))}</td>
       <td><input class="po-qty" type="number" min="1" value="${Number(line.qty||1)}" data-line-qty="${index}"></td>
-      <td>${selectedChips(line.colors||[],index)}${colorText?`<small>${esc(colorText)}</small>`:''}<button type="button" class="small-btn" data-line-colors="${index}">Assign Colors</button></td>
-      <td>${money(lineTotal(line))}</td>
+      <td class="po-line-colors">${gramRows}<button type="button" class="small-btn" data-line-colors="${index}">Change Colors</button></td>
+      <td class="po-line-total">${money(lineTotal(line))}</td>
       <td><button type="button" class="small-btn red po-line-remove" data-remove-line="${index}" aria-label="Remove item">X</button></td>
     </tr>`;
-  }).join('')||'<tr><td colspan="6">No items added.</td></tr>';
+  }).join('')||'<tr><td colspan="6"><div class="po-empty">No items added.</div></td></tr>';
   renderTotal();
   renderSelectedInfo();
 }

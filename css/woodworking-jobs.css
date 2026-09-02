@@ -43,3 +43,20 @@ body.woodworking-jobs-page .wood-job-row.active{border-color:#d24335;background:
 @media(max-width:1260px){body.woodworking-jobs-page .wood-job-topbar{grid-template-columns:1fr auto}body.woodworking-jobs-page .wood-price-row{grid-column:1/-1}body.woodworking-jobs-page .wood-editor-body{grid-template-columns:1fr}body.woodworking-jobs-page .wood-material-panel{grid-column:1;grid-row:auto}}
 @media(max-width:950px){body.woodworking-jobs-page .wood-jobs-workspace{grid-template-columns:1fr}body.woodworking-jobs-page .wood-status-card{position:static}body.woodworking-jobs-page .wood-job-form-grid{grid-template-columns:repeat(2,1fr)}body.woodworking-jobs-page .wood-notes{grid-column:1/-1;grid-row:auto}}
 @media(max-width:650px){body.woodworking-jobs-page .wood-job-form-grid,body.woodworking-jobs-page .wood-price-row{grid-template-columns:1fr}body.woodworking-jobs-page .wood-action-bar{grid-template-columns:1fr}body.woodworking-jobs-page .wood-action-bar span{display:none}}
+
+/* Plaque workflow and visual cleanup */
+body.woodworking-jobs-page .wood-editor-body{grid-template-columns:minmax(0,1.7fr) minmax(320px,.75fr)}
+body.woodworking-jobs-page .wood-info-panel{padding:16px}
+body.woodworking-jobs-page .wood-material-panel{align-self:start}
+body.woodworking-jobs-page .wood-plaque-panel{padding:16px}
+body.woodworking-jobs-page #plaques{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+body.woodworking-jobs-page .plaque-row{display:grid!important;grid-template-columns:auto minmax(0,1fr) 130px 150px auto!important;gap:9px!important;align-items:end!important;margin:0!important;padding:12px!important;border:1px solid #5b421b!important;border-radius:10px!important;background:linear-gradient(180deg,#100d08,#090704)!important}
+body.woodworking-jobs-page .plaque-row>strong{align-self:center;display:grid;place-items:center;width:34px;height:34px;border:1px solid #8c6220;border-radius:8px;color:#ffc24f}
+body.woodworking-jobs-page .plaque-row label{min-width:0}
+body.woodworking-jobs-page .plaque-row input,body.woodworking-jobs-page .plaque-row select{min-width:0}
+body.woodworking-jobs-page .plaque-row .small-btn{min-width:68px}
+body.woodworking-jobs-page .wood-job-topbar{grid-template-columns:minmax(160px,1fr) auto minmax(520px,680px)}
+body.woodworking-jobs-page .wood-price-row .price-card{min-height:58px}
+body.woodworking-jobs-page .wood-price-row .price-card strong{font-size:17px}
+@media(max-width:1450px){body.woodworking-jobs-page #plaques{grid-template-columns:1fr}body.woodworking-jobs-page .plaque-row{grid-template-columns:auto minmax(0,1fr) 120px 140px auto!important}}
+@media(max-width:900px){body.woodworking-jobs-page .plaque-row{grid-template-columns:40px 1fr!important}body.woodworking-jobs-page .plaque-row label{grid-column:2}body.woodworking-jobs-page .plaque-row .small-btn{grid-column:2;justify-self:start}}

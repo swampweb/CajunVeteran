@@ -39,3 +39,30 @@ body.print-orders-page .po-order-groups{max-height:calc(100vh - 360px)}
 @media(max-width:1250px){body.print-orders-page .po-editor-body{grid-template-columns:1fr}body.print-orders-page .po-adjustment-panel{grid-column:1;grid-row:auto}body.print-orders-page .po-order-info-grid{grid-template-columns:repeat(2,1fr)}body.print-orders-page .po-notes-field{grid-column:1/-1;grid-row:auto}}
 @media(max-width:1000px){body.print-orders-page .po-workspace,body.print-orders-page .po-items-layout{grid-template-columns:1fr}body.print-orders-page .po-list-card{position:static}body.print-orders-page .po-order-topbar{grid-template-columns:1fr}body.print-orders-page .po-order-groups{max-height:420px}}
 @media(max-width:650px){body.print-orders-page .po-order-info-grid,body.print-orders-page .po-order-topbar .po-summary{grid-template-columns:1fr}body.print-orders-page .po-action-bar{grid-template-columns:1fr}body.print-orders-page .po-action-bar span{display:none}}
+
+/* Readability refinement for long item names and color/gram details */
+body.print-orders-page .po-items-layout{grid-template-columns:minmax(330px,390px) minmax(0,1fr)}
+body.print-orders-page .po-readonly-panel{min-height:0}
+body.print-orders-page .po-selection-host{display:block}
+body.print-orders-page .po-selection-host>p{margin:0;color:#b9aa91}
+body.print-orders-page .po-selected-info{display:grid!important;gap:10px!important}
+body.print-orders-page .po-info-card{padding:11px!important}
+body.print-orders-page .po-info-card h4{font-size:14px;line-height:1.35;white-space:normal;overflow-wrap:anywhere}
+body.print-orders-page .po-info-grid{grid-template-columns:1fr!important}
+body.print-orders-page .po-order-line-row td{vertical-align:top;padding-top:13px;padding-bottom:13px}
+body.print-orders-page .po-line-item-cell{min-width:285px}
+body.print-orders-page .po-line-item-name{margin-bottom:7px;color:#ffc24f;font-size:14px;font-weight:900;line-height:1.35;white-space:normal;overflow-wrap:anywhere}
+body.print-orders-page .po-item-search{min-width:0!important;width:100%!important;font-size:11px}
+body.print-orders-page .po-line-item-cell small{display:block;margin-top:5px;color:#b9aa91}
+body.print-orders-page .po-line-price,body.print-orders-page .po-line-total{color:#ffc24f;font-weight:900;white-space:nowrap}
+body.print-orders-page .po-line-colors{min-width:240px}
+body.print-orders-page .po-line-grams{display:grid;gap:5px;margin-bottom:8px}
+body.print-orders-page .po-line-grams span{display:grid;grid-template-columns:14px minmax(95px,1fr) auto;align-items:center;gap:7px;padding:6px 7px;border:1px solid #493516;border-radius:7px;background:#0d0b08}
+body.print-orders-page .po-line-grams i{width:12px;height:12px;border:1px solid rgba(255,255,255,.4);border-radius:50%}
+body.print-orders-page .po-line-grams b{min-width:0;color:#f5ead7;font-size:11px;white-space:normal;overflow-wrap:anywhere}
+body.print-orders-page .po-line-grams em{color:#ffc24f;font-size:11px;font-style:normal;font-weight:900;white-space:nowrap}
+body.print-orders-page .po-bundle-detail{display:grid;gap:5px;margin-top:8px}
+body.print-orders-page .po-bundle-detail span{display:flex;justify-content:space-between;gap:8px;padding:5px 7px;border:1px solid #3d2b12;border-radius:6px}
+body.print-orders-page .po-bundle-detail b{color:#f3e8d7;font-size:10px}.po-bundle-detail em{color:#ffc24f;font-size:10px;font-style:normal;white-space:nowrap}
+@media(max-width:1250px){body.print-orders-page .po-items-layout{grid-template-columns:1fr}body.print-orders-page .po-builder-column{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){body.print-orders-page .po-builder-column{grid-template-columns:1fr}body.print-orders-page .po-line-item-cell,body.print-orders-page .po-line-colors{min-width:220px}}
