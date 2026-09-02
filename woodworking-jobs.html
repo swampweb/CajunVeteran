@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" href="images/apple-touch-icon.png">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/woodworking-jobs.css">
   <title>Woodworking Jobs</title>
 </head>
 <body class="woodworking-jobs-page">
@@ -58,7 +59,20 @@
                 <div class="v7-card-head"><h2 class="v7-panel-title">Plaque Details</h2><button class="small-btn" id="addPlaque" type="button">Add Plaque</button></div>
                 <div id="plaques"></div>
               </section>
-              <div class="price-row wood-price-row"><div class="price-card"><span>Item Price Each</span><strong id="itemPrice">$0.00</strong></div><div class="price-card"><span>Job Total</span><strong id="jobTotal">$0.00</strong></div></div>
+              <div class="price-row wood-price-row">
+                <div class="price-card"><span>Item Price Each</span><strong id="itemPrice">$0.00</strong></div>
+                <div class="price-card"><span>Subtotal</span><strong id="jobSubtotal">$0.00</strong></div>
+                <div class="price-card"><span>Adjustment</span><strong id="jobAdjustment">$0.00</strong></div>
+                <div class="price-card total"><span>Job Total</span><strong id="jobTotal">$0.00</strong></div>
+              </div>
+              <section class="wood-adjustment-section">
+                <label class="inline-check wood-adjustment-toggle"><input id="hasAdjustment" type="checkbox"> Discount / Adjustment</label>
+                <div id="adjustmentBox" class="wood-adjustment-grid hidden">
+                  <label>Type<select id="adjustmentMode"><option value="discount">Discount</option><option value="surcharge">Surcharge</option></select></label>
+                  <label>Value<select id="adjustmentType"><option value="percent">Percent (%)</option><option value="amount">Dollar Amount ($)</option></select></label>
+                  <label>Amount<input id="adjustmentValue" type="number" min="0" step="0.01" value="0"></label>
+                </div>
+              </section>
               <div class="actions"><button class="btn clear" id="clearJob" type="button">Clear</button><button class="btn primary" type="submit">Save Job</button><button class="btn danger hidden" id="deleteJob" type="button">Delete</button></div>
             </form>
             <section class="section-soft selected-material-box"><h2 class="v7-panel-title">Selected Material</h2><div id="materialInfo">Select a material.</div></section>
