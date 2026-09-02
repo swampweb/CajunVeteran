@@ -1,0 +1,41 @@
+/* Isolated 3D Print Orders layout. Existing IDs and JavaScript behavior are preserved. */
+body.print-orders-page .v7-container{max-width:1580px}
+body.print-orders-page .po-workspace{grid-template-columns:minmax(300px,360px) minmax(0,1fr);gap:16px}
+body.print-orders-page .po-editor-card{max-height:none;overflow:visible}
+body.print-orders-page .po-editor-card form{display:block}
+body.print-orders-page .po-order-topbar{display:grid;grid-template-columns:minmax(220px,1fr) minmax(420px,620px);align-items:center;gap:18px;padding:15px 18px;border-bottom:1px solid #3b2b15;background:linear-gradient(180deg,#17130e,#100e0a)}
+body.print-orders-page .po-order-topbar h2{margin:0;color:#e4ae55;text-transform:uppercase;font-size:19px}
+body.print-orders-page .po-order-topbar .po-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;min-width:0}
+body.print-orders-page .po-order-topbar .summary-line{display:grid;gap:4px;padding:10px 12px;border:1px solid #60471f;border-radius:8px;background:#0c0a07}
+body.print-orders-page .po-order-topbar .summary-line span{color:#cdbf9f;font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+body.print-orders-page .po-order-topbar .summary-line strong{font-size:20px;color:#ffc24f}
+body.print-orders-page .po-order-topbar .summary-line:last-child{border-color:#a83229;background:rgba(151,35,27,.13)}
+body.print-orders-page .po-editor-body{padding:16px;display:grid;grid-template-columns:minmax(0,2.25fr) minmax(280px,.85fr);gap:14px}
+body.print-orders-page .po-panel{border:1px solid rgba(184,135,40,.55);border-radius:10px;background:rgba(0,0,0,.14);padding:14px;min-width:0}
+body.print-orders-page .po-section-title{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px}
+body.print-orders-page .po-section-title>span{display:grid;place-items:center;width:27px;height:27px;flex:0 0 27px;border:1px solid #8c6220;border-radius:7px;color:#f0b429;font-weight:900}
+body.print-orders-page .po-section-title h3{margin:0;color:#f0b429;text-transform:uppercase;font-size:14px;letter-spacing:.04em}
+body.print-orders-page .po-section-title p{margin:2px 0 0;color:#b9aa91;font-size:11px}
+body.print-orders-page .po-order-info-grid{display:grid;grid-template-columns:1.25fr .8fr .8fr .8fr;gap:12px}
+body.print-orders-page .po-notes-field{grid-column:3/5;grid-row:2/4}
+body.print-orders-page .po-notes-field textarea{min-height:96px}
+body.print-orders-page .po-paid-check{align-self:end;min-height:40px}
+body.print-orders-page .po-adjustment-panel{grid-column:2;grid-row:1}
+body.print-orders-page .po-adjustment-toggle{padding:9px 10px;border:1px solid #4f3919;border-radius:7px;background:#0d0b08}
+body.print-orders-page .po-adjustment-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:11px}
+body.print-orders-page .po-items-layout{grid-column:1/-1;display:grid;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:14px}
+body.print-orders-page .po-builder-column{display:grid;gap:14px;align-content:start}
+body.print-orders-page .po-add-wide{width:100%}
+body.print-orders-page .po-readonly-panel{min-height:210px}
+body.print-orders-page .po-selection-host{color:#b9aa91;font-size:12px}
+body.print-orders-page .po-selected-info{margin:0!important}
+body.print-orders-page .po-builder-column .po-selected-info{display:none!important}
+body.print-orders-page .po-order-items-panel{min-height:330px}
+body.print-orders-page .po-order-items-panel>.po-selected-info{margin-bottom:12px!important}
+body.print-orders-page .po-item-table{min-width:760px}
+body.print-orders-page .po-action-bar{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr auto auto;gap:9px;align-items:center;padding-top:2px}
+body.print-orders-page .po-list-card{position:sticky;top:14px}
+body.print-orders-page .po-order-groups{max-height:calc(100vh - 360px)}
+@media(max-width:1250px){body.print-orders-page .po-editor-body{grid-template-columns:1fr}body.print-orders-page .po-adjustment-panel{grid-column:1;grid-row:auto}body.print-orders-page .po-order-info-grid{grid-template-columns:repeat(2,1fr)}body.print-orders-page .po-notes-field{grid-column:1/-1;grid-row:auto}}
+@media(max-width:1000px){body.print-orders-page .po-workspace,body.print-orders-page .po-items-layout{grid-template-columns:1fr}body.print-orders-page .po-list-card{position:static}body.print-orders-page .po-order-topbar{grid-template-columns:1fr}body.print-orders-page .po-order-groups{max-height:420px}}
+@media(max-width:650px){body.print-orders-page .po-order-info-grid,body.print-orders-page .po-order-topbar .po-summary{grid-template-columns:1fr}body.print-orders-page .po-action-bar{grid-template-columns:1fr}body.print-orders-page .po-action-bar span{display:none}}

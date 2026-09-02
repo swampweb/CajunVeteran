@@ -5,97 +5,68 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" href="images/apple-touch-icon.png">
   <link rel="stylesheet" href="css/styles.css">
-  <title>V7 3D Print Orders</title>
+  <link rel="stylesheet" href="css/print-orders.css">
+  <title>3D Print Orders</title>
 </head>
-<body>
-  <main class="v7-main">
+<body class="print-orders-page">
+  <main class="v7-main po-main">
     <div class="v7-container">
       <header class="po-header">
-        <div class="po-header-copy">
-          <h1>3D Print Orders</h1>
-          <p>Manage customer orders, items, colors, and delivery status</p>
-        </div>
+        <div class="po-header-copy"><h1>3D Print Orders</h1><p>Manage customer orders, items, colors, and delivery status</p></div>
         <div class="po-header-actions">
-          <button class="btn po-refresh" id="refreshOrders" type="button">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0 1.3 4.4M20 4v7h-7"/></svg>
-            <span>Refresh</span>
-          </button>
-          <button class="btn primary" id="newOrderBtn" type="button">New Order</button>
-          <label class="po-status-filter">Status
-            <select id="statusFilter">
-              <option value="all">All Orders</option>
-              <option value="new">New</option>
-              <option value="in_process">In Process</option>
-              <option value="completed">Completed</option>
-              <option value="delivered">Delivered</option>
-              <option value="shipped">Shipped</option>
-            </select>
-          </label>
+          <button class="btn po-refresh" id="refreshOrders" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0 1.3 4.4M20 4v7h-7"/></svg><span>Refresh</span></button>
+          <button class="btn primary" id="newOrderBtn" type="button">+ New Order</button>
+          <label class="po-status-filter">Status<select id="statusFilter"><option value="all">All Orders</option><option value="new">New</option><option value="in_process">In Process</option><option value="completed">Completed</option><option value="delivered">Delivered</option><option value="shipped">Shipped</option></select></label>
           <img class="po-header-logo" src="images/CajunVeteran 3D Print Logo.png" alt="CajunVeteran 3D Printing">
         </div>
       </header>
-
-      <section class="po-kpis">
-        <article class="po-kpi red"><span>New Orders</span><strong id="kpiNew">0</strong></article>
-        <article class="po-kpi orange"><span>In Process</span><strong id="kpiInProcess">0</strong></article>
-        <article class="po-kpi green"><span>Ready</span><strong id="kpiReady">0</strong></article>
-      </section>
-
+      <section class="po-kpis"><article class="po-kpi red"><span>New Orders</span><strong id="kpiNew">0</strong></article><article class="po-kpi orange"><span>In Process</span><strong id="kpiInProcess">0</strong></article><article class="po-kpi green"><span>Ready</span><strong id="kpiReady">0</strong></article></section>
       <section class="po-workspace">
-        <section class="po-list-card">
-          <div class="po-card-head"><h2>Orders</h2></div>
-          <div class="po-card-body">
-            <div class="po-search"><input id="orderSearch" placeholder="Search order # or customer"></div>
-            <div class="po-order-groups" id="ordersGrouped"></div>
-          </div>
-        </section>
-
+        <aside class="po-list-card"><div class="po-card-head"><h2>Orders</h2></div><div class="po-card-body"><div class="po-search"><input id="orderSearch" placeholder="Search order # or customer"></div><div class="po-order-groups" id="ordersGrouped"></div></div></aside>
         <section class="po-editor-card">
-          <div class="po-card-head">
-            <h2 id="orderTitle">New Order</h2>
-            <div class="po-summary" id="orderTotalBox"></div>
-          </div>
-          <div class="po-card-body">
-            <form id="orderForm">
-              <div class="form-grid">
-                <label>Customer *<input id="customer" required list="customerList" placeholder="Start typing customer name..."></label>
-                <label>Order Date *<input id="orderDate" type="date" required></label>
-                <label>Due Date<input id="dueDate" type="date"></label>
-                <label>Status *<select id="status"><option value="new">New</option><option value="in_process">In Process</option><option value="completed">Completed</option><option value="delivered">Delivered</option><option value="shipped">Shipped</option></select></label>
-                <label>Priority *<select id="priority"><option value="2">Normal</option><option value="1">Rush</option><option value="3">Whenever</option></select></label>
-                <label class="inline-check">Paid <input id="paid" type="checkbox"></label>
-                <label class="full">Notes<textarea id="notes"></textarea></label>
-                <label class="inline-check full"><input id="hasAdjustment" type="checkbox"> Discount / Adjustment</label>
-                <div id="adjustmentBox" class="form-grid full hidden">
-                  <label>Type<select id="adjustmentMode"><option value="discount">Discount</option><option value="surcharge">Surcharge</option></select></label>
-                  <label>Value<select id="adjustmentType"><option value="percent">%</option><option value="amount">$</option></select></label>
-                  <label>Amount<input id="adjustmentValue" type="number" step=".01" value="0"></label>
+          <form id="orderForm">
+            <div class="po-order-topbar"><h2 id="orderTitle">New Order</h2><div class="po-summary" id="orderTotalBox"></div></div>
+            <div class="po-editor-body">
+              <section class="po-panel po-order-info-panel">
+                <div class="po-section-title"><span>1</span><div><h3>Order Information</h3><p>Customer, schedule, status, and notes</p></div></div>
+                <div class="po-order-info-grid">
+                  <label>Customer *<input id="customer" required list="customerList" placeholder="Start typing customer name..."></label>
+                  <label>Order Date *<input id="orderDate" type="date" required></label>
+                  <label>Due Date<input id="dueDate" type="date"></label>
+                  <label>Status *<select id="status"><option value="new">New</option><option value="in_process">In Process</option><option value="completed">Completed</option><option value="delivered">Delivered</option><option value="shipped">Shipped</option></select></label>
+                  <label>Priority *<select id="priority"><option value="2">Normal</option><option value="1">Rush</option><option value="3">Whenever</option></select></label>
+                  <label class="inline-check po-paid-check">Paid <input id="paid" type="checkbox"></label>
+                  <label class="po-notes-field">Notes<textarea id="notes" placeholder="Add notes about this order..."></textarea></label>
                 </div>
-              </div>
-              <h3>Order Items</h3>
-              <div class="table-wrap">
-                <table class="table po-item-table">
-                  <thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Colors</th><th>Total</th><th></th></tr></thead>
-                  <tbody id="lineTable"></tbody>
-                </table>
-              </div>
-              <div class="actions">
-                <button type="button" class="btn" id="addLine">+ Add Item</button>
-                <button type="button" class="btn danger hidden" id="deleteOrderBtn">Delete</button>
-                <button type="button" class="btn clear" id="clearOrder">Clear</button>
-                <button class="btn primary" type="submit" id="saveOrderBtn">Save Order</button>
-              </div>
-            </form>
-          </div>
+              </section>
+              <section class="po-panel po-adjustment-panel">
+                <div class="po-section-title"><span>%</span><div><h3>Discount / Adjustment</h3><p>Optional order-level price change</p></div></div>
+                <label class="inline-check po-adjustment-toggle"><input id="hasAdjustment" type="checkbox"> Apply adjustment</label>
+                <div id="adjustmentBox" class="po-adjustment-grid hidden">
+                  <label>Type<select id="adjustmentMode"><option value="discount">Discount</option><option value="surcharge">Surcharge</option></select></label>
+                  <label>Apply By<select id="adjustmentType"><option value="percent">Percentage</option><option value="amount">Dollar Amount</option></select></label>
+                  <label>Value<input id="adjustmentValue" type="number" step=".01" value="0"></label>
+                </div>
+              </section>
+              <section class="po-items-layout">
+                <aside class="po-builder-column">
+                  <section class="po-panel po-add-panel"><div class="po-section-title"><span>2</span><div><h3>Add Order Items</h3><p>Search by item name or SKU</p></div></div><button type="button" class="btn primary po-add-wide" id="addLine">+ Add Item</button></section>
+                  <section class="po-panel po-readonly-panel"><div class="po-section-title"><span>i</span><div><h3>Selection Summary</h3><p>Read only</p></div></div><div class="po-selection-host"><p>Selected item details appear here as items are added.</p></div></section>
+                </aside>
+                <section class="po-panel po-order-items-panel">
+                  <div class="po-section-title"><span>3</span><div><h3>Order Items</h3><p>Items, assigned colors, quantities, print time, and totals</p></div></div>
+                  <div class="table-wrap"><table class="table po-item-table"><thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Colors</th><th>Total</th><th></th></tr></thead><tbody id="lineTable"></tbody></table></div>
+                </section>
+              </section>
+              <div class="po-action-bar"><button type="button" class="btn danger hidden" id="deleteOrderBtn">Delete</button><span></span><button type="button" class="btn clear" id="clearOrder">Clear Order</button><button class="btn primary" type="submit" id="saveOrderBtn">Save Order</button></div>
+            </div>
+          </form>
         </section>
       </section>
       <datalist id="customerList"></datalist>
     </div>
   </main>
   <footer class="v7-footer">CajunVeteran Workshop Management | Built by a Veteran</footer>
-  <script src="js/database.js"></script>
-  <script src="js/navigation.js"></script>
-  <script src="js/modal.js"></script>
-  <script src="js/print-orders.js"></script>
+  <script src="js/database.js"></script><script src="js/navigation.js"></script><script src="js/modal.js"></script><script src="js/print-orders.js"></script>
 </body>
 </html>

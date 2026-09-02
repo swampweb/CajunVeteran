@@ -1,197 +1,45 @@
-/* Woodworking Jobs page-specific layout and adjustment styles */
-body.woodworking-jobs-page .v7-container {
-  max-width: 1580px;
-}
-
-body.woodworking-jobs-page .wood-jobs-workspace {
-  display: grid;
-  grid-template-columns: minmax(300px, 360px) minmax(720px, 980px);
-  gap: 18px;
-  align-items: start;
-  justify-content: start;
-}
-
-body.woodworking-jobs-page .wood-status-card,
-body.woodworking-jobs-page .wood-job-editor {
-  width: 100%;
-  min-width: 0;
-}
-
-body.woodworking-jobs-page .wood-job-editor .v7-card-body {
-  padding: 18px;
-}
-
-body.woodworking-jobs-page .wood-job-form-grid {
-  grid-template-columns: repeat(2, minmax(260px, 1fr));
-  gap: 14px 16px;
-}
-
-body.woodworking-jobs-page .wood-job-form-grid textarea {
-  min-height: 115px;
-}
-
-body.woodworking-jobs-page .wood-price-row {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(135px, 1fr));
-  gap: 10px;
-  margin-top: 16px;
-}
-
-body.woodworking-jobs-page .wood-price-row .price-card {
-  min-height: 76px;
-  padding: 12px;
-  border: 1px solid rgba(184, 135, 40, .62);
-  border-radius: 9px;
-  background: rgba(0, 0, 0, .18);
-}
-
-body.woodworking-jobs-page .wood-price-row .price-card span {
-  display: block;
-  margin-bottom: 7px;
-  color: #cdbf9f;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: .04em;
-}
-
-body.woodworking-jobs-page .wood-price-row .price-card strong {
-  color: #ffc24f;
-  font-size: 22px;
-}
-
-body.woodworking-jobs-page .wood-price-row .price-card.total {
-  border-color: #d24335;
-  background: rgba(151, 35, 27, .14);
-}
-
-body.woodworking-jobs-page .wood-adjustment-section {
-  margin-top: 12px;
-  padding: 13px;
-  border: 1px solid rgba(184, 135, 40, .42);
-  border-radius: 9px;
-  background: rgba(0, 0, 0, .14);
-}
-
-body.woodworking-jobs-page .wood-adjustment-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #f4ead8;
-  font-weight: 800;
-}
-
-body.woodworking-jobs-page .wood-adjustment-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(160px, 1fr));
-  gap: 12px;
-  margin-top: 12px;
-}
-
-body.woodworking-jobs-page .wood-adjustment-grid.hidden {
-  display: none;
-}
-
-body.woodworking-jobs-page .wood-adjustment-grid label {
-  display: grid;
-  gap: 6px;
-  color: #f4ead8;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-body.woodworking-jobs-page .wood-adjustment-grid input,
-body.woodworking-jobs-page .wood-adjustment-grid select {
-  width: 100%;
-  min-height: 40px;
-  box-sizing: border-box;
-  border: 1px solid rgba(184, 135, 40, .72);
-  border-radius: 7px;
-  background: #090806;
-  color: #fff5e2;
-  padding: 8px 10px;
-}
-
-body.woodworking-jobs-page .selected-material-box {
-  margin-top: 16px;
-}
-
-body.woodworking-jobs-page .status-groups {
-  display: grid;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-body.woodworking-jobs-page .status-group {
-  border: 1px solid rgba(184, 135, 40, .5);
-  border-radius: 9px;
-  overflow: hidden;
-}
-
-body.woodworking-jobs-page .status-head {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 11px 12px;
-  border: 0;
-  background: rgba(184, 135, 40, .08);
-  color: #f0b64f;
-  font-weight: 900;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-body.woodworking-jobs-page .status-body {
-  display: none;
-  padding: 7px;
-}
-
-body.woodworking-jobs-page .status-group.open .status-body {
-  display: grid;
-  gap: 7px;
-}
-
-body.woodworking-jobs-page .wood-job-row {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 4px 10px;
-  padding: 10px;
-  border: 1px solid rgba(184, 135, 40, .35);
-  border-radius: 7px;
-  background: #0c0a07;
-  color: #f4ead8;
-  text-align: left;
-  cursor: pointer;
-}
-
-body.woodworking-jobs-page .wood-job-row.active {
-  border-color: #d24335;
-  background: rgba(151, 35, 27, .16);
-}
-
-body.woodworking-jobs-page .wood-job-row small {
-  color: #cdbf9f;
-}
-
-body.woodworking-jobs-page .wood-job-row .row-project {
-  grid-column: 1 / -1;
-}
-
-@media (max-width: 1120px) {
-  body.woodworking-jobs-page .wood-jobs-workspace {
-    grid-template-columns: minmax(275px, 330px) minmax(600px, 1fr);
-  }
-  body.woodworking-jobs-page .wood-price-row {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 850px) {
-  body.woodworking-jobs-page .wood-jobs-workspace,
-  body.woodworking-jobs-page .wood-job-form-grid,
-  body.woodworking-jobs-page .wood-adjustment-grid {
-    grid-template-columns: 1fr;
-  }
-}
+/* Isolated professional Woodworking Jobs layout. Existing IDs and JS behavior are preserved. */
+body.woodworking-jobs-page .v7-container{max-width:1580px}
+body.woodworking-jobs-page .wood-jobs-workspace{display:grid;grid-template-columns:minmax(300px,360px) minmax(0,1fr);gap:16px;align-items:start}
+body.woodworking-jobs-page .wood-status-card{position:sticky;top:14px}
+body.woodworking-jobs-page .wood-job-editor{overflow:visible}
+body.woodworking-jobs-page .wood-job-topbar{display:grid;grid-template-columns:1fr auto minmax(560px,760px);gap:12px;align-items:center;padding:14px 17px;border-bottom:1px solid #3b2b15;background:linear-gradient(180deg,#17130e,#100e0a)}
+body.woodworking-jobs-page .wood-job-topbar h2{margin:0}
+body.woodworking-jobs-page .wood-price-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0}
+body.woodworking-jobs-page .wood-price-row .price-card{min-height:64px;padding:9px 10px;border:1px solid #61461d;border-radius:8px;background:#0c0a07}
+body.woodworking-jobs-page .wood-price-row .price-card span{display:block;color:#bcae98;font-size:9px;text-transform:uppercase}
+body.woodworking-jobs-page .wood-price-row .price-card strong{color:#ffc24f;font-size:18px}
+body.woodworking-jobs-page .wood-price-row .total{border-color:#a83229;background:rgba(151,35,27,.13)}
+body.woodworking-jobs-page .wood-editor-body{padding:16px;display:grid;grid-template-columns:minmax(0,2fr) minmax(300px,.8fr);gap:14px}
+body.woodworking-jobs-page .wood-panel{min-width:0;padding:14px;border:1px solid rgba(184,135,40,.55);border-radius:10px;background:rgba(0,0,0,.14)}
+body.woodworking-jobs-page .wood-section-title{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px}
+body.woodworking-jobs-page .wood-section-title>span{display:grid;place-items:center;width:27px;height:27px;flex:0 0 27px;border:1px solid #8c6220;border-radius:7px;color:#f0b429;font-weight:900}
+body.woodworking-jobs-page .wood-section-title h3{margin:0;color:#f0b429;text-transform:uppercase;font-size:14px}
+body.woodworking-jobs-page .wood-section-title p{margin:2px 0 0;color:#b9aa91;font-size:11px}
+body.woodworking-jobs-page .wood-section-title .small-btn{margin-left:auto}
+body.woodworking-jobs-page .wood-job-form-grid{display:grid;grid-template-columns:repeat(3,minmax(170px,1fr));gap:12px}
+body.woodworking-jobs-page .wood-notes{grid-column:2/4;grid-row:3/5}
+body.woodworking-jobs-page .wood-notes textarea{min-height:96px}
+body.woodworking-jobs-page .wood-paid{align-self:end;min-height:40px}
+body.woodworking-jobs-page .wood-material-panel{grid-column:2;grid-row:1}
+body.woodworking-jobs-page .selected-material-box{margin-top:12px;padding:12px;border:1px solid #4f3919;border-radius:8px;background:#0d0b08}
+body.woodworking-jobs-page .selected-material-box h4{margin:0 0 9px;color:#f0b429;text-transform:uppercase;font-size:12px}
+body.woodworking-jobs-page .material-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+body.woodworking-jobs-page .material-detail-grid div{padding:8px;border:1px solid #382a15;border-radius:7px}
+body.woodworking-jobs-page .material-detail-grid span{display:block;color:#b7aa96;font-size:9px;text-transform:uppercase}
+body.woodworking-jobs-page .material-detail-grid b{color:#ecc16e}
+body.woodworking-jobs-page .wood-adjustment-section{margin-top:12px;padding:11px;border:1px solid #4f3919;border-radius:8px;background:#0d0b08}
+body.woodworking-jobs-page .wood-adjustment-grid{display:grid;grid-template-columns:1fr;gap:9px;margin-top:10px}
+body.woodworking-jobs-page .wood-adjustment-grid.hidden{display:none}
+body.woodworking-jobs-page .wood-plaque-panel{grid-column:1/-1}
+body.woodworking-jobs-page .plaque-row{margin-bottom:9px;padding:9px;border:1px solid #493416;border-radius:8px;background:#090704}
+body.woodworking-jobs-page .wood-action-bar{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr auto auto;gap:9px;align-items:center}
+body.woodworking-jobs-page .status-groups{display:grid;gap:8px;margin-top:12px}
+body.woodworking-jobs-page .status-group{border:1px solid #5a401b;border-radius:8px;overflow:hidden}
+body.woodworking-jobs-page .status-head{width:100%;display:flex;justify-content:space-between;padding:10px 12px;border:0;background:#19140c;color:#eab45a;font-weight:900;text-transform:uppercase;cursor:pointer}
+body.woodworking-jobs-page .status-body{display:none;padding:7px}body.woodworking-jobs-page .status-group.open .status-body{display:grid;gap:7px}
+body.woodworking-jobs-page .wood-job-row{width:100%;display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:10px;border:1px solid #493516;border-radius:7px;background:#0c0a07;color:#f4ead8;text-align:left;cursor:pointer}
+body.woodworking-jobs-page .wood-job-row.active{border-color:#d24335;background:rgba(151,35,27,.16)}body.woodworking-jobs-page .wood-job-row small{color:#cdbf9f}body.woodworking-jobs-page .row-project{grid-column:1/-1}
+@media(max-width:1260px){body.woodworking-jobs-page .wood-job-topbar{grid-template-columns:1fr auto}body.woodworking-jobs-page .wood-price-row{grid-column:1/-1}body.woodworking-jobs-page .wood-editor-body{grid-template-columns:1fr}body.woodworking-jobs-page .wood-material-panel{grid-column:1;grid-row:auto}}
+@media(max-width:950px){body.woodworking-jobs-page .wood-jobs-workspace{grid-template-columns:1fr}body.woodworking-jobs-page .wood-status-card{position:static}body.woodworking-jobs-page .wood-job-form-grid{grid-template-columns:repeat(2,1fr)}body.woodworking-jobs-page .wood-notes{grid-column:1/-1;grid-row:auto}}
+@media(max-width:650px){body.woodworking-jobs-page .wood-job-form-grid,body.woodworking-jobs-page .wood-price-row{grid-template-columns:1fr}body.woodworking-jobs-page .wood-action-bar{grid-template-columns:1fr}body.woodworking-jobs-page .wood-action-bar span{display:none}}
