@@ -1,7 +1,7 @@
 initNavigation('woodworking-jobs.html');
 
 const state = {
-  jobs: [], items: [], materials: [], orders: [], plaques: [], editing: null,
+  jobs: [], items: [], materials: [], orders: [], plaques: [], allPlaques: [], editing: null,
   statusFilter: 'all', groupsOpen: { new: true, in_process: true, completed: false, delivered: false }
 };
 
@@ -11,10 +11,30 @@ const norm = value => String(value || 'new').toLowerCase().replace(/\s+/g, '_');
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 
 const PLAQUE_STORE = 'cv_woodworking_job_plaques_v1';
+const PLAQUE_TABLE = 'cv_woodworking_plaques';
 function plaqueStore(){try{return JSON.parse(localStorage.getItem(PLAQUE_STORE)||'{}')||{};}catch{return {};}}
-function savedPlaques(jobId){const rows=plaqueStore()[String(jobId||'')];return Array.isArray(rows)?rows:[];}
-function savePlaques(jobId, rows){const store=plaqueStore();store[String(jobId||'')]=(rows||[]).map(row=>({...row}));localStorage.setItem(PLAQUE_STORE,JSON.stringify(store));}
-
+function localPlaques(jobId){const rows=plaqueStore()[String(jobId||'')];return Array.isArray(rows)?rows:[];}
+function cachePlaques(jobId, rows){const store=plaqueStore();store[String(jobId||'')]=(rows||[]).map(row=>({...row}));localStorage.setItem(PLAQUE_STORE,JSON.stringify(store));}
+function normalizedPlaque(row,index=0){return {id:row?.id,job_id:String(row?.job_id||''),plaque_number:Number(row?.plaque_number||index+1),name:String(row?.name||''),rank:String(row?.rank||'NCO'),month_promoted:String(row?.month_promoted||'')};}
+function plaquesForJob(jobId){
+  const remote=(state.allPlaques||[]).filter(row=>String(row.job_id)===String(jobId)).sort((a,b)=>Number(a.plaque_number||a.id||0)-Number(b.plaque_number||b.id||0));
+  if(remote.length)return remote.map(normalizedPlaque);
+  return localPlaques(jobId).map(normalizedPlaque);
+}
+async function loadPlaqueTable(){
+  try{state.allPlaques=await CVDB.select(PLAQUE_TABLE,'select=*&order=job_id.asc,plaque_number.asc,id.asc');}
+  catch(error){
+    console.warn('Plaque table load failed; using local plaque cache.',error);
+    try{state.allPlaques=await CVDB.select(PLAQUE_TABLE,'select=*&order=job_id.asc,id.asc');}catch{state.allPlaques=[];}
+  }
+}
+async function savePlaquesToSupabase(jobId, rows){
+  const clean=(rows||[]).map((row,index)=>({job_id:String(jobId),plaque_number:index+1,name:String(row.name||'').trim(),rank:String(row.rank||'NCO'),month_promoted:String(row.month_promoted||'').trim()}));
+  cachePlaques(jobId,clean);
+  await CVDB.remove(PLAQUE_TABLE,`job_id=eq.${encodeURIComponent(jobId)}`);
+  if(clean.length)await CVDB.insert(PLAQUE_TABLE,clean);
+  state.allPlaques=state.allPlaques.filter(row=>String(row.job_id)!==String(jobId)).concat(clean);
+}
 function isPlaqueItem(item) { return /plaque/i.test(item?.name || ''); }
 function nextJobId() {
   const ids = state.jobs.map(job => Number(String(job.job_id || '').replace(/\D/g, ''))).filter(Boolean);
@@ -142,6 +162,7 @@ async function load() {
   state.items = data.woodItems || [];
   state.materials = data.woodMaterials || [];
   state.orders = data.orders || [];
+  await loadPlaqueTable();
   const names = [...new Set([...state.jobs.map(j => j.customer), ...state.orders.map(o => o.customer)].filter(Boolean))];
   $('customerList').innerHTML = names.sort().map(name => `<option value="${esc(name)}"></option>`).join('');
   renderSelects();
@@ -168,15 +189,15 @@ function openJob(id) {
     const suggestion = suggestedMaterial(selectedItem());
     $('material').value = suggestion ? String(suggestion.id) : '';
   }
-  const mode = job.adjustment_mode || (Number(job.adjustment || 0) < 0 ? 'discount' : 'surcharge');
+  const mode = job.adjustment_mode && job.adjustment_mode !== 'none' ? job.adjustment_mode : (Number(job.adjustment || 0) < 0 ? 'discount' : 'surcharge');
   const adjustmentValue = Number(job.adjustment_value || 0);
-  const hasAdjustment = adjustmentValue > 0 || Number(job.adjustment || 0) !== 0;
+  const hasAdjustment = (job.adjustment_mode && job.adjustment_mode !== 'none') || adjustmentValue > 0 || Number(job.adjustment || 0) !== 0;
   $('hasAdjustment').checked = hasAdjustment;
   $('adjustmentMode').value = mode === 'surcharge' ? 'surcharge' : 'discount';
-  $('adjustmentType').value = job.adjustment_type || 'amount';
+  $('adjustmentType').value = job.adjustment_type && job.adjustment_type !== 'none' ? job.adjustment_type : 'amount';
   $('adjustmentValue').value = adjustmentValue || Math.abs(Number(job.adjustment || 0));
   $('adjustmentBox').classList.toggle('hidden', !hasAdjustment);
-  state.plaques = savedPlaques(job.job_id);
+  state.plaques = plaquesForJob(job.job_id);
   if (!state.plaques.length && job.plaque_name) state.plaques.push({ name: job.plaque_name, rank: job.plaque_rank || 'NCO', month_promoted: job.plaque_month_promoted || '' });
   if (isPlaqueItem(selectedItem())) { const target=Math.max(1,Number($('qty').value||1)); while(state.plaques.length<target) state.plaques.push({rank:'NCO'}); while(state.plaques.length>target) state.plaques.pop(); }
   $('deleteJob').classList.remove('hidden');
@@ -234,6 +255,7 @@ $('deleteJob').onclick = async () => {
   if (!state.editing) return;
   const ok = await confirmAction({ title:'Delete Woodworking Job', message:`Delete job ${state.editing}?`, details:'This cannot be undone.', confirmText:'Delete Job' });
   if (!ok) return;
+  await CVDB.remove(PLAQUE_TABLE, `job_id=eq.${encodeURIComponent(state.editing)}`);
   await CVDB.remove('cv_woodworking_jobs', `job_id=eq.${encodeURIComponent(state.editing)}`);
   toast('Job deleted');
   await load();
@@ -263,17 +285,30 @@ $('jobForm').onsubmit = async event => {
     updated_at: new Date().toISOString()
   };
   if (!row.customer || !row.source_item_id) { toast('Customer and Woodworking Item are required.', 'err'); return; }
-  savePlaques(jobId, state.plaques);
+  const extended = {
+    ...row,
+    subtotal: calc.subtotal,
+    adjustment: calc.adjustment,
+    adjustment_mode: $('hasAdjustment').checked ? $('adjustmentMode').value : 'none',
+    adjustment_type: $('hasAdjustment').checked ? $('adjustmentType').value : 'none',
+    adjustment_value: $('hasAdjustment').checked ? Number($('adjustmentValue').value || 0) : 0
+  };
   try {
-    const extended = { ...row, adjustment: calc.adjustment, adjustment_mode: $('adjustmentMode').value, adjustment_type: $('adjustmentType').value, adjustment_value: Number($('adjustmentValue').value || 0), subtotal: calc.subtotal };
     if (state.editing) await CVDB.patch('cv_woodworking_jobs', `job_id=eq.${encodeURIComponent(jobId)}`, extended);
     else await CVDB.insert('cv_woodworking_jobs', extended);
   } catch (error) {
-    console.warn('Adjustment columns unavailable; saving calculated total only.', error);
-    if (state.editing) await CVDB.patch('cv_woodworking_jobs', `job_id=eq.${encodeURIComponent(jobId)}`, row);
-    else await CVDB.insert('cv_woodworking_jobs', row);
+    console.error('Woodworking job save failed. Confirm the adjustment columns exist.', error);
+    toast('Job not saved. Run the included SQL to add adjustment columns.', 'err');
+    return;
   }
-  toast('Job saved');
+  try {
+    await savePlaquesToSupabase(jobId, state.plaques);
+  } catch (error) {
+    console.error('Plaque save failed.', error);
+    toast('Job saved, but plaques were not saved. Check cv_woodworking_plaques columns.', 'err');
+    return;
+  }
+  toast(`Job saved with ${state.plaques.length} plaque${state.plaques.length===1?'':'s'}.`);
   await load();
 };
 
