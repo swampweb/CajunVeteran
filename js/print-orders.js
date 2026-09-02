@@ -91,7 +91,7 @@ function renderLines(){
     const item=itemBySku(line.item_sku)||{};
     const comps=orderComponentsForLine(line);
     const bundleDetail=line.bundle?`<div class="po-bundle-detail">${line.bundle.lines.map(x=>`<span><b>${esc(x.name)}</b><em>${money(x.price)} / ${formatMinutes(x.minutes)}</em></span>`).join('')}</div>`:'';
-    const gramRows=comps.length?`<div class="po-line-grams">${comps.map(c=>`<span><i style="background:${colorBg(c.color)}"></i><b>${esc(componentName(c))}</b><em>${Number(c.grams||0).toFixed(1)}g</em></span>`).join('')}</div>`:'';
+    const gramRows=comps.length?`<div class="po-line-grams">${comps.map(c=>`<span><i style="background:${colorBg(c.color)}"></i><b>${esc(componentName(c))}</b><em>${Number(c.grams||0).toFixed(1)}g</em></span>`).join('')}</div>`:'<span class="po-color-note">No assigned colors</span>';
     return `<tr class="po-order-line-row">
       <td class="po-line-item-cell"><div class="po-line-item-name">${esc(item.name||line.item_sku||'Select an item')}</div><input class="po-item-search" list="printItemPickerList" data-line-item-search="${index}" value="${esc(item.name?itemLabel(item):(line.item_sku||''))}" placeholder="Search item or SKU"><small>SKU: ${esc(line.item_sku||'')}</small>${bundleDetail}</td>
       <td class="po-line-price">${money(lineUnitPrice(line))}</td>
